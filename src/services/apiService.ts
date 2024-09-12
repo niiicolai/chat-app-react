@@ -1,7 +1,7 @@
 import TokenService from "./tokenService";
 
-const API_URL = 'http://localhost:3000';
-const API_PREFIX = '/api/v1';
+const API_URL = import.meta.env.VITE_API_URL;
+const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
 /**
  * @interface ApiServiceBuilder

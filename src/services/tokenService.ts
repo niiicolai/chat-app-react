@@ -3,7 +3,7 @@
  * @constant AUTH_LS_KEY
  * @description Local storage key for the JWT token
  */
-const AUTH_LS_KEY = 'auth';
+const AUTH_LS_KEY = import.meta.env.VITE_AUTH_LS_KEY;
 
 /**
  * @interface Token

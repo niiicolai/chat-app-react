@@ -1,5 +1,7 @@
 import RoomCreate from '../components/room/RoomCreate'
 import RoomList from '../components/room/RoomList'
+import useWebsocket from '../hooks/useWebsockets'
+const socket = useWebsocket()
 
 function AppView() {
   return (
