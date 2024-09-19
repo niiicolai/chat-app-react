@@ -1,24 +1,6 @@
-import ApiService, { BuilderResponse, BuilderMethods } from "./apiService.js";
-import TokenService from "./tokenService.js";
-
-/**
- * @interface User
- * @description User interface
- * @param {string} uuid - The user uuid
- * @param {string} username - The user username
- * @param {string} email - The user email
- * @param {string} avatar_src - The user avatar source
- * @param {string} created_at - The user created at
- * @param {string} updated_at - The user updated at
- */
-export interface User {
-    uuid: string;
-    username: string;
-    email: string;
-    avatar_src: string;
-    created_at: string;
-    updated_at: string;
-}
+import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
+import TokenService from "./tokenService";
+import User from "../models/user";
 
 export default class UserService {
     /**
@@ -48,7 +30,7 @@ export default class UserService {
     static me = async (): Promise<User> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/me`)
+                .endpoint(`/user/me`)
                 .method(BuilderMethods.GET)
                 .auth()
                 .execute() as BuilderResponse;
@@ -83,14 +65,13 @@ export default class UserService {
     /**
      * @function update
      * @description Update a user
-     * @param {string} uuid - The user uuid
      * @param {FormData} formData - The user form data
      * @returns {Promise<User>} user
      */
-    static update = async (uuid: string, formData: FormData): Promise<string> => {
+    static update = async (formData: FormData): Promise<string> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/user/${uuid}`)
+                .endpoint(`/user/me`)
                 .method(BuilderMethods.PATCH)
                 .body(formData)
                 .auth()
@@ -104,13 +85,12 @@ export default class UserService {
     /**
      * @function destroy
      * @description Destroy a user
-     * @param {string} uuid - The user uuid
      * @returns {Promise<User>} user
      */
-    static destroy = async (uuid: string): Promise<string> => {
+    static destroy = async (): Promise<string> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/user/${uuid}`)
+                .endpoint(`/user/me`)
                 .method(BuilderMethods.DELETE)
                 .auth()
                 .execute() as BuilderResponse;
@@ -129,7 +109,7 @@ export default class UserService {
     static login = async (formData: FormData): Promise<User> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/login`)
+                .endpoint(`/user/login`)
                 .method(BuilderMethods.POST)
                 .body({
                     email: formData.get('email'),

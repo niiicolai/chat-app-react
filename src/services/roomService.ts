@@ -1,38 +1,6 @@
-import ApiService, { BuilderResponse, BuilderMethods } from "./apiService.js";
-
-/**
- * @interface Room
- * @description Room interface
- * @param {string} uuid - The room uuid
- * @param {string} name - The room name
- * @param {string} description - The room description
- * @param {string} room_category_name - The room category name
- * @param {string} avatar_src - The room avatar source
- * @param {string} created_at - The room created at
- * @param {string} updated_at - The room updated at
- */
-export interface Room {
-    uuid: string;
-    name: string;
-    description: string;
-    room_category_name: string;
-    avatar_src: string;
-    created_at: string;
-    updated_at: string;
-}
-
-/**
- * @interface RoomCategory
- * @description Room category interface
- * @param {string} name - The room category name
- * @param {string} created_at - The room category created at
- * @param {string} updated_at - The room category updated at
- */
-export interface RoomCategory {
-    name: string;
-    created_at: string;
-    updated_at: string;
-}
+import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
+import Room from "../models/room";
+import RoomCategory from "../models/room_category";
 
 export default class RoomService {
     /**

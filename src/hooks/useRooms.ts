@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import RoomService, { Room } from "../services/roomService";
+import Room from "../models/room";
+import RoomService from "../services/roomService";
 import UserService from "../services/userService";
 
 const useRooms = () => {

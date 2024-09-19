@@ -1,49 +1,52 @@
 import useRooms from "../../hooks/useRooms";
 import useRoomCategories from "../../hooks/useRoomCategories";
+import InputControl from "../utils/InputControl";
+import Button from "../utils/Button";
 
 const RoomUpdate = (props: any) => {
+    const { room, setEditRoom } = props;
     const { categories } = useRoomCategories();
     const { error, isLoading, update } = useRooms();
-    const room = props.room
     return (
-        <>
-            <h1>
+        <div className="absolute top-0 left-0 right-0 p-3 bg-black min-h-screen z-40">
+            <h1 className="text-lg font-bold">
                 Update Room
             </h1>
 
-            <p>
+            <p className="text-md mb-3">
                 Enter the details to update a room
             </p>
 
             {error && <p className="text-danger">{error}</p>}
             {isLoading && <div className="spinner-border"></div>}
-
             {room && (
-                <form onSubmit={update}>
-
+                <form onSubmit={update} className="text-white">
                     <input type="hidden" name="uuid" value={room.uuid} />
-                    <input type="text" name="name" placeholder="Name" defaultValue={room.name} />
-                    <input type="text" name="description" placeholder="Description" defaultValue={room.description} />
-
-                    <label>Room Category</label>
-                    <select name="room_category_name" id="room_category_name" defaultValue={room.room_category_name}>
-                        {categories.map((category) => (
-                            <option key={category.name} value={category.name}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Avatar</label>
-                    <input type="file" name="file" />
-                    {room.avatar_src && <img src={room.avatar_src} alt={room.name} />}
-
-                    <button type="submit">Update</button>
+                    <InputControl id="name" type="text" label="Name" name="name" defaultValue={room.name} />
+                    <InputControl id="description" type="text" label="Desc" name="description" defaultValue={room.description} />
+                    <InputControl 
+                        id="room_category_name" 
+                        name="room_category_name"
+                        type="select" 
+                        label="Category" 
+                        defaultValue={room.room_category_name} 
+                        options={
+                            categories.map((category) => (
+                                <option key={category.name} value={category.name}>
+                                    {category.name}
+                                </option>
+                            ))
+                        }
+                    />
+                    <InputControl id="file" type="file" label="Avatar" name="file" defaultValue={room.avatar?.room_file?.src} />
+                    
+                    <div className="flex flex-col gap-2">
+                        <Button type="primary" button="submit" slot="Update" />
+                        <Button type="secondary" button="button" slot="Cancel" onClick={() => setEditRoom(null)} />
+                    </div>
                 </form>
             )}
-
-            {!room && <p>No room selected! {room}</p>}
-        </>
+        </div>
     );
 };
 
