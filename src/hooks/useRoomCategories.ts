@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import RoomService, { RoomCategory } from "../services/roomService";
+import RoomService from "../services/roomService";
+import RoomCategory from "../models/room_category";
 
 const useRoomCategories = () => {
     const [categories, setCategories] = useState<RoomCategory[]>([]);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import UserService, { User } from "../services/userService";
+import UserService from "../services/userService";
 import TokenService from "../services/tokenService";
+import User from "../models/user";
 
 interface UseWebsocket {
     onChatMessage: (cb: (data: any) => void) => void;

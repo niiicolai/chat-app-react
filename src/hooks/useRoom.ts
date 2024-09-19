@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Room } from "../services/roomService";
+import Room from "../models/room";
 
 const useRoom = () => {
     const [room, setRoom] = useState<Room>();
