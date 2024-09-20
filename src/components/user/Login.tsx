@@ -5,14 +5,15 @@ import Alert from "../utils/Alert";
 import Link from "../utils/Link";
 import InputControl from "../utils/InputControl";
 import GhostIcon from "../icons/GhostIcon";
-import { router } from "../../router/router";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { error, isLoading, login } = useUser();
+    const navigate = useNavigate();
     const handleSubmit = async (e: any) => {
         try {
             await login(e);
-            router.navigate("/");
+            navigate("/");
         } catch (error: any) {
             console.error(error.message);
         }

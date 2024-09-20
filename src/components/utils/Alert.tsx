@@ -7,9 +7,13 @@ const types: { [key: string]: string } = {
 
 const Alert = (props: any) => {
     return (
-        <p className={`${types[props.type]} p-3 text-sm rounded-md text-center font-bold`}>
-            {props.message}
-        </p>
+        <>
+            {props.message &&
+                <p className={`${types[props.type]} p-3 text-sm rounded-md text-center font-bold`}>
+                    {props.message}
+                </p>
+            }
+        </>
     );
 };
 

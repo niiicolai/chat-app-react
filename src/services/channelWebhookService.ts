@@ -1,17 +1,17 @@
 import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
-import Channel from "../models/channel";
+import ChannelWebhook from "../models/channel_webhook";
 
-export default class ChannelService {
+export default class ChannelWebhookService {
     /**
      * @function findOne
-     * @description Find a channel by uuid
-     * @param {string} uuid - The channel uuid
-     * @returns {Promise<Channel>} channel
+     * @description Find a channel webhook by uuid
+     * @param {string} uuid - The channel webhook uuid
+     * @returns {Promise<ChannelWebhook>} channel webhook
      */
-    static findOne = async (uuid: string): Promise<Channel> => {
+    static findOne = async (uuid: string): Promise<ChannelWebhook> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/channel/${uuid}`)
+                .endpoint(`/channel_webhook/${uuid}`)
                 .method(BuilderMethods.GET)
                 .execute() as BuilderResponse;
 
@@ -23,16 +23,16 @@ export default class ChannelService {
 
     /**
      * @function findAll
-     * @description Find all channels for a room
+     * @description Find all channel webhooks for a room
      * @param {params} room_uuid - The room uuid
      * @param {params} page - The page number (optional)
      * @param {params} limit - The limit number (optional)
-     * @returns {Promise<Channel[]>} channels
+     * @returns {Promise<ChannelWebhook[]>} channel webhook
      */
-    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<Channel[]> => {
+    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<ChannelWebhook[]> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/channel`)
+                .endpoint(`/channel_webhooks`)
                 .parameter('page', page)
                 .parameter('limit', limit)
                 .parameter('room_uuid', room_uuid)
@@ -49,14 +49,14 @@ export default class ChannelService {
 
     /**
      * @function create
-     * @description Create a channel
-     * @param {FormData} formData - The channel form data
-     * @returns {Promise<Channel>} channel
+     * @description Create a channel webhook
+     * @param {FormData} formData - The channel webhook form data
+     * @returns {Promise<ChannelWebhook>} channel webhook
      */
-    static create = async (formData: FormData): Promise<Channel> => {
+    static create = async (formData: FormData): Promise<ChannelWebhook> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/channel`)
+                .endpoint(`/channel_webhook`)
                 .method(BuilderMethods.POST)
                 .body(formData)
                 .auth()
@@ -70,15 +70,15 @@ export default class ChannelService {
 
     /**
      * @function update
-     * @description Update a channel
-     * @param {string} uuid - The channel uuid
-     * @param {FormData} formData - The channel form data
-     * @returns {Promise<Channel>} channel
+     * @description Update a channel webhook
+     * @param {string} uuid - The channel webhook uuid
+     * @param {FormData} formData - The channel webhook form data
+     * @returns {Promise<ChannelWebhook>} channel webhook
      */
-    static update = async (uuid: string, formData: FormData): Promise<Channel> => {
+    static update = async (uuid: string, formData: FormData): Promise<ChannelWebhook> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/channel/${uuid}`)
+                .endpoint(`/channel_webhook/${uuid}`)
                 .method(BuilderMethods.PATCH)
                 .body(formData)
                 .auth()
@@ -92,14 +92,14 @@ export default class ChannelService {
 
     /**
      * @function destroy
-     * @description Destroy a channel
-     * @param {string} uuid - The channel uuid
+     * @description Destroy a channel webhook
+     * @param {string} uuid - The channel webhook uuid
      * @returns {Promise<string>} message
      */
     static destroy = async (uuid: string): Promise<string> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/channel/${uuid}`)
+                .endpoint(`/channel_webhook/${uuid}`)
                 .method(BuilderMethods.DELETE)
                 .auth()
                 .execute() as BuilderResponse;

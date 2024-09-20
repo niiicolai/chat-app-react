@@ -50,11 +50,25 @@ const useRooms = () => {
         }
     }
 
-    const destroy = async (uuid: string) => {
+    const destroy = async (uuid: string | undefined) => {
+        if (!uuid) return;
         try {
             setLoading(true);
             await RoomService.destroy(uuid);
             setRooms(rooms.filter((r) => r.uuid !== uuid));
+            setLoading(false);
+        } catch (err: any) {
+            setError(err.message);
+            setLoading(false);
+        }
+    }
+
+    const updateSettings = async (uuid: string | undefined, settings: any) => {
+        if (!uuid) return;
+        try {
+            setLoading(true);
+            const room = await RoomService.updateSettings(uuid, settings);
+            setRooms(rooms.map((r) => r.uuid === room.uuid ? room : r));
             setLoading(false);
         } catch (err: any) {
             setError(err.message);
@@ -70,6 +84,7 @@ const useRooms = () => {
         create,
         update,
         destroy,
+        updateSettings,
     };
 }
 

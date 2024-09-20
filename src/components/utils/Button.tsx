@@ -8,10 +8,10 @@ const types: { [key: string]: string } = {
 };
 
 const Button = (props: any) => {
-    const { button, onClick, slot, display } = props;
+    const { button, onClick, slot, display, title } = props;
     const displayClass = display ? display : 'px-6 py-1 w-full block';
     return (
-        <button type={button} className={`${types[props.type]} ${displayClass} transition-all rounded-md`} onClick={onClick}>
+        <button type={button} className={`${types[props.type]} ${displayClass} transition-all rounded-md`} onClick={onClick} title={title}>
             {slot}
         </button>
     );

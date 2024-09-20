@@ -1,20 +1,20 @@
-import ChannelService from "../services/channelService";
-import Channel from "../models/channel";
 import { useEffect, useState, useContext } from "react";
 import { RoomContext } from "../context/roomContext";
+import RoomUserService from "../services/roomUserService";
+import RoomUser from "../models/room_user";
 
-const useChannels = () => {
+const useRoomUser = () => {
     const { room } = useContext(RoomContext);
-    const [channels, setChannels] = useState<Channel[]>([]);
-    const [isLoading, setLoading] = useState(false);
+    const [roomUsers, setRoomUsers] = useState<RoomUser[]>([]);
     const [error, setError] = useState("");
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!room) return;
 
         setLoading(true);
-        ChannelService.findAll(room.uuid)
-            .then(setChannels)
+        RoomUserService.findAll(room.uuid)
+            .then(setRoomUsers)
             .catch((err: any) => setError(err.message))
             .finally(() => setLoading(false));
 
@@ -22,11 +22,11 @@ const useChannels = () => {
     }, []);
 
     return {
-        channels,
-        setChannels,
+        roomUsers,
+        setRoomUsers,
         isLoading,
         error,
     };
 }
 
-export default useChannels;
+export default useRoomUser;

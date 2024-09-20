@@ -1,32 +1,27 @@
-import RoomList from '../components/room/RoomList'
-import useWebsocket from '../hooks/useWebsockets'
+import { useState } from 'react';
+import { RoomContext } from '../context/roomContext';
+import Spinner from '../components/utils/Spinner';
+import AppLeftPanel from '../components/AppLeftPanel';
+import AppMainPanel from '../components/AppMainPanel';
+import AppUnauthorized from '../components/AppUnauthorized';
 import useUser from "../hooks/useUser";
-
-const socket = useWebsocket()
+import Room from '../models/room';
 
 function AppView() {
-  const { user } = useUser()
-  if (!user) {
-    return (
-      <div className="App w-full h-screen bg-black text-white">
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Welcome to Chat App</h1>
-            <p className="text-sm mb-4">Please login to continue</p>
-            <a href="/login" className="bg-blue-500 text-white px-4 py-2 rounded">Login</a>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const [room, setRoom] = useState<Room | null>(null);
+  const { user, isLoading: isLoadingUser } = useUser();
+
+  if (isLoadingUser) return <Spinner />;
+  else if (!user) return <AppUnauthorized />;
   
   return (
-    <div className="App w-full h-screen bg-black text-white">
-      <div className="">
-        <RoomList />
+    <RoomContext.Provider value={{ room, setRoom }}>
+      <div className="w-full h-screen bg-black text-white flex flex-col sm:flex-row">
+        <AppLeftPanel />
+        <AppMainPanel />
       </div>
-    </div>
-  )
+    </RoomContext.Provider>
+  );
 }
 
-export default AppView
+export default AppView;

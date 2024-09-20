@@ -7,9 +7,9 @@ const types: { [key: string]: string } = {
 };
 
 const Badge = (props: any) => {
-    const { slot } = props;
+    const { slot, title } = props;
     return (
-        <div className={`${types[props.type]} px-1 py-1 rounded-md inline-block text-xs font-bold`}>
+        <div title={title} className={`${types[props.type]} px-3 py-1 rounded-md inline-block text-xs font-bold flex items-center justify-center`}>
             {slot}
         </div>
     );
