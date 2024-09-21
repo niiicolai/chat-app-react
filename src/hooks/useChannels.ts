@@ -19,13 +19,28 @@ const useChannels = () => {
             .finally(() => setLoading(false));
 
         return () => { }
-    }, []);
+    }, [room]);
+
+    const create = async (event: any) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        try {
+            setLoading(true);
+            const channel = await ChannelService.create(formData);
+            setChannels([...channels, channel]);
+            setLoading(false);
+        } catch (err: any) {
+            setError(err.message);
+            setLoading(false);
+        }
+    }
 
     return {
         channels,
         setChannels,
         isLoading,
         error,
+        create,
     };
 }
 

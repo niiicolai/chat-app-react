@@ -13,6 +13,7 @@ export default class ChannelWebhookService {
             const response = await ApiService.builder()
                 .endpoint(`/channel_webhook/${uuid}`)
                 .method(BuilderMethods.GET)
+                .auth()
                 .execute() as BuilderResponse;
 
             return response.data;

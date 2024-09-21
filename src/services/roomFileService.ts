@@ -13,6 +13,7 @@ export default class RoomInviteLinkService {
             const response = await ApiService.builder()
                 .endpoint(`/room_file/${uuid}`)
                 .method(BuilderMethods.GET)
+                .auth()
                 .execute() as BuilderResponse;
 
             return response.data;

@@ -21,7 +21,7 @@ const useRoomFiles = () => {
             .finally(() => setLoading(false));
 
         return () => { }
-    }, []);
+    }, [room]);
 
     return {
         files,

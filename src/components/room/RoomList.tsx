@@ -5,15 +5,18 @@ import RoomListItem from "./RoomListItem";
 import useRooms from "../../hooks/useRooms";
 import { useContext } from "react";
 import { RoomContext } from "../../context/roomContext";
+import { ChannelContext } from "../../context/channelContext";
 
 const RoomList = (props: any) => {
   const { setRoom } = useContext(RoomContext);
+  const { setChannel } = useContext(ChannelContext);
   const { rooms, error, isLoading } = useRooms();
   const { browseRooms, setBrowseRooms } = props;
 
   const selectRoom = (room: any) => {
     setRoom(room);
     setBrowseRooms(false);
+    setChannel(null);
   }
 
   return (

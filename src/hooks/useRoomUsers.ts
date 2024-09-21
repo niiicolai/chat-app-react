@@ -19,7 +19,7 @@ const useRoomUser = () => {
             .finally(() => setLoading(false));
 
         return () => { }
-    }, []);
+    }, [room]);
 
     return {
         roomUsers,

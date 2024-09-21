@@ -1,5 +1,6 @@
 import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
 import Channel from "../models/channel";
+import ChannelType from "../models/channel_type";
 
 export default class ChannelService {
     /**
@@ -32,7 +33,7 @@ export default class ChannelService {
     static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<Channel[]> => {
         try {
             const response = await ApiService.builder()
-                .endpoint(`/channel`)
+                .endpoint(`/channels`)
                 .parameter('page', page)
                 .parameter('limit', limit)
                 .parameter('room_uuid', room_uuid)
@@ -105,6 +106,25 @@ export default class ChannelService {
                 .execute() as BuilderResponse;
 
             return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
+    /**
+     * @function channelTypes
+     * @description Find all channel types
+     * @returns {Promise<ChannelType[]>} channel types
+     */
+    static channelTypes = async (): Promise<ChannelType[]> => {
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/channel_types`)
+                .method(BuilderMethods.GET)
+                .execute() as BuilderResponse;
+
+            const { data } = response.data;
+            return data;
         } catch (error: any) {
             throw new Error(error.message);
         }

@@ -23,19 +23,9 @@ const RoomCreate = (props: any) => {
                     <input type="hidden" name="uuid" value={uuidv4()} />
                     <InputControl id="name" type="text" label="Name" name="name" />
                     <InputControl id="description" type="text" label="Desc" name="description" />
-                    <InputControl
-                        id="room_category_name"
-                        name="room_category_name"
-                        type="select"
-                        label="Category"
-                        options={
-                            categories.map((category) => (
-                                <option key={category.name} value={category.name}>
-                                    {category.name}
-                                </option>
-                            ))
-                        }
-                    />
+                    <InputControl id="room_category_name" name="room_category_name" type="select" label="Category" options={categories.map((category) => (
+                        <option key={category.name} value={category.name}>{category.name}</option>
+                    ))} />
                     <InputControl id="file" type="file" label="Avatar" name="file" />
 
                     <div className="flex flex-col gap-2">

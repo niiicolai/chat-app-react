@@ -128,4 +128,20 @@ export default class RoomService {
             throw new Error(error.message);
         }
     }
+
+    static updateSettings = async (uuid: string | undefined, settings: any) => {
+        if (!uuid) return;
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/room/${uuid}/settings`)
+                .method(BuilderMethods.PATCH)
+                .body(settings)
+                .auth()
+                .execute() as BuilderResponse;
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
 }

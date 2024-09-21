@@ -19,7 +19,7 @@ const useRoomInviteLinks = () => {
             .finally(() => setLoading(false));
 
         return () => { }
-    }, []);
+    }, [room]);
 
     return {
         inviteLinks,

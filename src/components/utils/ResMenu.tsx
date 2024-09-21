@@ -1,10 +1,10 @@
 import Button from "./Button";
 import EllipsisIcon from "../icons/EllipsisIcon";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ResMenu = (props: any) => {
     const [ show, setShow ] = useState(false);
-    const { slot, type, title } = props;
+    const { slot, type, title, stickDirection } = props;
     const display = props.display || "w-8 h-8 flex items-center justify-center";
     const showMenu = show ? "block" : "hidden sm:block";
     return (
@@ -14,7 +14,7 @@ const ResMenu = (props: any) => {
                     slot={<EllipsisIcon fill="white" width="1em" />}
                 />
             </div>
-            <div className={`${showMenu} absolute sm:relative right-0 top-9 sm:top-0 bg-gray-800 sm:bg-transparent rounded-md`}>
+            <div className={`${showMenu} ${stickDirection} absolute sm:relative top-9 sm:top-0 bg-gray-800 sm:bg-transparent rounded-md z-30`}>
                 {slot}
             </div>
         </div>

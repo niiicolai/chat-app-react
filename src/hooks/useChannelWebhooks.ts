@@ -19,7 +19,7 @@ const useChannelWebhooks = () => {
             .finally(() => setLoading(false));
 
         return () => { }
-    }, []);
+    }, [room]);
 
     return {
         webhooks,
