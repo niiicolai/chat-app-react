@@ -10,7 +10,7 @@ export default interface ChannelMessage {
     user_uuid: string;
     created_at: string;
     updated_at: string;
-    user: User;
-    channel_webhook_message: ChannelWebhookMessage;
-    channel_message_upload: ChannelMessageUpload;
+    user: User | null;
+    channel_webhook_message: ChannelWebhookMessage | null;
+    channel_message_upload: ChannelMessageUpload | null;
 }

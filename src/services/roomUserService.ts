@@ -55,12 +55,12 @@ export default class RoomInviteLinkService {
      * @param {FormData} formData - The room user form data
      * @returns {Promise<RoomUser>} room user
      */
-    static update = async (uuid: string, formData: FormData): Promise<RoomUser> => {
+    static update = async (uuid: string, obj: any): Promise<RoomUser> => {
         try {
             const response = await ApiService.builder()
                 .endpoint(`/room_user/${uuid}`)
                 .method(BuilderMethods.PATCH)
-                .body(formData)
+                .body(obj)
                 .auth()
                 .execute() as BuilderResponse;
 

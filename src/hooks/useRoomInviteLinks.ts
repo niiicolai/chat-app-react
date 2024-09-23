@@ -4,22 +4,22 @@ import { useEffect, useState, useContext } from "react";
 import { RoomContext } from "../context/roomContext";
 
 const useRoomInviteLinks = () => {
-    const { room } = useContext(RoomContext);
+    const { selectedRoom } = useContext(RoomContext);
     const [inviteLinks, setInviteLinks] = useState<RoomInviteLink[]>([]);
     const [error, setError] = useState("");
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (!room) return;
+        if (!selectedRoom) return;
 
         setLoading(true);
-        RoomInviteLinkService.findAll(room.uuid)
+        RoomInviteLinkService.findAll(selectedRoom.uuid)
             .then(setInviteLinks)
             .catch((err: any) => setError(err.message))
             .finally(() => setLoading(false));
 
         return () => { }
-    }, [room]);
+    }, [selectedRoom]);
 
     return {
         inviteLinks,

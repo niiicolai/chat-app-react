@@ -1,48 +1,77 @@
-import useChannels from "../../hooks/useChannels";
+import ChannelService from "../../services/channelService";
 import useChannelTypes from "../../hooks/useChannelTypes";
-import InputControl from "../utils/InputControl";
+import InputControlTracked from "../utils/InputControlTracked";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import { v4 as uuidv4 } from "uuid";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { RoomContext } from "../../context/roomContext";
+import { ChannelContext } from "../../context/channelContext";
 
-const ChannelCreate = (props: any) => {
-    const { createChannel, setCreateChannel } = props;
-    const { room } = useContext(RoomContext);
+interface ChannelCreateProps {
+    showCreateChannel: boolean;
+    setShowCreateChannel: (show: boolean) => void;
+}
+
+const ChannelCreate = (props: ChannelCreateProps) => {
+    const { showCreateChannel, setShowCreateChannel } = props;
+    const { selectedRoom } = useContext(RoomContext);
+    const { setChannels, channels } = useContext(ChannelContext);
     const { channelTypes } = useChannelTypes();
-    const { error, isLoading, create } = useChannels();
+    const [ name, setName ] = useState('');
+    const [ description, setDescription ] = useState('');
+    const [ file, setFile ] = useState('' as any);
+
+    const create = async (e: any) => {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        formData.set('file', file);
+        const response = await ChannelService.create(formData);
+        setChannels([...channels, response]);
+        setShowCreateChannel(false);
+        setName('');
+        setDescription('');
+        setFile('');
+    };
+
+    const fileHandler = (e: any) => {
+        if (!e.target.files.length) {
+            setFile('');
+            return;
+        }
+        setFile(e.target.files[0]);
+    }
+
     return (
-        <Modal title="Create Channel" show={createChannel} setShow={setCreateChannel} slot={
+        <Modal title="Create Channel" show={showCreateChannel} setShow={setShowCreateChannel} slot={
             <div>
-                {room && (
+                {selectedRoom && (
                     <div>
                         <p className="text-md mb-3">
                             Enter the details to create a new channel.
                         </p>
 
-                        <Alert message={error} type="error" />
-                        <Spinner isLoading={isLoading} fill="white" width="16" />
-
                         <form onSubmit={create}>
                             <input type="hidden" name="uuid" value={uuidv4()} />
-                            <input type="hidden" name="room_uuid" value={room.uuid} />
+                            <input type="hidden" name="room_uuid" value={selectedRoom.uuid} />
 
-                            <InputControl id="channel-create-name" label="Name" type="text" name="name" />
-                            <InputControl id="channel-create-description" label="Description" type="text" name="description" />
-                            <InputControl id="channel-create-type" label="Type" type="select" name="channel_type_name" options={channelTypes.map((type: any) => (
+                            <InputControlTracked id="channel-create-name" label="Name" type="text" name="name" value={name} onChange={(e: any) => setName(e.target.value)} />
+                            <InputControlTracked id="channel-create-description" label="Description" type="text" name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
+                            <InputControlTracked id="channel-create-type" label="Type" type="select" name="channel_type_name" options={channelTypes.map((type: any) => (
                                 <option key={type.name} value={type.name}>{type.name}</option>
                             ))} />
-                            <InputControl id="file" type="file" label="Avatar" name="file" />
+                            <InputControlTracked id="file" type="file" label="Avatar" name="file" value={file} onChange={(e: any) => fileHandler(e)} />
+                            
                             <div className="flex flex-col gap-2">
                                 <Button type="primary" button="submit" slot="Create" />
                             </div>
                         </form>
                     </div>
                 )}
-                {!room && (
+                {!selectedRoom && (
                     <p className="text-white">Select a room to create a channel</p>
                 )}
             </div>

@@ -1,10 +1,11 @@
 
-import RoomInviteLinkList from "../room_invite_link/RoomInviteLinkList";
-import ChannelWebhookList from "../channel_webhook/ChannelWebhookList";
+import RoomInviteLinkMain from "../room_invite_link/RoomInviteLinkMain";
+import ChannelWebhookMain from "../channel_webhook/ChannelWebhookMain";
 import RoomSettingUpdate from "../room_setting/RoomSettingUpdate";
-import RoomUserList from "../room_user/RoomUserList";
+import RoomUserMain from "../room_user/RoomUserMain";
 import RoomFileList from "../room_file/RoomFileList";
 import ChannelCreate from "../channel/ChannelCreate";
+import RoomService from "../../services/roomService";
 
 import TrashIcon from "../icons/TrashIcon";
 import UsersIcon from "../icons/UsersIcon";
@@ -14,12 +15,12 @@ import FileIcon from "../icons/FileIcon";
 import GearIcon from "../icons/GearIcon";
 import BotIcon from "../icons/BotIcon";
 import PenIcon from "../icons/PenIcon";
+import DoorIcon from "../icons/DoorIcon";
 import Button from "../utils/Button";
 import ResMenu from "../utils/ResMenu";
 
 import Room from "../../models/room";
 import RoomUpdate from "./RoomUpdate";
-import useRooms from "../../hooks/useRooms";
 import { useContext, useState } from "react";
 import { RoomContext } from "../../context/roomContext";
 
@@ -27,31 +28,58 @@ const RoomOptions = () => {
     const [editRoom, setEditRoom] = useState<Room | null>(null);
     const [editSettings, setEditSettings] = useState<Room | null>(null);
     const [showWebhooks, setShowWebhooks] = useState(false);
-    const [createChannel, setCreateChannel] = useState(false);
+    const [showCreateChannel, setShowCreateChannel] = useState(false);
     const [showUsers, setShowUsers] = useState(false);
     const [showFiles, setShowFiles] = useState(false);
     const [showLinks, setShowLinks] = useState(false);
-    const { room } = useContext(RoomContext);
-    const { destroy } = useRooms();
+    const { selectedRoom, setSelectedRoom, rooms, setRooms } = useContext(RoomContext);
+
+    const destroyRoom = async (uuid: string | undefined) => {
+        if (!uuid) return;
+        try {
+            await RoomService.destroy(uuid);
+            setRooms(rooms.filter((r) => r.uuid !== uuid));
+            if (selectedRoom?.uuid === uuid) {
+                setSelectedRoom(null);
+            }
+        } catch (err: any) {
+            console.error(err);
+        }
+    }
+
+    const leaveRoom = async (uuid: string | undefined) => {
+        if (!uuid) return;
+        try {
+            await RoomService.leave(uuid);
+            setRooms(rooms.filter((r) => r.uuid !== uuid));
+            if (selectedRoom?.uuid === uuid) {
+                setSelectedRoom(null);
+            }
+        } catch (err: any) {
+            console.error(err);
+        }
+    }
+
     const roomOptions = [
-        { title: 'Create Channel', icon: <PlusIcon fill="white" width="1em" />, onClick: () => setCreateChannel(!createChannel), type: 'primary' },
+        { title: 'Create Channel', icon: <PlusIcon fill="white" width="1em" />, onClick: () => setShowCreateChannel(!showCreateChannel), type: 'primary' },
         { title: 'Users', icon: <UsersIcon fill="white" width="1.2em" />, onClick: () => setShowUsers(!showUsers), type: 'primary' },
         { title: 'Files', icon: <FileIcon fill="white" width="1em" />, onClick: () => setShowFiles(!showFiles), type: 'primary' },
         { title: 'Invite Links', icon: <LinkIcon fill="white" width="1.2em" />, onClick: () => setShowLinks(!showLinks), type: 'primary' },
         { title: 'Webhooks', icon: <BotIcon fill="white" width="1.2em" />, onClick: () => setShowWebhooks(!showWebhooks), type: 'primary' },
-        { title: 'Room Settings', icon: <GearIcon fill="white" width="1em" />, onClick: () => setEditSettings(editSettings ? null : room), type: 'primary' },
-        { title: 'Edit Room', icon: <PenIcon fill="white" width="1em" />, onClick: () => setEditRoom(editRoom ? null : room), type: 'primary' },
-        { title: 'Delete Room', icon: <TrashIcon fill="white" width=".8em " />, onClick: () => destroy(room?.uuid), type: 'error' },
+        { title: 'Room Settings', icon: <GearIcon fill="white" width="1em" />, onClick: () => setEditSettings(editSettings ? null : selectedRoom), type: 'primary' },
+        { title: 'Edit Room', icon: <PenIcon fill="white" width="1em" />, onClick: () => setEditRoom(editRoom ? null : selectedRoom), type: 'primary' },
+        { title: 'Delete Room', icon: <TrashIcon fill="white" width=".8em " />, onClick: () => destroyRoom(selectedRoom?.uuid), type: 'error' },
+        { title: 'Leave Room', icon: <DoorIcon fill="white" width="1em" />, onClick: () => leaveRoom(selectedRoom?.uuid), type: 'error' },
     ]
     return (
         <div>
             <RoomUpdate editRoom={editRoom} setEditRoom={setEditRoom} />
             <RoomFileList showFiles={showFiles} setShowFiles={setShowFiles} />
-            <RoomInviteLinkList showLinks={showLinks} setShowLinks={setShowLinks} />
-            <ChannelWebhookList showWebhooks={showWebhooks} setShowWebhooks={setShowWebhooks} />
+            <RoomInviteLinkMain showLinks={showLinks} setShowLinks={setShowLinks} />
+            <ChannelWebhookMain showWebhooks={showWebhooks} setShowWebhooks={setShowWebhooks} />
             <RoomSettingUpdate editSettings={editSettings} setEditSettings={setEditSettings} />
-            <RoomUserList showUsers={showUsers} setShowUsers={setShowUsers} />
-            <ChannelCreate createChannel={createChannel} setCreateChannel={setCreateChannel} />
+            <RoomUserMain showUsers={showUsers} setShowUsers={setShowUsers} />
+            <ChannelCreate showCreateChannel={showCreateChannel} setShowCreateChannel={setShowCreateChannel} />
 
             <ResMenu
                 type="primary"

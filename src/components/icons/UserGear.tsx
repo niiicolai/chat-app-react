@@ -1,6 +1,6 @@
 
 
-const TrashIcon = (props: any) => {
+const UserGear = (props: any) => {
     const { fill, width } = props;
     return (
         // Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.
@@ -9,4 +9,4 @@ const TrashIcon = (props: any) => {
     );
 };
 
-export default TrashIcon;
+export default UserGear;

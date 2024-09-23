@@ -73,15 +73,15 @@ export default class ChannelService {
      * @function update
      * @description Update a channel message
      * @param {string} uuid - The channel message uuid
-     * @param {FormData} formData - The channel message form data
+     * @param {any} obj - The channel message object
      * @returns {Promise<ChannelMessage>} channel message
      */
-    static update = async (uuid: string, formData: FormData): Promise<ChannelMessage> => {
+    static update = async (uuid: string, obj: any): Promise<ChannelMessage> => {
         try {
             const response = await ApiService.builder()
                 .endpoint(`/channel_message/${uuid}`)
                 .method(BuilderMethods.PATCH)
-                .body(formData)
+                .body(obj)
                 .auth()
                 .execute() as BuilderResponse;
 

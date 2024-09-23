@@ -1,36 +1,41 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import useUser from '../hooks/useUser';
-
+import { UserContext } from '../context/userContext';
+import UserService from '../services/userService';
 import RoomCreate from '../components/room/RoomCreate';
 import RoomList from '../components/room/RoomList';
 import UserEdit from '../components/user/UserEdit';
-
 import GhostIcon from '../components/icons/GhostIcon';
 import LogoutIcon from '../components/icons/LogoutIcon';
 import ListIcon from '../components/icons/ListIcon';
 import UserGear from '../components/icons/UserGear';
 import PlusIcon from '../components/icons/PlusIcon';
-
 import Button from '../components/utils/Button'
 
-function AppLeftPanel(props: any) {
+function AppLeftPanel() {
+  const { setUser } = useContext(UserContext);
   const [browseRooms, setBrowseRooms] = useState(false);
-  const [createRoom, setCreateRoom] = useState(false);
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [editUser, setEditUser] = useState(false);
-  const { logout } = useUser();
   const navigate = useNavigate();
 
+  const logout = () => {
+    setUser(null);
+    UserService.logout();
+    localStorage.removeItem('user');
+    navigate('/login')
+  }
+
   const actions = [
-    { name: 'Create Room', type: 'primary', onClick: () => { setCreateRoom(true) }, slot: <PlusIcon fill="white" width="1em" /> },
+    { name: 'Create Room', type: 'primary', onClick: () => { setShowCreateRoom(true) }, slot: <PlusIcon fill="white" width="1em" /> },
     { name: 'Browse Rooms', type: 'primary', onClick: () => { setBrowseRooms(true) }, slot: <ListIcon fill="white" width="1em" /> },
     { name: 'Edit Profile', type: 'primary', onClick: () => { setEditUser(true) }, slot: <UserGear fill="white" width="1em" /> },
-    { name: 'Logout', type: 'error', onClick: () => { logout().then(()=> navigate('/login')) }, slot: <LogoutIcon fill="white" width="1em" /> }
+    { name: 'Logout', type: 'error', onClick: () => { logout() }, slot: <LogoutIcon fill="white" width="1em" /> }
   ]
 
   return (
     <div className='flex flex-row sm:flex-col justify-between gap-2 p-3 sm:h-screen border-b sm:border-r sm:border-b-0 border-gray-800'>
-      <RoomCreate createRoom={createRoom} setCreateRoom={setCreateRoom} />
+      <RoomCreate showCreateRoom={showCreateRoom} setShowCreateRoom={setShowCreateRoom} />
       <RoomList browseRooms={browseRooms} setBrowseRooms={setBrowseRooms} />
       <UserEdit editUser={editUser} setEditUser={setEditUser} />
 

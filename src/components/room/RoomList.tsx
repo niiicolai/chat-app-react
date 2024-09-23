@@ -2,41 +2,34 @@ import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Modal from "../utils/Modal";
 import RoomListItem from "./RoomListItem";
-import useRooms from "../../hooks/useRooms";
 import { useContext } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
+import Room from "../../models/room";
 
-const RoomList = (props: any) => {
-  const { setRoom } = useContext(RoomContext);
-  const { setChannel } = useContext(ChannelContext);
-  const { rooms, error, isLoading } = useRooms();
+interface RoomListProps {
+  browseRooms: boolean;
+  setBrowseRooms: (show: boolean) => void;
+}
+
+const RoomList = (props: RoomListProps) => {
+  const { setSelectedRoom, rooms } = useContext(RoomContext);
+  const { setSelectedChannel } = useContext(ChannelContext);
   const { browseRooms, setBrowseRooms } = props;
 
   const selectRoom = (room: any) => {
-    setRoom(room);
+    setSelectedRoom(room);
     setBrowseRooms(false);
-    setChannel(null);
+    setSelectedChannel(null);
   }
 
   return (
     <Modal title="Rooms" show={browseRooms} setShow={setBrowseRooms} slot={
       <div>
-        <Alert message={error} type="error" />
-
-        {isLoading &&
-          <div className="flex flex-col items-center justify-center gap-3 p-3">
-            <h1 className="text-white">Loading rooms...</h1>
-            <Spinner isLoading={true} fill="white" width="16" />
-          </div>
-        }
-
-        {!isLoading &&
-          <ul className="flex flex-col gap-3 mb-3">
-            {rooms.map((room) => (<RoomListItem key={room.uuid} room={room} setRoom={selectRoom} />))}
-            {!rooms.length && <li className="text-white">No rooms found</li>}
-          </ul>
-        }
+        <ul className="flex flex-col gap-3 mb-3">
+          {rooms.map((room) => (<RoomListItem key={room.uuid} room={room} setRoom={selectRoom} />))}
+          {!rooms.length && <li className="text-white">No rooms found</li>}
+        </ul>
       </div>
     } />
   );

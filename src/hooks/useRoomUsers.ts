@@ -4,22 +4,22 @@ import RoomUserService from "../services/roomUserService";
 import RoomUser from "../models/room_user";
 
 const useRoomUser = () => {
-    const { room } = useContext(RoomContext);
+    const { selectedRoom } = useContext(RoomContext);
     const [roomUsers, setRoomUsers] = useState<RoomUser[]>([]);
     const [error, setError] = useState("");
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (!room) return;
+        if (!selectedRoom) return;
 
         setLoading(true);
-        RoomUserService.findAll(room.uuid)
+        RoomUserService.findAll(selectedRoom.uuid)
             .then(setRoomUsers)
             .catch((err: any) => setError(err.message))
             .finally(() => setLoading(false));
 
         return () => { }
-    }, [room]);
+    }, [selectedRoom]);
 
     return {
         roomUsers,

@@ -14,7 +14,6 @@ const InputControl = (props: any) => {
                     className={inputClassNames}
                 />
             }
-
             {type === 'select' &&
                 <select
                     id={id} name={name}
@@ -22,7 +21,6 @@ const InputControl = (props: any) => {
                     className={inputClassNames}
                 >{options}</select>
             }
-
             {type === 'file' &&
                 <div className="w-full bg-white rounded-md">
                     <input
@@ -35,7 +33,6 @@ const InputControl = (props: any) => {
                 </div>
 
             }
-
             {type !== 'textarea' && type !== 'select' && type !== 'file' &&
                 <input
                     id={id}

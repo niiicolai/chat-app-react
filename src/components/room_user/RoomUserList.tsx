@@ -1,19 +1,24 @@
-import useRoomUsers from "../../hooks/useRoomUsers";
 import Modal from "../utils/Modal";
-import { useState } from "react";
+import RoomUser from "../../models/room_user";
+import RoomUserListItem from "./RoomUserListItem";
 
-const RoomUserList = (props: any) => {
-    const { showUsers, setShowUsers } = props;
-    const { roomUsers, error, isLoading } = useRoomUsers();
-    const [ showUserUpdate, setShowUserUpdate ] = useState(false);
+interface RoomUserListProps {
+    roomUsers: RoomUser[];
+    showUsers: boolean;
+    setShowUsers: (show: boolean) => void;
+    update: (uuid: string, room_user_role_name: string) => void;
+    destroy: (uuid: string) => void;
+}
+
+const RoomUserList = (props: RoomUserListProps) => {
+    const { showUsers, setShowUsers, roomUsers, update, destroy } = props;
+
     return (
         <Modal title="Room Users" show={showUsers} setShow={setShowUsers} slot={
             <div>
-                <ul className="flex flex-col gap-3 mb-3">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
                     {roomUsers.map((roomUser) => (
-                        <li key={roomUser.uuid} className="flex flex-col gap-1">
-                            <span className="text-white">{roomUser.uuid}</span>
-                        </li>
+                        <RoomUserListItem roomUser={roomUser} key={roomUser.uuid} update={update} destroy={destroy} />
                     ))}
                     {!roomUsers.length && <li className="text-white">No room users found</li>}
                 </ul>

@@ -205,12 +205,19 @@ export default class ApiService {
                 body: b.options.body
             });
 
+            if (response.status === 204) {
+                return {
+                    data: null,
+                    status: response.status,
+                    statusText: response.statusText
+                };
+            }
+
             const data = await response.json();
 
             if (!response.ok) {
                 throw new BuilderError(data.error);
             }
-
             
             return {
                 data,

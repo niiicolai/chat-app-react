@@ -1,26 +1,43 @@
-import useRooms from "../../hooks/useRooms";
 import useRoomCategories from "../../hooks/useRoomCategories";
 import InputControl from "../utils/InputControl";
+import RoomService from "../../services/roomService";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
+import { useContext } from "react";
+import { RoomContext } from "../../context/roomContext";
 
 const RoomUpdate = (props: any) => {
+    const { selectedRoom, setSelectedRoom, rooms, setRooms } = useContext(RoomContext);
     const { editRoom, setEditRoom } = props;
     const { categories } = useRoomCategories();
-    const { error, isLoading, update } = useRooms();
+
+    const updateRoom = async (event: any) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const uuid = formData.get("uuid") as string;
+        formData.delete("uuid");
+        try {
+            const room = await RoomService.update(uuid, formData);
+            setRooms(rooms.map((r) => r.uuid === room.uuid ? room : r));
+            if (selectedRoom?.uuid === room.uuid) {
+                setSelectedRoom(room);
+            }
+            setEditRoom(null);
+        } catch (err: any) {
+            console.error(err);
+        }
+    }
 
     return (
-        <Modal title="Update Room" show={editRoom} setShow={setEditRoom} slot={
+        <Modal title="Update Room" show={editRoom} setShow={()=>setEditRoom(null)} slot={
             <div>
 
                 <p className="text-md mb-3">
                     Enter the details to update a room
                 </p>
 
-                {error && <p className="text-danger">{error}</p>}
-                {isLoading && <div className="spinner-border"></div>}
                 {editRoom && (
-                    <form onSubmit={update} className="text-white">
+                    <form onSubmit={updateRoom} className="text-white">
                         <input type="hidden" name="uuid" value={editRoom.uuid} />
                         <InputControl id="name" type="text" label="Name" name="name" defaultValue={editRoom.name} />
                         <InputControl id="description" type="text" label="Desc" name="description" defaultValue={editRoom.description} />

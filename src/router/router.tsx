@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
     element: <SignupView />,
   },
   {
-    path: "/join-room/:roomUuid",
+    path: "/room/:roomInviteLinkUuid/join",
     element: <JoinRoomView />,
   },
 ]);

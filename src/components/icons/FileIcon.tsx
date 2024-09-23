@@ -1,6 +1,6 @@
 
 
-const BotIcon = (props: any) => {
+const FileIcon = (props: any) => {
     const { fill, width } = props;
     return (
         // Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.
@@ -9,4 +9,4 @@ const BotIcon = (props: any) => {
     );
 };
 
-export default BotIcon;
+export default FileIcon;

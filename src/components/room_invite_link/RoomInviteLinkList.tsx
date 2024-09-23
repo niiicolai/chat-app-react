@@ -1,21 +1,30 @@
-import useRoomInviteLinks from "../../hooks/useRoomInviteLinks";
+import RoomInviteLinkListItem from "./RoomInviteLinkListItem";
+import RoomInviteLink from "../../models/room_invite_link";
+import Button from "../utils/Button";
 import Modal from "../utils/Modal";
-import { useState } from "react";
 
-const RoomInviteLinkList = (props: any) => {
-    const { showLinks, setShowLinks } = props;
-    const { inviteLinks, error, isLoading } = useRoomInviteLinks();
-    const [ showLinkCreate, setShowLinkCreate ] = useState(false);
-    const [ showLinkUpdate, setShowLinkUpdate ] = useState(false);
+interface RoomInviteLinkListProps {
+    inviteLinks: RoomInviteLink[];
+    setLinkEdit: (link: RoomInviteLink | null) => void;
+    showLinks: boolean;
+    setShowLinks: (show: boolean) => void;
+    destroyLink: (uuid: string) => void;
+    setShowLinkCreate: (show: boolean) => void;
+}
+
+const RoomInviteLinkList = (props: RoomInviteLinkListProps) => {
+    const { inviteLinks, setLinkEdit, showLinks, setShowLinks, destroyLink, setShowLinkCreate } = props;
     return (
         <Modal title="Room Invite Links" show={showLinks} setShow={setShowLinks} slot={
             <div>
-                <ul className="flex flex-col gap-3 mb-3">
+                <div className="mb-3">
+                    <Button type="primary" button="button" title="Create Invite Link"
+                    onClick={() => setShowLinkCreate(true)} slot="Create Invite Link" />
+                </div>
+
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
                     {inviteLinks.map((link) => (
-                        <li key={link.uuid} className="flex flex-col gap-1">
-                            <span className="text-white">{link.uuid}</span>
-                            <span className="text-white">{link.expires_at}</span>
-                        </li>
+                        <RoomInviteLinkListItem link={link} key={link.uuid} setLinkEdit={setLinkEdit} destroyLink={destroyLink} />
                     ))}
                     {!inviteLinks.length && <li className="text-white">No invite links found</li>}
                 </ul>

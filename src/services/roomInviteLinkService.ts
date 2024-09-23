@@ -13,6 +13,7 @@ export default class RoomInviteLinkService {
             const response = await ApiService.builder()
                 .endpoint(`/room_invite_link/${uuid}`)
                 .method(BuilderMethods.GET)
+                .auth()
                 .execute() as BuilderResponse;
 
             return response.data;
@@ -53,12 +54,12 @@ export default class RoomInviteLinkService {
      * @param {FormData} formData - The invite link form data
      * @returns {Promise<RoomInviteLink>} invite link
      */
-    static create = async (formData: FormData): Promise<RoomInviteLink> => {
+    static create = async (obj: any): Promise<RoomInviteLink> => {
         try {
             const response = await ApiService.builder()
                 .endpoint(`/room_invite_link`)
                 .method(BuilderMethods.POST)
-                .body(formData)
+                .body(obj)
                 .auth()
                 .execute() as BuilderResponse;
 
@@ -75,12 +76,12 @@ export default class RoomInviteLinkService {
      * @param {FormData} formData - The invite link form data
      * @returns {Promise<RoomInviteLink>} invite link
      */
-    static update = async (uuid: string, formData: FormData): Promise<RoomInviteLink> => {
+    static update = async (uuid: string, obj: any): Promise<RoomInviteLink> => {
         try {
             const response = await ApiService.builder()
                 .endpoint(`/room_invite_link/${uuid}`)
                 .method(BuilderMethods.PATCH)
-                .body(formData)
+                .body(obj)
                 .auth()
                 .execute() as BuilderResponse;
 
@@ -101,6 +102,26 @@ export default class RoomInviteLinkService {
             const response = await ApiService.builder()
                 .endpoint(`/room_invite_link/${uuid}`)
                 .method(BuilderMethods.DELETE)
+                .auth()
+                .execute() as BuilderResponse;
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
+    /**
+     * @function join
+     * @description Join a room by invite link
+     * @param {string} uuid - The invite link uuid
+     * @returns {Promise<string>} message
+     */
+    static join = async (uuid: string): Promise<string> => {
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/room_invite_link/${uuid}/join`)
+                .method(BuilderMethods.POST)
                 .auth()
                 .execute() as BuilderResponse;
 

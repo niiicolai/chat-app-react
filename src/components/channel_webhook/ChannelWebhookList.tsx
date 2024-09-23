@@ -1,20 +1,38 @@
-import useChannelWebhooks from "../../hooks/useChannelWebhooks";
+import ChannelWebhook from "../../models/channel_webhook";
+import ChannelWebhookListItem from "./ChannelWebhookListItem";
+import { useContext } from "react";
+import { ChannelContext } from "../../context/channelContext";
 import Modal from "../utils/Modal";
-import { useState } from "react";
+import Button from "../utils/Button";
 
-const ChannelWebhookList = (props: any) => {
-    const { showWebhooks, setShowWebhooks } = props;
-    const { webhooks, error, isLoading } = useChannelWebhooks();
-    const [ showWebhookCreate, setShowWebhookCreate ] = useState(false);
-    const [ showWebhookUpdate, setShowWebhookUpdate ] = useState(false);
+interface ChannelWebhookListProps {
+    webhooks: ChannelWebhook[];
+    showWebhooks: boolean;
+    setShowWebhooks: (show: boolean) => void;
+    setWebhookEdit: (webhook: ChannelWebhook | null) => void;
+    destroyWebhook: (uuid: string) => void;
+    setShowWebhookCreate: (show: boolean) => void;
+    setWebhookTest: (webhook: ChannelWebhook | null) => void;
+}
+
+const ChannelWebhookList = (props: ChannelWebhookListProps) => {
+    const { channels } = useContext(ChannelContext);
+    const { showWebhooks, setShowWebhooks, webhooks, setWebhookEdit, destroyWebhook, setShowWebhookCreate, setWebhookTest } = props;
+    const getWebhookChannel = (webhook: ChannelWebhook) => {
+        const channel = channels.find((channel) => channel.uuid === webhook.channel_uuid);
+        return channel;
+    }
     return (
         <Modal title="Channel Webhooks" show={showWebhooks} setShow={setShowWebhooks} slot={
             <div>
-                <ul className="flex flex-col gap-3 mb-3">
+                <div className="mb-3">
+                    <Button type="primary" button="button" title="Create Webhook"
+                    onClick={() => setShowWebhookCreate(true)} slot="Create Webhook" />
+                </div>
+
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
                     {webhooks.map((webhook) => (
-                        <li key={webhook.uuid} className="flex flex-col gap-1">
-                            <span className="text-white">{webhook.uuid}</span>
-                        </li>
+                        <ChannelWebhookListItem webhook={webhook} key={webhook.uuid} setWebhookEdit={setWebhookEdit} channel={getWebhookChannel(webhook)} destroyWebhook={destroyWebhook} setWebhookTest={setWebhookTest} />
                     ))}
                     {!webhooks.length && <li className="text-white">No channel webhooks found</li>}
                 </ul>

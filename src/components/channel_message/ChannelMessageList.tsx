@@ -1,26 +1,64 @@
-import useChannelMessages from "../../hooks/useChannelMessages";
 import ChannelMessageListItem from "./ChannelMessageListItem";
+import ChannelMessage from "../../models/channel_message";
+import Alert from "../utils/Alert";
+import Spinner from "../utils/Spinner";
 import { useContext } from "react";
 import { ChannelContext } from "../../context/channelContext";
 
-const ChannelMessageList = (props: any) => {
-    const { channel } = useContext(ChannelContext);
-    const { messages, error, isLoading } = useChannelMessages();
+
+interface ChannelMessageListProps {
+    setEditMessage: (message: ChannelMessage | null) => void;
+    destroyMessage: (uuid: string) => void;
+    destroyFile: (msg: ChannelMessage) => void;
+    messages: ChannelMessage[];
+    isLoading: boolean;
+    error: string | null;
+}
+
+const ChannelMessageList = (props: ChannelMessageListProps) => {
+    const { messages, isLoading, error, setEditMessage, destroyMessage, destroyFile } = props;
+    const { selectedChannel } = useContext(ChannelContext);
+
+    const emptyStateMessages = [
+        'Looks like you\'re the early bird! Send a message to kick things off! 🐦💬',
+        'You’re the first one here! Why not say hello? 👋💬',
+        'It’s quiet in here... be the first to break the silence! 🗨️'
+    ];
+
+    const emptyStateMessage = emptyStateMessages[Math.floor(Math.random() * emptyStateMessages.length)];
+
+    if (isLoading) return (
+        <div className="flex flex-col items-center justify-center gap-3 p-3 h-full text-center">
+            <Spinner isLoading={isLoading} fill="white" width="2em" />
+            <p className="text-white ml-3">Hold on, messages are<br />traveling through cyberspace</p>
+        </div>
+    );
+
     return (
-        <div className="overflow-y-auto bg-black pb-12 sm:pb-0">
-            {channel &&
-                <div className="p-3">
-                    <ul className="flex flex-col gap-3 mb-3">
-                        {messages.map((message) => <ChannelMessageListItem key={message.uuid} channelMessage={message} />)}
-                        {!messages.length && <li className="text-white">No channel messages found</li>}
+        <div className="bg-black pb-12">
+            <div className="p-3">
+                <Alert type="error" message={error} />
+
+                {!messages.length &&
+                    <div className="flex flex-col items-center justify-center gap-3 p-3 text-center">
+                        <p className="text-white ml-3">{emptyStateMessage}</p>
+                    </div>
+                }
+
+                {selectedChannel &&
+                    <ul className="flex flex-col justify-end gap-3 mb-3">
+                        {messages.map((message: ChannelMessage) => (
+                            <ChannelMessageListItem
+                                key={message.uuid}
+                                channelMessage={message}
+                                setEditMessage={setEditMessage}
+                                destroyMessage={destroyMessage}
+                                destroyFile={destroyFile}
+                            />
+                        ))}
                     </ul>
-                </div>
-            }
-            {!channel &&
-                <div className="flex items-center justify-center h-full p-3">
-                    <p className="text-white">Select a channel to view messages</p>
-                </div>
-            }
+                }
+            </div>
         </div>
     );
 };

@@ -2,10 +2,14 @@ import { createContext } from 'react';
 import Room from '../models/room';
 
 export const RoomContext = createContext<{
-    room: Room | null,
-    setRoom: (room: Room) => void
+    selectedRoom: Room | null,
+    rooms: Room[],
+    setSelectedRoom: (room: Room | null) => void,
+    setRooms: (rooms: Room[]) => void
 }>({
-    room: null,
-    setRoom: () => { }
+    selectedRoom: null,
+    rooms: [],
+    setSelectedRoom: () => { },
+    setRooms: () => { }
 });
 

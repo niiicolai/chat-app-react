@@ -110,4 +110,26 @@ export default class ChannelWebhookService {
             throw new Error(error.message);
         }
     }
+
+    /**
+     * @function test
+     * @description Test a channel webhook
+     * @param {string} uuid - The channel webhook uuid
+     * @param {FormData} formData - The channel webhook form data
+     * @returns {Promise<string>} message
+     */
+    static test = async (uuid: string, obj: any): Promise<string> => {
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/channel_webhook/${uuid}`)
+                .method(BuilderMethods.POST)
+                .body(obj)
+                .auth()
+                .execute() as BuilderResponse;
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
 }

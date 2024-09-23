@@ -1,22 +1,32 @@
+import RoomFileService from "../../services/roomFileService";
+import RoomFileListItem from "./RoomFileListItem";
 import useRoomFiles from "../../hooks/useRoomFiles";
+import Spinner from "../utils/Spinner";
+import Alert from "../utils/Alert";
 import Modal from "../utils/Modal";
-import { useState } from "react";
 
 const RoomFileList = (props: any) => {
     const { showFiles, setShowFiles } = props;
-    const { files, error, isLoading } = useRoomFiles();
-    const [ showLinkCreate, setShowLinkCreate ] = useState(false);
-    const [ showLinkUpdate, setShowLinkUpdate ] = useState(false);
+    const { files, setFiles, error, isLoading } = useRoomFiles();
+
+    const destroy = async (uuid: string) => {
+        try {
+            await RoomFileService.destroy(uuid);
+            setFiles((files: any) => files.filter((file: any) => file.uuid !== uuid));
+        }catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
     return (
         <Modal title="Room Files" show={showFiles} setShow={setShowFiles} slot={
             <div>
-                <ul className="flex flex-col gap-3 mb-3">
+                <Alert type="error" message={error} />
+                <Spinner show={isLoading} />
+                
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                     {files.map((file) => (
-                        <li key={file.uuid} className="flex flex-col gap-1">
-                            <span className="text-white">{file.uuid}</span>
-                            <span className="text-white">{file.src}</span>
-                            <span className="text-white">{file.room_file_type_name}</span>
-                        </li>
+                        <RoomFileListItem file={file} key={file.uuid} destroyFile={destroy} />
                     ))}
                     {!files.length && <li className="text-white">No files found</li>}
                 </ul>

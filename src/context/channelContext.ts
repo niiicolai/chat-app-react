@@ -2,9 +2,13 @@ import { createContext } from 'react';
 import Channel from '../models/channel';
 
 export const ChannelContext = createContext<{
-    channel: Channel | null,
-    setChannel: (channel: Channel | null) => void
+    selectedChannel: Channel | null,
+    setSelectedChannel: (channel: Channel | null) => void,
+    channels: Channel[],
+    setChannels: (channels: Channel[]) => void
 }>({
-    channel: null,
-    setChannel: () => { }
+    selectedChannel: null,
+    setSelectedChannel: () => { },
+    channels: [],
+    setChannels: () => { }
 });

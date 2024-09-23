@@ -1,4 +1,3 @@
-import useUser from "../../hooks/useUser";
 import Button from "../utils/Button";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
@@ -6,13 +5,19 @@ import Link from "../utils/Link";
 import InputControl from "../utils/InputControl";
 import GhostIcon from "../icons/GhostIcon";
 import { useNavigate } from 'react-router-dom';
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
+import UserService from "../../services/userService";
 
 const Login = () => {
-    const { error, isLoading, login } = useUser();
+    const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
         try {
-            await login(e);
+            const user = await UserService.login(formData);
+            setUser(user);
             navigate("/");
         } catch (error: any) {
             console.error(error.message);
@@ -22,8 +27,6 @@ const Login = () => {
     return (
         <div className="text-white h-full flex items-center justify-center">
             <div className="max-w-xl">
-
-                {error && <Alert message={error} type="error" />}
 
                 <div className="text-md overflow-hidden w-96 flex flex-col items-center justify-center gap-1 p-3 text-white">
                     <div className="flex items-center justify-center gap-6 w-full mb-3 text-3xl font-bold">
@@ -43,8 +46,7 @@ const Login = () => {
 
                         <Button type="primary" button="submit" slot={
                             <span>
-                                {isLoading && <Spinner isLoading={isLoading} fill="white" width="16" />}
-                                {!isLoading && <span>Login</span>}
+                                Login
                             </span>
                         }/>
                     </form>

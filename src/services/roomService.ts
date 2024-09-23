@@ -14,6 +14,7 @@ export default class RoomService {
             const response = await ApiService.builder()
                 .endpoint(`/room/${uuid}`)
                 .method(BuilderMethods.GET)
+                .auth()
                 .execute() as BuilderResponse;
 
             return response.data;
@@ -129,6 +130,13 @@ export default class RoomService {
         }
     }
 
+    /**
+     * @function updateSettings
+     * @description Update a room settings
+     * @param {string} uuid - The room uuid
+     * @param {any} settings - The room settings
+     * @returns {Promise<Room>} room
+     */
     static updateSettings = async (uuid: string | undefined, settings: any) => {
         if (!uuid) return;
         try {
@@ -136,6 +144,27 @@ export default class RoomService {
                 .endpoint(`/room/${uuid}/settings`)
                 .method(BuilderMethods.PATCH)
                 .body(settings)
+                .auth()
+                .execute() as BuilderResponse;
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
+    /**
+     * @function leave
+     * @description leave a room
+     * @param {string} uuid - The room uuid
+     * @returns {Promise<Room>} room
+     */
+    static leave = async (uuid: string | undefined) => {
+        if (!uuid) return;
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/room/${uuid}/leave`)
+                .method(BuilderMethods.DELETE)
                 .auth()
                 .execute() as BuilderResponse;
 
