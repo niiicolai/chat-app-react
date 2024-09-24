@@ -3,7 +3,23 @@ import ChannelMessage from "../models/channel_message";
 import { useEffect, useState, useContext } from "react";
 import { ChannelContext } from "../context/channelContext";
 
-const useChannelMessages = () => {
+/**
+ * @interface UseChannelMessages
+ * @description The channel messages hook interface
+ */
+interface UseChannelMessages {
+    messages: ChannelMessage[];
+    setMessages: (messages: ChannelMessage[]) => void;
+    isLoading: boolean;
+    error: string;
+}
+
+/**
+ * @function useChannelMessages
+ * @description The channel messages hook
+ * @returns {UseChannelMessages} The channel messages hook
+ */
+const useChannelMessages = (): UseChannelMessages => {
     const { selectedChannel } = useContext(ChannelContext);
     const [messages, setMessages] = useState<ChannelMessage[]>([]);
     const [isLoading, setLoading] = useState(false);
@@ -16,7 +32,10 @@ const useChannelMessages = () => {
         setLoading(true);
         ChannelMessageService.findAll(selectedChannel.uuid)
             .then(setMessages)
-            .catch((err: any) => setError(err.message))
+            .catch((err: unknown) => {
+                if (err instanceof Error) setError(err.message);
+                else setError("An unknown error occurred");
+            })
             .finally(() => setLoading(false));
 
         return () => { }

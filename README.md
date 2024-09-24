@@ -74,9 +74,9 @@ A React.js SPA made for the chat backend application found at https://github.com
     - Scroll To Bottom Event [ ]
     - Infinite Scroll [ ]
 - Toast
-    - Create [ ]
-    - List [ ]
-    - Delete [ ]
+    - Create [x]
+    - List [x]
+    - Delete [x]
 - Websocket
     - Connect [x]
     - Join Channel [ ]
@@ -111,4 +111,29 @@ npm run dev
 ### Test 
 ```
 npm test
+```
+
+### ESLint
+```
+npx eslint src/
+```
+
+## Docker
+
+### Build
+```
+docker build -t chat_react:v1.0 .
+```
+
+### Run in detached mode
+```
+docker run -d -p 5371:5371 chat_react:v1.0 
+```
+
+## Docker Compose
+**Note: You must build the docker image first.**
+
+### Run in detached mode
+```
+docker compose up -d
 ```

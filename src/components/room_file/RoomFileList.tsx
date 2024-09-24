@@ -4,17 +4,39 @@ import useRoomFiles from "../../hooks/useRoomFiles";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Modal from "../utils/Modal";
+import { ToastContext } from "../../context/toastContext";
+import { useContext, ReactNode } from "react";
 
-const RoomFileList = (props: any) => {
+/**
+ * @interface RoomFileListProps
+ * @description The props for the RoomFileList component
+ */
+interface RoomFileListProps {
+    showFiles: boolean;
+    setShowFiles: (show: boolean) => void;
+}
+
+/**
+ * @function RoomFileList
+ * @param {RoomFileListProps} props
+ * @returns {ReactNode}
+ */
+const RoomFileList = (props: RoomFileListProps): ReactNode => {
     const { showFiles, setShowFiles } = props;
+    const { addToast } = useContext(ToastContext);
     const { files, setFiles, error, isLoading } = useRoomFiles();
 
     const destroy = async (uuid: string) => {
         try {
             await RoomFileService.destroy(uuid);
-            setFiles((files: any) => files.filter((file: any) => file.uuid !== uuid));
-        }catch (error: any) {
-            throw new Error(error.message);
+            setFiles(files.filter((file) => file.uuid !== uuid));
+            addToast({ message: 'File deleted', type: 'success', duration: 5000 });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            } else {
+                console.error("An unknown error occurred");
+            }
         }
     }
 

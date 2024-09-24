@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+
 import AppView from "../views/AppView";
 import JoinRoomView from "../views/JoinRoomView";
 import LoginView from "../views/LoginView";

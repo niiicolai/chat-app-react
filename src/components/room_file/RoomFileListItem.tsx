@@ -3,13 +3,23 @@ import TrashIcon from "../icons/TrashIcon";
 import Badge from "../utils/Badge";
 import Button from "../utils/Button";
 import RoomFile from "../../models/room_file";
+import { ReactNode } from "react";
 
+/**
+ * @interface RoomFileListItemProps
+ * @description The props for the RoomFileListItem component
+ */
 interface RoomFileListItemProps {
     file: RoomFile;
     destroyFile: (uuid: string) => void;
 }
 
-const RoomFileListItem = (props: RoomFileListItemProps) => {
+/**
+ * @function RoomFileListItem
+ * @param {RoomFileListItemProps} props
+ * @returns {ReactNode}
+ */
+const RoomFileListItem = (props: RoomFileListItemProps): ReactNode => {
     const { file, destroyFile } = props;
     return (
         <li key={file.uuid} className="flex flex-col justify-between gap-3 border border-gray-800 rounded-md p-3">

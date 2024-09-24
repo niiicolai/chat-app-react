@@ -39,10 +39,10 @@ const RoomUpdate = (props: any) => {
                 {editRoom && (
                     <form onSubmit={updateRoom} className="text-white">
                         <input type="hidden" name="uuid" value={editRoom.uuid} />
-                        <InputControl id="name" type="text" label="Name" name="name" defaultValue={editRoom.name} />
-                        <InputControl id="description" type="text" label="Desc" name="description" defaultValue={editRoom.description} />
+                        <InputControl id="room-update-name" type="text" label="Name" name="name" defaultValue={editRoom.name} />
+                        <InputControl id="room-update-description" type="text" label="Desc" name="description" defaultValue={editRoom.description} />
                         <InputControl 
-                            id="room_category_name" 
+                            id="room-update-room_category_name" 
                             name="room_category_name"
                             type="select" 
                             label="Category" 
@@ -55,7 +55,7 @@ const RoomUpdate = (props: any) => {
                                 ))
                             }
                         />
-                        <InputControl id="file" type="file" label="Avatar" name="file" defaultValue={editRoom.avatar?.room_file?.src} />
+                        <InputControl id="room-update-file" type="file" label="Avatar" name="file" defaultValue={editRoom.avatar?.room_file?.src} />
                         
                         <div className="flex flex-col gap-2">
                             <Button type="primary" button="submit" slot="Update" />

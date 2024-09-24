@@ -59,14 +59,14 @@ const RoomCreate = (props: RoomCreateProps) => {
 
                 <form onSubmit={submitHandler}>
                     <input type="hidden" name="uuid" value={uuid} />
-                    <InputControlTracked id="name" type="text" label="Name" name="name" value={name} onChange={(e: any) => setName(e.target.value)} />
-                    <InputControlTracked id="description" type="text" label="Desc" name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
-                    <InputControlTracked id="room_category_name" name="room_category_name" type="select" label="Category" value={room_category_name} onChange={(e: any) => setRoomCategoryName(e.target.value)}
+                    <InputControlTracked id="room-create-name" type="text" label="Name" name="name" value={name} onChange={(e: any) => setName(e.target.value)} />
+                    <InputControlTracked id="room-create-description" type="text" label="Desc" name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
+                    <InputControlTracked id="room-create-room_category_name" name="room_category_name" type="select" label="Category" value={room_category_name} onChange={(e: any) => setRoomCategoryName(e.target.value)}
                         options={categories.map((category) => (
                         <option key={category.name} value={category.name}>{category.name}</option>
                         ))} 
                     />
-                    <InputControlTracked id="file" type="file" label="Avatar" name="file" value={file} onChange={(e: any) => fileHandler(e)} />
+                    <InputControlTracked id="room-create-file" type="file" label="Avatar" name="file" value={file} onChange={(e: any) => fileHandler(e)} />
 
                     <div className="flex flex-col gap-2">
                         <Button type="primary" button="submit" slot="Create" />

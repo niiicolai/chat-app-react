@@ -57,9 +57,9 @@ const ChannelUpdate = (props: ChannelUpdateProps) => {
                     <form onSubmit={update}>
                         <input type="hidden" name="uuid" value={editChannel?.uuid ||''} />
 
-                        <InputControl id="channel-create-name" label="Name" type="text" name="name" defaultValue={editChannel?.name ||''} />
-                        <InputControl id="channel-create-description" label="Description" type="text" name="description" defaultValue={editChannel?.description ||''} />
-                        <InputControlTracked id="file" type="file" label="Avatar" name="file" value={editChannel?.room_file?.src ||''} onChange={(e: any) => fileHandler(e)} />
+                        <InputControl id="channel-update-name" label="Name" type="text" name="name" defaultValue={editChannel?.name ||''} />
+                        <InputControl id="channel-update-description" label="Description" type="text" name="description" defaultValue={editChannel?.description ||''} />
+                        <InputControlTracked id="channel-update-file" type="file" label="Avatar" name="file" value={editChannel?.room_file?.src ||''} onChange={(e: any) => fileHandler(e)} />
                         <div className="flex flex-col gap-2">
                             <Button type="primary" button="submit" slot="Update" />
                         </div>

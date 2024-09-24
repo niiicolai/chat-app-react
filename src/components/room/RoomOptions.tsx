@@ -2,7 +2,7 @@
 import RoomInviteLinkMain from "../room_invite_link/RoomInviteLinkMain";
 import ChannelWebhookMain from "../channel_webhook/ChannelWebhookMain";
 import RoomSettingUpdate from "../room_setting/RoomSettingUpdate";
-import RoomUserMain from "../room_user/RoomUserMain";
+import RoomUserList from "../room_user/RoomUserList";
 import RoomFileList from "../room_file/RoomFileList";
 import ChannelCreate from "../channel/ChannelCreate";
 import RoomService from "../../services/roomService";
@@ -78,7 +78,7 @@ const RoomOptions = () => {
             <RoomInviteLinkMain showLinks={showLinks} setShowLinks={setShowLinks} />
             <ChannelWebhookMain showWebhooks={showWebhooks} setShowWebhooks={setShowWebhooks} />
             <RoomSettingUpdate editSettings={editSettings} setEditSettings={setEditSettings} />
-            <RoomUserMain showUsers={showUsers} setShowUsers={setShowUsers} />
+            <RoomUserList showUsers={showUsers} setShowUsers={setShowUsers} />
             <ChannelCreate showCreateChannel={showCreateChannel} setShowCreateChannel={setShowCreateChannel} />
 
             <ResMenu

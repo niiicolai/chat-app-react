@@ -4,14 +4,24 @@ import Avatar from "../utils/Avatar";
 import Button from "../utils/Button";
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
+import { ReactNode } from "react";
 
+/**
+ * @interface RoomUserListItemProps
+ * @description The props for the RoomUserListItem component
+ */
 interface RoomUserListItemProps {
     roomUser: RoomUser;
     update: (uuid: string, room_user_role_name: string) => void;
     destroy: (uuid: string) => void;
 }
 
-const RoomUserListItem = (props: RoomUserListItemProps) => {
+/**
+ * @function RoomUserListItem
+ * @param {RoomUserListItemProps} props
+ * @returns {ReactNode}
+ */
+const RoomUserListItem = (props: RoomUserListItemProps): ReactNode => {
     const { roomUser, update, destroy } = props;
     const { user } = useContext(UserContext);
     const isMe = user?.uuid === roomUser.user.uuid;

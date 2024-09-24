@@ -63,7 +63,7 @@ const ChannelCreate = (props: ChannelCreateProps) => {
                             <InputControlTracked id="channel-create-type" label="Type" type="select" name="channel_type_name" options={channelTypes.map((type: any) => (
                                 <option key={type.name} value={type.name}>{type.name}</option>
                             ))} />
-                            <InputControlTracked id="file" type="file" label="Avatar" name="file" value={file} onChange={(e: any) => fileHandler(e)} />
+                            <InputControlTracked id="channel-create-file" type="file" label="Avatar" name="file" value={file} onChange={(e: any) => fileHandler(e)} />
                             
                             <div className="flex flex-col gap-2">
                                 <Button type="primary" button="submit" slot="Create" />
