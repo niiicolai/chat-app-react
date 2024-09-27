@@ -1,3 +1,5 @@
+[![VM Publish Production](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy.yml)
+
 # Chat App React+TypeScript
 A React.js SPA made for the chat backend application found at https://github.com/niiicolai/chat-app.
 
@@ -87,7 +89,7 @@ A React.js SPA made for the chat backend application found at https://github.com
     - end2end tests [ ]
 - Routing
     - React Router [x]
-    - Sitemap [ ]
+    - Sitemap [x]
 - CI/CD
     - GitHub Actions [x]
     - GitHub Secrets [x]
@@ -115,7 +117,12 @@ npm test
 
 ### ESLint
 ```
-npx eslint src/
+npm run eslint
+```
+
+## Sitemap
+```
+npm run sitemap
 ```
 
 ## Docker

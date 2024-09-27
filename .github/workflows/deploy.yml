@@ -21,7 +21,10 @@ jobs:
         run: npm ci
       
       - name: Run ESLint
-        run: npx eslint src/
+        run: npm run eslint
+
+      - name: Build sitemap
+        run: npm run sitemap
       
       - name: Remove .env file
         run: rm .env
