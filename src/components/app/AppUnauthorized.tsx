@@ -1,6 +1,11 @@
+import { ReactNode } from "react";
 
-
-function AppUnauthorized() {
+/**
+ * @function AppUnauthorized
+ * @description The unauthorized app component
+ * @returns {ReactNode} ReactNode
+ */
+function AppUnauthorized(): ReactNode {
   return (
     <div className="App w-full h-screen bg-black text-white">
         <div className="flex items-center justify-center h-full">

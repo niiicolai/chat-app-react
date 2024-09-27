@@ -1,5 +1,9 @@
 import type RoomFile from "./room_file";
 
+/**
+ * @interface Channel
+ * @description The Channel interface
+ */
 export default interface Channel {
     uuid: string;
     name: string;

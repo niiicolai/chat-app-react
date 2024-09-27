@@ -30,6 +30,10 @@ const RoomInviteLinkCreate = (props: RoomInviteLinkCreateProps): ReactNode => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const expiredAtHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        setExpiresAt(e.currentTarget.value);
+    }
+
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
@@ -64,16 +68,34 @@ const RoomInviteLinkCreate = (props: RoomInviteLinkCreateProps): ReactNode => {
 
                     <div className="flex gap-1">
                         <div className="w-full">
-                            <InputControlTracked id="invite-link-create-expires-at" label="Expires At" type="datetime-local" name="expires_at" value={expiresAt} onChange={(e: FormEvent<HTMLFormElement>) => setExpiresAt(e.currentTarget.value)} />
+                            <InputControlTracked 
+                                onChange={expiredAtHandler}
+                                id="invite-link-create-expires-at" 
+                                label="Expires At" 
+                                type="datetime-local" 
+                                name="expires_at" 
+                                value={expiresAt} 
+                            />
                         </div>
                         {expiresAt &&
-                            <Button type="primary" button="button" slot="Clear" display="mb-3 w-12" onClick={() => setExpiresAt('')} />
+                            <Button 
+                                type="primary" 
+                                button="button" 
+                                slot="Clear" 
+                                display="mb-3 w-12" 
+                                onClick={() => setExpiresAt('')} 
+                            />
                         }
                     </div>
 
                     <div className="flex flex-col gap-2">
                         <Button type="primary" button="submit" slot={
-                            <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Create"}</span>
+                            <span>
+                                {isLoading 
+                                    ? <Spinner isLoading={isLoading} width="2em" fill="white" /> 
+                                    : "Create"
+                                }
+                            </span>
                         } />
                     </div>
                 </form>

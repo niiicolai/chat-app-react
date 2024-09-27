@@ -1,10 +1,14 @@
 import ChannelWebhook from "../../models/channel_webhook";
 import ChannelWebhookListItem from "./ChannelWebhookListItem";
-import { useContext } from "react";
+import { useContext, ReactNode } from "react";
 import { ChannelContext } from "../../context/channelContext";
 import Modal from "../utils/Modal";
 import Button from "../utils/Button";
 
+/**
+ * @interface ChannelWebhookListProps
+ * @description The props for the ChannelWebhookList component
+ */
 interface ChannelWebhookListProps {
     webhooks: ChannelWebhook[];
     showWebhooks: boolean;
@@ -15,7 +19,12 @@ interface ChannelWebhookListProps {
     setWebhookTest: (webhook: ChannelWebhook | null) => void;
 }
 
-const ChannelWebhookList = (props: ChannelWebhookListProps) => {
+/**
+ * @function ChannelWebhookList
+ * @param {ChannelWebhookListProps} props
+ * @returns {ReactNode}
+ */
+const ChannelWebhookList = (props: ChannelWebhookListProps): ReactNode => {
     const { channels } = useContext(ChannelContext);
     const { showWebhooks, setShowWebhooks, webhooks, setWebhookEdit, destroyWebhook, setShowWebhookCreate, setWebhookTest } = props;
     const getWebhookChannel = (webhook: ChannelWebhook) => {

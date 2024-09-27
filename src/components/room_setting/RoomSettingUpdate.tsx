@@ -32,6 +32,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): ReactNode => {
     const { editSettings, setEditSettings } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const show = editSettings ? true : false;
 
     const updateRoomSettings = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -65,7 +66,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): ReactNode => {
     }
 
     return (
-        <Modal title="Update Settings" show={editSettings} setShow={() => setEditSettings(null)} slot={
+        <Modal title="Update Settings" show={show} setShow={() => setEditSettings(null)} slot={
             <div>
                 <Alert type="error" message={error} />
 

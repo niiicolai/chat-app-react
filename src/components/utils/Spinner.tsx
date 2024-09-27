@@ -1,4 +1,21 @@
-const Spinner = (props: any) => {
+import { ReactNode } from 'react';
+
+/**
+ * @interface SpinnerProps
+ * @description The props for the Spinner component
+ */
+interface SpinnerProps {
+    isLoading: boolean;
+    width: string;
+    fill: string;
+}
+
+/**
+ * @function Spinner
+ * @param {SpinnerProps} props
+ * @returns {ReactNode}
+ */
+const Spinner = (props: SpinnerProps): ReactNode => {
     const { isLoading, width, fill } = props;
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill={fill} width={width} className={!isLoading ? 'hidden' : 'block' + ' mx-auto animate-spin'}>

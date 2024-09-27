@@ -1,6 +1,10 @@
 import type Channel from "./channel";
 import type RoomFile from "./room_file";
 
+/**
+ * @interface ChannelWebhook
+ * @description The ChannelWebhook interface
+ */
 export default interface ChannelWebhook {
     uuid: string;
     name: string;

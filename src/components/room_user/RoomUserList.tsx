@@ -49,7 +49,7 @@ const RoomUserList = (props: RoomUserListProps): ReactNode => {
         <Modal title="Room Users" show={showUsers} setShow={setShowUsers} slot={
             <div>
                 <Alert type="error" message={error} />
-                <Spinner isLoading={isLoading} />
+                <Spinner width="2em" fill="white" isLoading={isLoading} />
 
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
                     {roomUsers.map((roomUser) => (

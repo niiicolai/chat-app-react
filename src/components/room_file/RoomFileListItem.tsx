@@ -38,10 +38,13 @@ const RoomFileListItem = (props: RoomFileListItemProps): ReactNode => {
                         <div className="flex flex-col items-center justify-center">
                             <ChannelMessageUpload channelMessage={{
                                 channel_message_upload: {
+                                    uuid: file.channel_message_upload.uuid,
                                     channel_message_upload_type_name: file.channel_message_upload.channel_message_upload_type_name,
-                                    room_file: {
-                                        src: file.src
-                                    }
+                                    channel_message: {
+                                        uuid: file.channel_message_upload.channel_message.uuid,
+                                        body: file.channel_message_upload.channel_message.body
+                                    },
+                                    room_file: file
                                 }
                             }} />
                             <div className="flex items-center gap-1 mt-2 justify-center">

@@ -44,7 +44,7 @@ const RoomFileList = (props: RoomFileListProps): ReactNode => {
         <Modal title="Room Files" show={showFiles} setShow={setShowFiles} slot={
             <div>
                 <Alert type="error" message={error} />
-                <Spinner show={isLoading} />
+                <Spinner width="2em" fill="white" isLoading={isLoading} />
                 
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                     {files.map((file) => (

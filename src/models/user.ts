@@ -1,3 +1,8 @@
+
+/**
+ * @interface User
+ * @description The User interface
+ */
 export default interface User {
     uuid: string;
     username: string;

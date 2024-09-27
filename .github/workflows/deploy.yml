@@ -13,18 +13,44 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Create .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env    
-      - run: npm ci
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npx eslint src/
+      
       - name: Remove .env file
         run: rm .env
-  deploy:
+  
+  test:
     needs: 
       - build
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env    
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Remove .env file
+        run: rm .env
+
+  deploy:
+    needs: 
+      - build
+      - test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
 
     - name: Create .env file
       run: echo "${{ secrets.ENV_FILE }}" > .env
@@ -49,4 +75,3 @@ jobs:
           docker build -t ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} .
           docker-compose -f compose.yml down
           docker-compose -f compose.yml up -d
-          

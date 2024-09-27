@@ -5,7 +5,12 @@ import PenIcon from "../icons/PenIcon";
 import TrashIcon from "../icons/TrashIcon";
 import PaperPlaneIcon from "../icons/PaperPlaneIcon";
 import Avatar from "../utils/Avatar";
+import { ReactNode } from "react";
 
+/**
+ * @interface ChannelWebhookListItemProps
+ * @description The props for the ChannelWebhookListItem component
+ */
 interface ChannelWebhookListItemProps {
     webhook: ChannelWebhook;
     channel: Channel | undefined;
@@ -14,7 +19,12 @@ interface ChannelWebhookListItemProps {
     destroyWebhook: (uuid: string) => void;
 }
 
-const ChannelWebhookListItem = (props: ChannelWebhookListItemProps) => {
+/**
+ * @function ChannelWebhookListItem
+ * @param {ChannelWebhookListItemProps} props
+ * @returns {ReactNode}
+ */
+const ChannelWebhookListItem = (props: ChannelWebhookListItemProps): ReactNode => {
     const { webhook, channel, setWebhookEdit, destroyWebhook, setWebhookTest } = props;
 
     const API_URL = import.meta.env.VITE_API_URL;

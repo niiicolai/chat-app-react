@@ -3,7 +3,7 @@ import ChannelProvider from '../providers/ChannelProvider';
 import RoomProvider from '../providers/RoomProvider';
 import UserProvider from '../providers/UserProvider';
 import ToastProvider from "../providers/ToastProvider";
-import AppMain from '../components/AppMain';
+import AppMain from '../components/app/AppMain';
 
 /**
  * @function AppView

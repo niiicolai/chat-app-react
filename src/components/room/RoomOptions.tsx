@@ -6,6 +6,8 @@ import RoomUserList from "../room_user/RoomUserList";
 import RoomFileList from "../room_file/RoomFileList";
 import ChannelCreate from "../channel/ChannelCreate";
 import RoomService from "../../services/roomService";
+import RoomUpdate from "./RoomUpdate";
+import Room from "../../models/room";
 
 import TrashIcon from "../icons/TrashIcon";
 import UsersIcon from "../icons/UsersIcon";
@@ -19,12 +21,16 @@ import DoorIcon from "../icons/DoorIcon";
 import Button from "../utils/Button";
 import ResMenu from "../utils/ResMenu";
 
-import Room from "../../models/room";
-import RoomUpdate from "./RoomUpdate";
 import { useContext, useState } from "react";
 import { RoomContext } from "../../context/roomContext";
+import { ToastContext } from "../../context/toastContext";
+import { ReactNode } from "react";
 
-const RoomOptions = () => {
+/**
+ * @function RoomOptions
+ * @returns {ReactNode}
+ */
+const RoomOptions = (): ReactNode => {
     const [editRoom, setEditRoom] = useState<Room | null>(null);
     const [editSettings, setEditSettings] = useState<Room | null>(null);
     const [showWebhooks, setShowWebhooks] = useState(false);
@@ -33,6 +39,7 @@ const RoomOptions = () => {
     const [showFiles, setShowFiles] = useState(false);
     const [showLinks, setShowLinks] = useState(false);
     const { selectedRoom, setSelectedRoom, rooms, setRooms } = useContext(RoomContext);
+    const { addToast } = useContext(ToastContext);
 
     const destroyRoom = async (uuid: string | undefined) => {
         if (!uuid) return;
@@ -42,8 +49,13 @@ const RoomOptions = () => {
             if (selectedRoom?.uuid === uuid) {
                 setSelectedRoom(null);
             }
-        } catch (err: any) {
-            console.error(err);
+            addToast({ message: 'Room deleted', type: 'success', duration: 5000 });
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                addToast({ message: err.message, type: 'error', duration: 5000 });
+            } else {
+                addToast({ message: 'An unknown error occurred', type: 'error', duration: 5000 });
+            }
         }
     }
 
@@ -55,8 +67,13 @@ const RoomOptions = () => {
             if (selectedRoom?.uuid === uuid) {
                 setSelectedRoom(null);
             }
-        } catch (err: any) {
-            console.error(err);
+            addToast({ message: 'Room left', type: 'success', duration: 5000 });
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                addToast({ message: err.message, type: 'error', duration: 5000 });
+            } else {
+                addToast({ message: 'An unknown error occurred', type: 'error', duration: 5000 });
+            }
         }
     }
 

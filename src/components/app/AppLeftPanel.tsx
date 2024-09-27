@@ -1,18 +1,23 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/userContext';
-import UserService from '../services/userService';
-import RoomCreate from '../components/room/RoomCreate';
-import RoomList from '../components/room/RoomList';
-import UserEdit from '../components/user/UserEdit';
-import GhostIcon from '../components/icons/GhostIcon';
-import LogoutIcon from '../components/icons/LogoutIcon';
-import ListIcon from '../components/icons/ListIcon';
-import UserGear from '../components/icons/UserGear';
-import PlusIcon from '../components/icons/PlusIcon';
-import Button from '../components/utils/Button'
+import { UserContext } from '../../context/userContext';
+import UserService from '../../services/userService';
+import RoomCreate from '../room/RoomCreate';
+import RoomList from '../room/RoomList';
+import UserEdit from '../user/UserEdit';
+import GhostIcon from '../icons/GhostIcon';
+import LogoutIcon from '../icons/LogoutIcon';
+import ListIcon from '../icons/ListIcon';
+import UserGear from '../icons/UserGear';
+import PlusIcon from '../icons/PlusIcon';
+import Button from '../utils/Button';
 
-function AppLeftPanel() {
+/**
+ * @function AppLeftPanel
+ * @description The left panel of the app
+ * @returns {ReactNode} ReactNode
+ */
+function AppLeftPanel(): ReactNode {
   const { setUser } = useContext(UserContext);
   const [browseRooms, setBrowseRooms] = useState(false);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
@@ -44,7 +49,7 @@ function AppLeftPanel() {
       </div>
 
       <div className='flex flex-row sm:flex-col gap-2'>
-        {actions.map((action: any, index: number) => (
+        {actions.map((action: { name:string, type:string, onClick: () => void, slot: ReactNode }, index: number) => (
           <Button onClick={action.onClick}
             display="w-8 h-8 p-1 font-bold flex items-center justify-center"
             button="button"

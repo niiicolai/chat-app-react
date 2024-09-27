@@ -1,23 +1,30 @@
-import Spinner from "../utils/Spinner";
-import Alert from "../utils/Alert";
 import Modal from "../utils/Modal";
 import RoomListItem from "./RoomListItem";
-import { useContext } from "react";
+import Room from "../../models/room";
+import { useContext, ReactNode } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
-import Room from "../../models/room";
 
+/**
+ * @interface RoomListProps
+ * @description The props for the RoomList component
+ */
 interface RoomListProps {
   browseRooms: boolean;
   setBrowseRooms: (show: boolean) => void;
 }
 
-const RoomList = (props: RoomListProps) => {
+/**
+ * @function RoomList
+ * @param {RoomListProps} props
+ * @returns {ReactNode}
+ */
+const RoomList = (props: RoomListProps): ReactNode => {
   const { setSelectedRoom, rooms } = useContext(RoomContext);
   const { setSelectedChannel } = useContext(ChannelContext);
   const { browseRooms, setBrowseRooms } = props;
 
-  const selectRoom = (room: any) => {
+  const selectRoom = (room: Room) => {
     setSelectedRoom(room);
     setBrowseRooms(false);
     setSelectedChannel(null);

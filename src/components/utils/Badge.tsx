@@ -1,4 +1,9 @@
+import { ReactNode } from 'react';
 
+/**
+ * @constant types
+ * @description Badge CSS types
+ */
 const types: { [key: string]: string } = {
     primary: 'bg-indigo-500 text-white',
     error: 'bg-red-500 text-white',
@@ -6,10 +11,27 @@ const types: { [key: string]: string } = {
     warning: 'bg-yellow-500 text-white',
 };
 
-const Badge = (props: any) => {
-    const { slot, title } = props;
+/**
+ * @interface BadgeProps
+ * @description The props for the Badge component
+ */
+interface BadgeProps {
+    type?: string;
+    slot: ReactNode;
+    title: string;
+}
+
+/**
+ * @function Badge
+ * @param {BadgeProps} props
+ * @returns {ReactNode}
+ */
+const Badge = (props: BadgeProps): ReactNode => {
+    const { slot, title, type } = props;
+    const styling = type ? types[type] : types.primary;
+    
     return (
-        <div title={title} className={`${types[props.type]} px-2 rounded-md inline-block text-xs flex items-center justify-center`} style={{ paddingTop: '.2em', paddingBottom: '.2em' }}>
+        <div title={title} className={`${styling} px-2 rounded-md inline-block text-xs flex items-center justify-center`} style={{ paddingTop: '.2em', paddingBottom: '.2em' }}>
             {slot}
         </div>
     );

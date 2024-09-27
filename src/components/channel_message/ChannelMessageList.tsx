@@ -2,10 +2,13 @@ import ChannelMessageListItem from "./ChannelMessageListItem";
 import ChannelMessage from "../../models/channel_message";
 import Alert from "../utils/Alert";
 import Spinner from "../utils/Spinner";
-import { useContext } from "react";
+import { useContext, ReactNode } from "react";
 import { ChannelContext } from "../../context/channelContext";
 
-
+/**
+ * @interface ChannelMessageListProps
+ * @description The props for the ChannelMessageList component
+ */
 interface ChannelMessageListProps {
     setEditMessage: (message: ChannelMessage | null) => void;
     destroyMessage: (uuid: string) => void;
@@ -15,7 +18,12 @@ interface ChannelMessageListProps {
     error: string | null;
 }
 
-const ChannelMessageList = (props: ChannelMessageListProps) => {
+/**
+ * @function ChannelMessageList
+ * @param {ChannelMessageListProps} props
+ * @returns {ReactNode}
+ */
+const ChannelMessageList = (props: ChannelMessageListProps): ReactNode => {
     const { messages, isLoading, error, setEditMessage, destroyMessage, destroyFile } = props;
     const { selectedChannel } = useContext(ChannelContext);
 

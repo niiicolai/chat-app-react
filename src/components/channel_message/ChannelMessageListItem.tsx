@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ReactNode } from "react";
 import ChannelMessageUpload from "../channel_message_upload/ChannelMessageUpload";
 import ChannelMessage from "../../models/channel_message";
 import ArrowTurnDownIcon from "../icons/ArrowTurnDownIcon";
@@ -10,6 +10,10 @@ import PenIcon from "../icons/PenIcon";
 import Button from "../utils/Button";
 import Badge from "../utils/Badge";
 
+/**
+ * @interface ChannelMessageListItemProps
+ * @description The props for the ChannelMessageListItem component
+ */
 interface ChannelMessageListItemProps {
     setEditMessage: (message: ChannelMessage | null) => void;
     destroyMessage: (uuid: string) => void;
@@ -17,27 +21,41 @@ interface ChannelMessageListItemProps {
     channelMessage: ChannelMessage;
 }
 
-const ChannelMessageListItem = (props: ChannelMessageListItemProps) => {
+/**
+ * @function ChannelMessageListItem
+ * @param {ChannelMessageListItemProps} props
+ * @returns {ReactNode}
+ */
+const ChannelMessageListItem = (props: ChannelMessageListItemProps): ReactNode => {
     const { channelMessage, setEditMessage, destroyMessage, destroyFile } = props;
     const [showSettings, setShowSettings] = useState(false);
     const handleMouseEnter = () => setShowSettings(true);
     const handleMouseLeave = () => setShowSettings(false);
-    
 
     return (
         <li key={channelMessage.uuid} className="relative flex justify-between gap-3 hover:bg-gray-800 p-2 rounded-md" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className="w-full flex items-start gap-5">
                 <div className="w-8">
                     {channelMessage.channel_message_type_name === 'System' &&
-                        <Avatar src={null} alternativeName="System" alternativeIcon={<GhostIcon fill="#FFF" width=".7em" />} />
+                        <Avatar 
+                            src={null} 
+                            alternativeName="System" 
+                            alternativeIcon={<GhostIcon fill="#FFF" width=".7em" />} 
+                        />
                     }
-
                     {channelMessage.channel_message_type_name === 'Webhook' &&
-                        <Avatar src={channelMessage.channel_webhook_message?.channel_webhook.room_file?.src} alternativeName={channelMessage.channel_webhook_message?.channel_webhook.name} alternativeIcon={<BotIcon fill="#FFF" width=".7em" />} />
+                        <Avatar 
+                            src={channelMessage.channel_webhook_message?.channel_webhook.room_file?.src} 
+                            alternativeName={channelMessage.channel_webhook_message?.channel_webhook.name} 
+                            alternativeIcon={<BotIcon fill="#FFF" width=".7em" />} 
+                        />
                     }
-
                     {channelMessage.channel_message_type_name === 'User' &&
-                        <Avatar src={channelMessage.user?.avatar_src} alternativeName={channelMessage.user?.username} alternativeIcon={null} />
+                        <Avatar 
+                            src={channelMessage.user?.avatar_src} 
+                            alternativeName={channelMessage.user?.username} 
+                            alternativeIcon={null} 
+                        />
                     }
                 </div>
                 <div>
@@ -56,7 +74,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps) => {
 
                         {channelMessage.channel_message_type_name !== 'User' &&
                             <div className="scale-75">
-                                <Badge type="primary" slot={channelMessage.channel_message_type_name} />
+                                <Badge type="primary" title="Message Type" slot={channelMessage.channel_message_type_name} />
                             </div>
                         }
                     </div>
@@ -67,8 +85,22 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps) => {
 
                     {channelMessage.channel_message_upload &&
                         <div className="flex items-start gap-2 mt-1 sm:max-w-64 relative">
-                            <div className="rotate-180"><ArrowTurnDownIcon fill="#6366f1" width=".7em" /></div>
-                            <ChannelMessageUpload channelMessage={channelMessage} />
+                            <div className="rotate-180">
+                                <ArrowTurnDownIcon fill="#6366f1" width=".7em" />
+                            </div>
+                            
+                            <ChannelMessageUpload channelMessage={{
+                                channel_message_upload: {
+                                    uuid: channelMessage.channel_message_upload.uuid,
+                                    channel_message_upload_type_name: channelMessage.channel_message_upload.channel_message_upload_type_name,
+                                    channel_message: {
+                                        uuid: channelMessage.uuid,
+                                        body: channelMessage.body
+                                    },
+                                    room_file: channelMessage.channel_message_upload.room_file
+                                }
+                            }} />
+
                             {showSettings && (
                                 <Button type="error" display="h-5 w-5 flex items-center justify-center absolute right-3 top-3" button="button" title="Delete file" onClick={()=>destroyFile(channelMessage)} slot={
                                     <TrashIcon fill="white" width=".6em" />

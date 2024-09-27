@@ -5,41 +5,41 @@ import ChannelMessageUpdate from "./ChannelMessageUpdate";
 import ChannelMessageList from "./ChannelMessageList";
 import useChannelMessages from "../../hooks/useChannelMessages";
 import ChannelMessage from "../../models/channel_message";
-import { useState } from "react";
+import { useState, ReactNode, FormEvent } from "react";
 
-const ChannelMessageMain = () => {
+/**
+ * @function ChannelMessageMain
+ * @returns {ReactNode}
+ */
+const ChannelMessageMain = (): ReactNode => {
     const { messages, setMessages, error, isLoading } = useChannelMessages();
     const [editMessage, setEditMessage] = useState<ChannelMessage | null>(null);
 
-    const create = async (e: any, file: any) => {
+    const create = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
         e.preventDefault();
-        const form = new FormData(e.target);
+        const form = new FormData(e.currentTarget);
         // override the file
         form.set('file', file);
         const response = await ChannelMessageService.create(form);
-        setMessages((messages: any) => [response, ...messages]);
+        setMessages([response, ...messages]);
     };
 
-    const update = async (e: any) => {
+    const update = async (e: FormEvent<HTMLFormElement>) => {
         if (!editMessage) return;
         e.preventDefault();
-        const form = new FormData(e.target);
-        const uuid = form.get('uuid');
-        const body = form.get('body');
-        const response = await ChannelMessageService.update(editMessage.uuid, { body, uuid });
-        const updatedMessages = messages.map((message: ChannelMessage) => {
-            if (message.uuid === response.uuid) {
-                return response;
-            }
-            return message;
-        });
-        setMessages(updatedMessages);
+        const form = new FormData(e.currentTarget);
+        const uuid = form.get('uuid') as string;
+        const body = form.get('body') as string;
+        const response = await ChannelMessageService.update(uuid, { body });
+        setMessages(messages.map((message: ChannelMessage) => message.uuid === response.uuid 
+            ? response 
+            : message
+        ));
     };
 
     const destroy = async (uuid: string) => {
         await ChannelMessageService.destroy(uuid);
-        const updatedMessages = messages.filter((message: ChannelMessage) => message.uuid !== uuid);
-        setMessages(updatedMessages);
+        setMessages(messages.filter((message: ChannelMessage) => message.uuid !== uuid));
     };
 
     const destroyFile = async (msg: ChannelMessage) => {
@@ -47,13 +47,10 @@ const ChannelMessageMain = () => {
         const { uuid } = msg;
         const { uuid: fileUuid } = msg.channel_message_upload.room_file;
         await RoomFileService.destroy(fileUuid);
-        const updatedMessages = messages.map((message: ChannelMessage) => {
-            if (message.uuid === uuid) {
-                message.channel_message_upload = null;
-            }
-            return message;
-        });
-        setMessages(updatedMessages);
+        setMessages(messages.map((message: ChannelMessage) => message.uuid === uuid
+            ? { ...message, channel_message_upload: null }
+            : message
+        ));
     };
 
     return (
@@ -66,8 +63,15 @@ const ChannelMessageMain = () => {
                 destroyMessage={destroy}
                 destroyFile={destroyFile}
             />
-            {!editMessage && <ChannelMessageCreate create={create} />}
-            {!!editMessage && <ChannelMessageUpdate editMessage={editMessage} update={update} setEditMessage={setEditMessage} />}
+
+            {!editMessage 
+                ? <ChannelMessageCreate create={create} />
+                : <ChannelMessageUpdate 
+                    editMessage={editMessage} 
+                    update={update} 
+                    setEditMessage={setEditMessage} 
+                />
+            }
         </div>
     );
 };

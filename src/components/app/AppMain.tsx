@@ -1,11 +1,17 @@
 import AppUnauthorized from './AppUnauthorized';
 import AppLeftPanel from './AppLeftPanel';
 import AppContentPanel from './AppContentPanel';
-import ToastList from './toast/ToastList';
+import ToastList from '../toast/ToastList';
 import { useContext } from "react";
-import { UserContext } from "../context/userContext";
+import { UserContext } from "../../context/userContext";
+import { ReactNode } from "react";
 
-function AppMain() {
+/**
+ * @function AppMain
+ * @description The main app component
+ * @returns {ReactNode} ReactNode
+ */
+function AppMain(): ReactNode {
     const { user } = useContext(UserContext);
 
     if (!user) return (

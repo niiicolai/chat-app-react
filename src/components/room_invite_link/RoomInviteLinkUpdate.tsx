@@ -6,16 +6,31 @@ import Alert from "../utils/Alert";
 import RoomInviteLink from "../../models/room_invite_link";
 import { FormEvent, useState } from "react";
 
+/**
+ * @interface RoomInviteLinkUpdateProps
+ * @description The props for the RoomInviteLinkUpdate component
+ */
 interface RoomInviteLinkUpdateProps {
     linkEdit: RoomInviteLink | null | undefined;
     setLinkEdit: (link: RoomInviteLink | null) => void;
     update: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 }
+
+/**
+ * @function RoomInviteLinkUpdate
+ * @param {RoomInviteLinkUpdateProps} props
+ * @returns {ReactNode}
+ */
 const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps) => {
     const { linkEdit, setLinkEdit, update } = props;
     const [ expiresAt, setExpiresAt ] = useState(linkEdit?.expires_at || '');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const show = linkEdit ? true : false;
+
+    const expiredAtHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        setExpiresAt(e.currentTarget.value);
+    }
 
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -37,7 +52,7 @@ const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps) => {
     }
 
     return (
-        <Modal title="Update Invite Link" show={linkEdit} setShow={()=>setLinkEdit(null)} slot={
+        <Modal title="Update Invite Link" show={show} setShow={()=>setLinkEdit(null)} slot={
             <div>
                 <Alert type="error" message={error} />
 
@@ -50,10 +65,24 @@ const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps) => {
 
                     <div className="flex gap-1">
                         <div className="w-full">
-                            <InputControlTracked id="invite-link-create-expires-at" label="Expires At" type="datetime-local" name="expires_at" value={expiresAt} onChange={(e: FormEvent<HTMLFormElement>) => setExpiresAt(e.currentTarget.value)} />
+                            <InputControlTracked 
+                                id="invite-link-create-expires-at" 
+                                label="Expires At" 
+                                type="datetime-local" 
+                                name="expires_at" 
+                                value={expiresAt} 
+                                onChange={expiredAtHandler} 
+                            />
                         </div>
+
                         {expiresAt &&
-                            <Button type="primary" button="button" slot="Clear" display="mb-3 w-12" onClick={() => setExpiresAt('')} />
+                            <Button 
+                                type="primary" 
+                                button="button" 
+                                slot="Clear" 
+                                display="mb-3 w-12" 
+                                onClick={() => setExpiresAt('')} 
+                            />
                         }
                     </div>
 
@@ -68,7 +97,12 @@ const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps) => {
 
                     <div className="flex flex-col gap-2">
                         <Button type="primary" button="submit" slot={
-                            <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Update"}</span>
+                            <span>
+                                {isLoading 
+                                    ? <Spinner isLoading={isLoading} width="2em" fill="white" /> 
+                                    : "Update"
+                                }
+                            </span>
                         } />
                     </div>
                 </form>

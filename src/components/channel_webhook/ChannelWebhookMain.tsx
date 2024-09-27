@@ -5,84 +5,99 @@ import ChannelWehookCreate from "./ChannelWebhookCreate";
 import ChannelWebhookUpdate from "./ChannelWebhookUpdate";
 import ChannelWebhookTest from "./ChannelWebhookTest";
 import ChannelWebhookService from "../../services/channelWebhookService";
-import { useState } from "react";
+import { useState, ReactNode, FormEvent } from "react";
 
+/**
+ * @interface ChannelWebhookMainProps
+ * @description The props for the ChannelWebhookMain component
+ */
 interface ChannelWebhookMainProps {
     showWebhooks: boolean;
     setShowWebhooks: (show: boolean) => void;
 }
 
-const ChannelWebhookMain = (props: ChannelWebhookMainProps) => {
+/**
+ * @function ChannelWebhookMain
+ * @param {ChannelWebhookMainProps} props
+ * @returns {ReactNode}
+ */
+const ChannelWebhookMain = (props: ChannelWebhookMainProps): ReactNode => {
     const { showWebhooks, setShowWebhooks } = props;
     const { webhooks, setWebhooks } = useChannelWebhooks();
-    const [ showWebhookCreate, setShowWebhookCreate ] = useState(false);
-    const [ webhookTest, setWebhookTest ] = useState<ChannelWebhook | null>(null);
-    const [ webhookEdit, setWebhookEdit ] = useState<ChannelWebhook | null>(null);
+    const [showWebhookCreate, setShowWebhookCreate] = useState(false);
+    const [webhookTest, setWebhookTest] = useState<ChannelWebhook | null>(null);
+    const [webhookEdit, setWebhookEdit] = useState<ChannelWebhook | null>(null);
 
-    const create = async (e: any, file: any) => {
+    const create = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
         e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
+        const formData = new FormData(e.currentTarget);
         formData.set('file', file);
         const response = await ChannelWebhookService.create(formData);
-        setWebhooks((webhooks: any) => [...webhooks, response]);
+        setWebhooks([...webhooks, response]);
         setShowWebhookCreate(false);
     };
 
-    const update = async (e: any, file: any) => {
+    const update = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
         e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);    
-        formData.set('file', file);    
+        const formData = new FormData(e.currentTarget);
+        formData.set('file', file);
         const uuid = formData.get('uuid') as string;
         if (!uuid) return;
         const response = await ChannelWebhookService.update(uuid, formData);
-        setWebhooks((webhooks: any) => webhooks.map((webhook: any) => webhook.uuid === uuid ? response : webhook));
+        setWebhooks(webhooks.map((webhook: ChannelWebhook) => webhook.uuid === uuid ? response : webhook));
         setWebhookEdit(null);
     };
 
     const destroy = async (uuid: string) => {
         await ChannelWebhookService.destroy(uuid);
-        setWebhooks((webhooks: any) => webhooks.filter((webhook: any) => webhook.uuid !== uuid));
+        setWebhooks(webhooks.filter((webhook: ChannelWebhook) => webhook.uuid !== uuid));
     };
 
-    const testWebhook = async (e: any) => {
+    const testWebhook = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
+        const formData = new FormData(e.currentTarget);
         const uuid = formData.get('uuid') as string;
         const message = formData.get('message') as string;
         await ChannelWebhookService.test(uuid, { message });
         setWebhookTest(null);
     };
 
-    return (
-        <div>
-            <ChannelWebhookList 
-                webhooks={webhooks} 
-                showWebhooks={showWebhooks} 
-                setShowWebhookCreate={setShowWebhookCreate}
-                setWebhookTest={setWebhookTest} 
-                setShowWebhooks={setShowWebhooks} 
-                setWebhookEdit={setWebhookEdit} 
-                destroyWebhook={destroy}
-            />
-            <ChannelWehookCreate 
-                showWebhookCreate={showWebhookCreate} 
-                setShowWebhookCreate={setShowWebhookCreate} 
-                create={create} 
-            />
-            <ChannelWebhookUpdate 
-                webhookEdit={webhookEdit} 
-                setWebhookEdit={setWebhookEdit} 
-                update={update} 
-            />
+    if (webhookTest) {
+        return (
             <ChannelWebhookTest
-                webhookTest={webhookTest} 
-                setWebhookTest={setWebhookTest} 
-                testWebhook={testWebhook} 
+                webhookTest={webhookTest}
+                setWebhookTest={setWebhookTest}
+                testWebhook={testWebhook}
             />
-        </div>
+        );
+    } else if (showWebhookCreate) {
+        return (
+            <ChannelWehookCreate
+                showWebhookCreate={showWebhookCreate}
+                setShowWebhookCreate={setShowWebhookCreate}
+                create={create}
+            />
+        );
+    } else if (webhookEdit) {
+        return (
+            <ChannelWebhookUpdate
+                webhookEdit={webhookEdit}
+                setWebhookEdit={setWebhookEdit}
+                update={update}
+            />
+        );
+    }
+
+    return (
+        <ChannelWebhookList
+            webhooks={webhooks}
+            showWebhooks={showWebhooks}
+            setShowWebhookCreate={setShowWebhookCreate}
+            setWebhookTest={setWebhookTest}
+            setShowWebhooks={setShowWebhooks}
+            setWebhookEdit={setWebhookEdit}
+            destroyWebhook={destroy}
+        />
     );
 };
 

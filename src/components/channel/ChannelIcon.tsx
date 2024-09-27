@@ -1,11 +1,21 @@
+import { ReactNode } from "react";
 import HashtagIcon from "../icons/HashtagIcon";
 import PhoneIcon from "../icons/PhoneIcon";
 
+/**
+ * @interface ChannelIconProps
+ * @description The props for the ChannelIcon component
+ */
 interface ChannelIconProps {
     channel_type_name: string;
 }
 
-const ChannelIcon = (props: ChannelIconProps) => {
+/**
+ * @function ChannelIcon
+ * @param {ChannelIconProps} props
+ * @returns {ReactNode}
+ */
+const ChannelIcon = (props: ChannelIconProps): ReactNode => {
     const { channel_type_name } = props;
     
     if (channel_type_name === 'Call') {
