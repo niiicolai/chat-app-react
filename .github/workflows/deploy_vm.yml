@@ -92,6 +92,6 @@ jobs:
         script: |
           cd ${{ secrets.SERVER_LOCATION }}/github/workspace
           docker build -t ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} .
-          docker-compose -f compose.yml down
-          docker-compose -f compose.yml up -d
+          docker-compose -f compose-local-image.yml down
+          docker-compose -f compose-local-image.yml up -d
           docker image prune -f
