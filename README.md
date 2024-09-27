@@ -1,4 +1,6 @@
-[![VM Publish Production](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy.yml)
+[![VM Publish Production](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_vm.yml)
+
+[![Docker Hub Deploy](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_docker_hub.yml)
 
 # Chat App React+TypeScript
 A React.js SPA made for the chat backend application found at https://github.com/niiicolai/chat-app.

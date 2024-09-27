@@ -91,7 +91,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd ${{ secrets.SERVER_LOCATION }}/github/workspace
-          docker image prune -f
           docker build -t ${{ secrets.IMAGE_NAME }}:${{ secrets.IMAGE_TAG }} .
           docker-compose -f compose.yml down
           docker-compose -f compose.yml up -d
+          docker image prune -f
