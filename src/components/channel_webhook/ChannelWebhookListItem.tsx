@@ -5,7 +5,7 @@ import PenIcon from "../icons/PenIcon";
 import TrashIcon from "../icons/TrashIcon";
 import PaperPlaneIcon from "../icons/PaperPlaneIcon";
 import Avatar from "../utils/Avatar";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface ChannelWebhookListItemProps
@@ -22,9 +22,9 @@ interface ChannelWebhookListItemProps {
 /**
  * @function ChannelWebhookListItem
  * @param {ChannelWebhookListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelWebhookListItem = (props: ChannelWebhookListItemProps): ReactNode => {
+const ChannelWebhookListItem = (props: ChannelWebhookListItemProps): JSX.Element => {
     const { webhook, channel, setWebhookEdit, destroyWebhook, setWebhookTest } = props;
 
     const API_URL = import.meta.env.VITE_API_URL;
@@ -35,7 +35,7 @@ const ChannelWebhookListItem = (props: ChannelWebhookListItemProps): ReactNode =
     return (
         <li className="flex flex-col gap-1 border border-gray-800 p-3 rounded-md break-all">
             <div className="flex gap-2 items-center border-b border-gray-800 pb-2 mb-2">
-                <Avatar src={webhook.room_file?.src} alternativeName={webhook.name} alternativeIcon={null} />
+                <Avatar src={webhook.room_file?.src} alternativeName={webhook.name} />
                 <span className="text-white">{webhook.name}</span>
             </div>
             <div className="flex flex-col gap-1 border-b border-gray-800 pb-2 mb-2">

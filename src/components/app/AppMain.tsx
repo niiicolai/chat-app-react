@@ -4,14 +4,14 @@ import AppContentPanel from './AppContentPanel';
 import ToastList from '../toast/ToastList';
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @function AppMain
  * @description The main app component
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function AppMain(): ReactNode {
+function AppMain(): JSX.Element {
     const { user } = useContext(UserContext);
 
     if (!user) return (

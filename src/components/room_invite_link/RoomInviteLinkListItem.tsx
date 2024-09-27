@@ -4,7 +4,7 @@ import PenIcon from "../icons/PenIcon";
 import TrashIcon from "../icons/TrashIcon";
 import CopyIcon from "../icons/CopyIcon";
 import { ToastContext } from "../../context/toastContext";
-import { useContext, ReactNode } from "react";
+import { useContext, JSX } from "react";
 
 /**
  * @constant CLIENT_URL
@@ -27,9 +27,9 @@ interface RoomInviteLinkListItemProps {
 /**
  * @function RoomInviteLinkListItem
  * @param {RoomInviteLinkListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps): ReactNode => {
+const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps): JSX.Element => {
     const { link, setLinkEdit, destroyLink } = props;
     const { addToast } = useContext(ToastContext);
     const url = new URL(`/room/${link.uuid}/join`, CLIENT_URL).toString();

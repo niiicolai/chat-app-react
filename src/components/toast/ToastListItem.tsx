@@ -1,5 +1,5 @@
 import Toast from "../../models/toast";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @constant types
@@ -25,9 +25,9 @@ interface ToastListItemProps {
 /**
  * @function ToastListItem
  * @param {ToastListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ToastListItem = (props: ToastListItemProps): ReactNode => {
+const ToastListItem = (props: ToastListItemProps): JSX.Element => {
     const { message, type } = props.toast;
 
     return (

@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, JSX } from 'react';
 import { ChannelContext } from '../context/channelContext';
 import Channel from '../models/channel';
 import useChannels from '../hooks/useChannels';
@@ -6,19 +6,18 @@ import useChannels from '../hooks/useChannels';
 /**
  * @interface ChannelProviderProps
  * @description The channel provider props
- * @param {ReactNode} slot - The slot
  */
 interface ChannelProviderProps {
-    slot: ReactNode;
+    slot: JSX.Element;
 }
 
 /**
  * @function ChannelProvider
  * @description The channel provider
  * @param {ChannelProviderProps} props - The props
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function ChannelProvider(props: ChannelProviderProps): ReactNode {
+function ChannelProvider(props: ChannelProviderProps): JSX.Element {
     const { channels, setChannels } = useChannels();
     const [ selectedChannel, setSelectedChannel ] = useState<Channel | null>(null);
     const { slot } = props;

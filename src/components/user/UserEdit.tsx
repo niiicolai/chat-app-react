@@ -3,7 +3,7 @@ import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
-import { useContext, useState, ReactNode, FormEvent } from "react";
+import { useContext, useState, JSX, FormEvent } from "react";
 import { UserContext } from "../../context/userContext";
 import { ToastContext } from "../../context/toastContext";
 import UserService from "../../services/userService";
@@ -20,9 +20,9 @@ interface EditUserProps {
 /**
  * @function EditUser
  * @param {EditUserProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const EditUser = (props: EditUserProps): ReactNode => {
+const EditUser = (props: EditUserProps): JSX.Element => {
     const { editUser, setEditUser } = props;
     const { addToast } = useContext(ToastContext);
     const { user, setUser } = useContext(UserContext);

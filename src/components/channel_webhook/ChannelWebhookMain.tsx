@@ -5,7 +5,7 @@ import ChannelWehookCreate from "./ChannelWebhookCreate";
 import ChannelWebhookUpdate from "./ChannelWebhookUpdate";
 import ChannelWebhookTest from "./ChannelWebhookTest";
 import ChannelWebhookService from "../../services/channelWebhookService";
-import { useState, ReactNode, FormEvent } from "react";
+import { useState, JSX, FormEvent } from "react";
 
 /**
  * @interface ChannelWebhookMainProps
@@ -19,9 +19,9 @@ interface ChannelWebhookMainProps {
 /**
  * @function ChannelWebhookMain
  * @param {ChannelWebhookMainProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelWebhookMain = (props: ChannelWebhookMainProps): ReactNode => {
+const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
     const { showWebhooks, setShowWebhooks } = props;
     const { webhooks, setWebhooks } = useChannelWebhooks();
     const [showWebhookCreate, setShowWebhookCreate] = useState(false);

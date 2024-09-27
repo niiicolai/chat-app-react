@@ -2,7 +2,7 @@ import Button from "../utils/Button";
 import ChannelIcon from "./ChannelIcon";
 import CoverImg from "../utils/CoverImg";
 import Channel from "../../models/channel";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface ChannelListItemProps
@@ -17,9 +17,9 @@ interface ChannelListItemProps {
 /**
  * @function ChannelListItem
  * @param {ChannelListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelListItem = (props: ChannelListItemProps): ReactNode => {
+const ChannelListItem = (props: ChannelListItemProps): JSX.Element => {
     const { channel, setChannel, isSelected } = props;
     const selectedClass = isSelected ? 'ring-2 ring-gray-500 hover:ring-gray-500' : '';
     return (

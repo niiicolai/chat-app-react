@@ -4,7 +4,7 @@ import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface RoomInviteLinkListProps
@@ -24,9 +24,9 @@ interface RoomInviteLinkListProps {
 /**
  * @function RoomInviteLinkList
  * @param {RoomInviteLinkListProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomInviteLinkList = (props: RoomInviteLinkListProps): ReactNode => {
+const RoomInviteLinkList = (props: RoomInviteLinkListProps): JSX.Element => {
     const { 
         inviteLinks, setLinkEdit, showLinks, 
         setShowLinks, destroyLink, setShowLinkCreate,

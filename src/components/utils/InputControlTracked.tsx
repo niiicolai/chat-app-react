@@ -1,4 +1,4 @@
-import { FormEvent, ReactNode } from 'react';
+import { FormEvent, JSX } from 'react';
 
 /**
  * @interface InputControlTrackedProps
@@ -9,7 +9,7 @@ interface InputControlTrackedProps {
     type: string;
     label: string;
     name: string;
-    options?: ReactNode;
+    options?: JSX.Element[];
     onChange: (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     value: string;
 }
@@ -17,9 +17,9 @@ interface InputControlTrackedProps {
 /**
  * @function InputControlTracked
  * @param {InputControlTrackedProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const InputControlTracked = (props: InputControlTrackedProps): ReactNode => {
+const InputControlTracked = (props: InputControlTrackedProps): JSX.Element => {
     const { id, type, label, name, options, onChange, value } = props;
     const inputClassNames = "text-black w-full border p-3 rounded-md text-black text-sm focus:ring-2 focus:ring-indigo-800 focus:outline-none";
     

@@ -24,13 +24,13 @@ import ResMenu from "../utils/ResMenu";
 import { useContext, useState } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ToastContext } from "../../context/toastContext";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @function RoomOptions
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomOptions = (): ReactNode => {
+const RoomOptions = (): JSX.Element => {
     const [editRoom, setEditRoom] = useState<Room | null>(null);
     const [editSettings, setEditSettings] = useState<Room | null>(null);
     const [showWebhooks, setShowWebhooks] = useState(false);

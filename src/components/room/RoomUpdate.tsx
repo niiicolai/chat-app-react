@@ -6,7 +6,7 @@ import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Room from "../../models/room";
-import { FormEvent, ReactNode, useContext, useState } from "react";
+import { FormEvent, JSX, useContext, useState } from "react";
 import { ToastContext } from "../../context/toastContext";
 import { RoomContext } from "../../context/roomContext";
 
@@ -22,9 +22,9 @@ interface RoomUpdateProps {
 /**
  * @function RoomUpdate
  * @param {RoomUpdateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomUpdate = (props: RoomUpdateProps): ReactNode => {
+const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
     const { selectedRoom, setSelectedRoom, rooms, setRooms } = useContext(RoomContext);
     const { addToast } = useContext(ToastContext);
     const { categories } = useRoomCategories();

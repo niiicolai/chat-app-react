@@ -2,7 +2,7 @@ import InputControlTracked from "../utils/InputControlTracked";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import ChannelWebhook from "../../models/channel_webhook";
-import { useState, ReactNode, FormEvent } from "react";
+import { useState, JSX, FormEvent } from "react";
 
 /**
  * @interface ChannelWebhookTestProps
@@ -17,9 +17,9 @@ interface ChannelWebhookTestProps {
 /**
  * @function ChannelWebhookTest
  * @param {ChannelWebhookTestProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelWebhookTest = (props: ChannelWebhookTestProps): ReactNode => {
+const ChannelWebhookTest = (props: ChannelWebhookTestProps): JSX.Element => {
     const { webhookTest, setWebhookTest, testWebhook } = props;
     const [ message, setMessage ] = useState('');
     const show = webhookTest !== null;

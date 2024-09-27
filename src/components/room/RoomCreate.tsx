@@ -6,7 +6,7 @@ import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import { v4 as uuidv4 } from "uuid";
-import { useState, useContext, ReactNode, FormEvent } from "react";
+import { useState, useContext, JSX, FormEvent } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ToastContext } from "../../context/toastContext";
 
@@ -22,9 +22,9 @@ interface RoomCreateProps {
 /**
  * @function RoomCreate
  * @param {RoomCreateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomCreate = (props: RoomCreateProps): ReactNode => {
+const RoomCreate = (props: RoomCreateProps): JSX.Element => {
     const { addToast } = useContext(ToastContext);
     const { rooms, setRooms, setSelectedRoom } = useContext(RoomContext);
     const { showCreateRoom, setShowCreateRoom } = props;

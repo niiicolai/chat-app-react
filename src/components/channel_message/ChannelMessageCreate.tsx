@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { FormEvent, useContext } from "react";
 import { ChannelContext } from "../../context/channelContext";
 import { ToastContext } from "../../context/toastContext";
-import { useState, ReactNode } from "react";
+import { useState, JSX } from "react";
 
 /**
  * @interface ChannelMessageCreateProps
@@ -18,9 +18,9 @@ interface ChannelMessageCreateProps {
 /**
  * @function ChannelMessageCreate
  * @param {ChannelMessageCreateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelMessageCreate = (props: ChannelMessageCreateProps): ReactNode => {
+const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => {
     const { selectedChannel } = useContext(ChannelContext);
     const { addToast } = useContext(ToastContext);
     const [message, setMessage] = useState("");

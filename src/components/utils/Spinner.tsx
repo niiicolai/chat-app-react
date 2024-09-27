@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @interface SpinnerProps
@@ -13,9 +13,9 @@ interface SpinnerProps {
 /**
  * @function Spinner
  * @param {SpinnerProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Spinner = (props: SpinnerProps): ReactNode => {
+const Spinner = (props: SpinnerProps): JSX.Element => {
     const { isLoading, width, fill } = props;
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill={fill} width={width} className={!isLoading ? 'hidden' : 'block' + ' mx-auto animate-spin'}>

@@ -1,23 +1,22 @@
 import { UserContext } from '../context/userContext';
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 import useUser from '../hooks/useUser';
 
 /**
  * @interface UserProviderProps
  * @description The user provider props
- * @param {ReactNode} slot - The slot
  */
 interface UserProviderProps {
-    slot: ReactNode;
+    slot: JSX.Element;
 }
 
 /**
  * @function UserProvider
  * @description The user provider
  * @param {UserProviderProps} props - The props
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function UserProvider(props: UserProviderProps): ReactNode {
+function UserProvider(props: UserProviderProps): JSX.Element {
     const { slot } = props;
     const { user, setUser } = useUser();
     

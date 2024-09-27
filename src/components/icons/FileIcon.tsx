@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function FileIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const FileIcon = (props: IconProps): ReactNode => {
+const FileIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

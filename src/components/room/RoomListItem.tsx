@@ -1,6 +1,6 @@
 import Button from "../utils/Button";
 import Room from "../../models/room";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface RoomListItemProps
@@ -14,9 +14,9 @@ interface RoomListItemProps {
 /**
  * @function RoomListItem
  * @param {RoomListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomListItem = (props: RoomListItemProps): ReactNode => {
+const RoomListItem = (props: RoomListItemProps): JSX.Element => {
     const { room, setRoom } = props;
 
     return (

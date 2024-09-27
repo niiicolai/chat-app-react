@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @interface CoverImgProps
@@ -12,9 +12,9 @@ interface CoverImgProps {
 /**
  * @function CoverImg
  * @param {CoverImgProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const CoverImg = (props: CoverImgProps): ReactNode => {
+const CoverImg = (props: CoverImgProps): JSX.Element => {
     const { src, overlay } = props;
     const isSrcPresent = src && src.length > 0;
     const overlayVisibleState = overlay ? 'block' : 'hidden';

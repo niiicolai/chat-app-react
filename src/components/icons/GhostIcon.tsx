@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function GhostIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const GhostIcon = (props: IconProps): ReactNode => {
+const GhostIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

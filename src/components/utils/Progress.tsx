@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @constant types
@@ -17,7 +17,7 @@ const types: { [key: string]: { fill: string, bgg: string } } = {
  * @description The props for the Progress component
  */
 interface ProgressProps {
-    slot: ReactNode;
+    slot: JSX.Element;
     type?: string;
     value: number;
     max: number;
@@ -26,9 +26,9 @@ interface ProgressProps {
 /**
  * @function Progress
  * @param {ProgressProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Progress = (props: ProgressProps): ReactNode => {
+const Progress = (props: ProgressProps): JSX.Element => {
     const { slot, type, value, max } = props;
     const percentage = ( value / max ) * 100;
     const styling = type ? types[type] : types.primary;

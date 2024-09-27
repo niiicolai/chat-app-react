@@ -5,7 +5,7 @@ import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import ChannelWebhook from "../../models/channel_webhook";
-import { useContext, useState, ReactNode, FormEvent } from "react";
+import { useContext, useState, JSX, FormEvent } from "react";
 import { ChannelContext } from "../../context/channelContext";
 
 /**
@@ -21,9 +21,9 @@ interface ChannelWebhookUpdateProps {
 /**
  * @function ChannelWebhookUpdate
  * @param {ChannelWebhookUpdateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): ReactNode => {
+const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => {
     const { channels } = useContext(ChannelContext);
     const { webhookEdit, setWebhookEdit, update } = props;
     const [file, setFile] = useState('' as string | Blob);

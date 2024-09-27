@@ -4,7 +4,7 @@ import Avatar from "../utils/Avatar";
 import Button from "../utils/Button";
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface RoomUserListItemProps
@@ -19,9 +19,9 @@ interface RoomUserListItemProps {
 /**
  * @function RoomUserListItem
  * @param {RoomUserListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomUserListItem = (props: RoomUserListItemProps): ReactNode => {
+const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
     const { roomUser, update, destroy } = props;
     const { user } = useContext(UserContext);
     const isMe = user?.uuid === roomUser.user.uuid;
@@ -30,7 +30,7 @@ const RoomUserListItem = (props: RoomUserListItemProps): ReactNode => {
         <li className="border border-gray-800 rounded-md p-3">
             <div className="flex items-start gap-3 border border-gray-800 rounded-md p-3 mb-3">
                 <div>
-                    <Avatar src={roomUser.user.avatar_src} alternativeName={roomUser.user.username} alternativeIcon={null} />
+                    <Avatar src={roomUser.user.avatar_src} alternativeName={roomUser.user.username} />
                 </div>
                 <div>
                     <p className="text-white mb-1">{roomUser.user.username}</p>

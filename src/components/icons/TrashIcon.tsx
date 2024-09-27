@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function TrashIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const TrashIcon = (props: IconProps): ReactNode => {
+const TrashIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

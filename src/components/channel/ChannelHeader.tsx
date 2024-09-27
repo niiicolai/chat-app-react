@@ -1,4 +1,4 @@
-import { useContext, useState, ReactNode } from "react";
+import { useContext, useState, JSX } from "react";
 import { ChannelContext } from "../../context/channelContext";
 import TrashIcon from "../icons/TrashIcon";
 import PenIcon from "../icons/PenIcon";
@@ -17,9 +17,9 @@ interface ChannelHeaderProps {
 /**
  * @function ChannelHeader
  * @param {ChannelHeaderProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelHeader = (props: ChannelHeaderProps): ReactNode => {
+const ChannelHeader = (props: ChannelHeaderProps): JSX.Element => {
     const { setEditChannel } = props;
     const { channels, setChannels, selectedChannel, setSelectedChannel } = useContext(ChannelContext);
     const [showSettings, setShowSettings] = useState(false);

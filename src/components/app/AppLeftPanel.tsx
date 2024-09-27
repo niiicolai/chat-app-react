@@ -1,4 +1,4 @@
-import { useState, useContext, ReactNode } from 'react'
+import { useState, useContext, JSX } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import UserService from '../../services/userService';
@@ -15,9 +15,9 @@ import Button from '../utils/Button';
 /**
  * @function AppLeftPanel
  * @description The left panel of the app
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function AppLeftPanel(): ReactNode {
+function AppLeftPanel(): JSX.Element {
   const { setUser } = useContext(UserContext);
   const [browseRooms, setBrowseRooms] = useState(false);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
@@ -49,7 +49,7 @@ function AppLeftPanel(): ReactNode {
       </div>
 
       <div className='flex flex-row sm:flex-col gap-2'>
-        {actions.map((action: { name:string, type:string, onClick: () => void, slot: ReactNode }, index: number) => (
+        {actions.map((action: { name:string, type:string, onClick: () => void, slot: JSX.Element }, index: number) => (
           <Button onClick={action.onClick}
             display="w-8 h-8 p-1 font-bold flex items-center justify-center"
             button="button"

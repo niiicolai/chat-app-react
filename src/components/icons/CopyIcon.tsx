@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function CopyIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const CopyIcon = (props: IconProps): ReactNode => {
+const CopyIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

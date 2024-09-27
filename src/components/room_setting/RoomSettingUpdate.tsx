@@ -6,7 +6,7 @@ import Room from "../../models/room";
 import Channel from "../../models/channel";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
-import { useContext, useState, ReactNode, FormEvent } from "react";
+import { useContext, useState, JSX, FormEvent } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
 import { ToastContext } from "../../context/toastContext";
@@ -23,9 +23,9 @@ interface RoomSettingUpdateProps {
 /**
  * @function RoomSettingUpdate
  * @param {RoomSettingUpdateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomSettingUpdate = (props: RoomSettingUpdateProps): ReactNode => {
+const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
     const { rooms, setRooms, setSelectedRoom, selectedRoom } = useContext(RoomContext);
     const { channels } = useContext(ChannelContext);
     const { addToast } = useContext(ToastContext);

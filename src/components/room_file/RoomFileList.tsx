@@ -5,7 +5,7 @@ import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Modal from "../utils/Modal";
 import { ToastContext } from "../../context/toastContext";
-import { useContext, ReactNode } from "react";
+import { useContext, JSX } from "react";
 
 /**
  * @interface RoomFileListProps
@@ -19,9 +19,9 @@ interface RoomFileListProps {
 /**
  * @function RoomFileList
  * @param {RoomFileListProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomFileList = (props: RoomFileListProps): ReactNode => {
+const RoomFileList = (props: RoomFileListProps): JSX.Element => {
     const { showFiles, setShowFiles } = props;
     const { addToast } = useContext(ToastContext);
     const { files, setFiles, error, isLoading } = useRoomFiles();

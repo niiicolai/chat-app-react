@@ -1,4 +1,4 @@
-import { FormEvent, useState, ReactNode, useContext } from "react";
+import { FormEvent, useState, JSX, useContext } from "react";
 import { ToastContext } from "../../context/toastContext";
 import Button from "../utils/Button";
 import Spinner from "../utils/Spinner";
@@ -18,9 +18,9 @@ interface ChannelMessageUpdateProps {
 /**
  * @function ChannelMessageUpdate
  * @param {ChannelMessageUpdateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): ReactNode => {
+const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): JSX.Element => {
     const { editMessage, setEditMessage, update } = props;
     const [message, setMessage] = useState(editMessage?.body || "");
     const [isLoading, setIsLoading] = useState(false);

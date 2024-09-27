@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function ListIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ListIcon = (props: IconProps): ReactNode => {
+const ListIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

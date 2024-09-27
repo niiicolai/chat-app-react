@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function CopyIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const CheckMarkIcon = (props: IconProps): ReactNode => {
+const CheckMarkIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

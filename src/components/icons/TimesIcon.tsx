@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function TimesIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const TimesIcon = (props: IconProps): ReactNode => {
+const TimesIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

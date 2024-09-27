@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import HashtagIcon from "../icons/HashtagIcon";
 import PhoneIcon from "../icons/PhoneIcon";
 
@@ -13,9 +13,9 @@ interface ChannelIconProps {
 /**
  * @function ChannelIcon
  * @param {ChannelIconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelIcon = (props: ChannelIconProps): ReactNode => {
+const ChannelIcon = (props: ChannelIconProps): JSX.Element => {
     const { channel_type_name } = props;
     
     if (channel_type_name === 'Call') {

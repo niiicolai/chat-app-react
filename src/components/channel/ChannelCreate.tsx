@@ -8,7 +8,7 @@ import ChannelService from "../../services/channelService";
 import useChannelTypes from "../../hooks/useChannelTypes";
 import InputControlTracked from "../utils/InputControlTracked";
 
-import { useContext, useState, ReactNode, FormEvent } from "react";
+import { useContext, useState, JSX, FormEvent } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
 import { v4 as uuidv4 } from "uuid";
@@ -25,9 +25,9 @@ interface ChannelCreateProps {
 /**
  * @function ChannelCreate
  * @param {ChannelCreateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelCreate = (props: ChannelCreateProps): ReactNode => {
+const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
     const { showCreateChannel, setShowCreateChannel } = props;
     const { selectedRoom } = useContext(RoomContext);
     const { setChannels, channels } = useContext(ChannelContext);

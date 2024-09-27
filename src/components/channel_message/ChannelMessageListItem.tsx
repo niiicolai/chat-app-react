@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, JSX } from "react";
 import ChannelMessageUpload from "../channel_message_upload/ChannelMessageUpload";
 import ChannelMessage from "../../models/channel_message";
 import ArrowTurnDownIcon from "../icons/ArrowTurnDownIcon";
@@ -24,9 +24,9 @@ interface ChannelMessageListItemProps {
 /**
  * @function ChannelMessageListItem
  * @param {ChannelMessageListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelMessageListItem = (props: ChannelMessageListItemProps): ReactNode => {
+const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element => {
     const { channelMessage, setEditMessage, destroyMessage, destroyFile } = props;
     const [showSettings, setShowSettings] = useState(false);
     const handleMouseEnter = () => setShowSettings(true);
@@ -54,7 +54,6 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): ReactNode =
                         <Avatar 
                             src={channelMessage.user?.avatar_src} 
                             alternativeName={channelMessage.user?.username} 
-                            alternativeIcon={null} 
                         />
                     }
                 </div>

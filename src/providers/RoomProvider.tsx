@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, JSX } from 'react';
 import { RoomContext } from '../context/roomContext';
 import useRooms from '../hooks/useRooms';
 import Room from '../models/room';
@@ -6,19 +6,18 @@ import Room from '../models/room';
 /**
  * @interface RoomProviderProps
  * @description The room provider props
- * @param {ReactNode} slot - The slot
  */
 interface RoomProviderProps {
-    slot: ReactNode;
+    slot: JSX.Element;
 }
 
 /**
  * @function RoomProvider
  * @description The room provider
  * @param {RoomProviderProps} props - The props
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function RoomProvider(props: RoomProviderProps): ReactNode {
+function RoomProvider(props: RoomProviderProps): JSX.Element {
     const { rooms, setRooms } = useRooms();
     const [ selectedRoom, setSelectedRoom ] = useState<Room | null>(null);
     const { slot } = props;

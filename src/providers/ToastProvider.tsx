@@ -1,5 +1,5 @@
 import { ToastContext } from '../context/toastContext';
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 import { useState } from 'react';
 import Toast from '../models/toast';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,19 +7,18 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * @interface ToastProviderProps
  * @description The toast provider props
- * @param {ReactNode} slot - The slot
  */
 interface ToastProviderProps {
-    slot: ReactNode;
+    slot: JSX.Element;
 }
 
 /**
  * @function ToastProvider
  * @description The toast provider
  * @param {ToastProviderProps} props - The props
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function ToastProvider(props: ToastProviderProps): ReactNode {
+function ToastProvider(props: ToastProviderProps): JSX.Element {
     const [ toasts, setToasts ] = useState<Toast[]>([]);
     const { slot } = props;
 

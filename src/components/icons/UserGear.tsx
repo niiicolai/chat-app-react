@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function UserGear
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const UserGear = (props: IconProps): ReactNode => {
+const UserGear = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

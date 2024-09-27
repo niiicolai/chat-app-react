@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @interface InputControlProps
@@ -10,15 +10,15 @@ interface InputControlProps {
     label: string;
     name: string;
     defaultValue?: string;
-    options?: ReactNode;
+    options?: JSX.Element[];
 }
 
 /**
  * @function InputControl
  * @param {InputControlProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const InputControl = (props: InputControlProps): ReactNode => {
+const InputControl = (props: InputControlProps): JSX.Element => {
     const { id, type, label, name, defaultValue, options } = props;
     const inputClassNames = "text-black w-full border p-3 rounded-md text-black text-sm focus:ring-2 focus:ring-indigo-800 focus:outline-none";
     

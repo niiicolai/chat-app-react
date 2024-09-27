@@ -3,7 +3,7 @@ import TrashIcon from "../icons/TrashIcon";
 import Badge from "../utils/Badge";
 import Button from "../utils/Button";
 import RoomFile from "../../models/room_file";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface RoomFileListItemProps
@@ -17,9 +17,9 @@ interface RoomFileListItemProps {
 /**
  * @function RoomFileListItem
  * @param {RoomFileListItemProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomFileListItem = (props: RoomFileListItemProps): ReactNode => {
+const RoomFileListItem = (props: RoomFileListItemProps): JSX.Element => {
     const { file, destroyFile } = props;
     return (
         <li key={file.uuid} className="flex flex-col justify-between gap-3 border border-gray-800 rounded-md p-3">

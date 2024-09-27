@@ -1,13 +1,13 @@
 import Button from "./Button";
 import TimesIcon from "../icons/TimesIcon";
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @interface ModalProps
  * @description The props for the Modal component
  */
 interface ModalProps {
-    slot: ReactNode;
+    slot: JSX.Element;
     title: string;
     show: boolean;
     setShow: (show: boolean) => void;
@@ -16,9 +16,9 @@ interface ModalProps {
 /**
  * @function Modal
  * @param {ModalProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Modal = (props: ModalProps): ReactNode => {
+const Modal = (props: ModalProps): JSX.Element => {
     const { title, show, setShow, slot } = props;
     return (
         <div className={`${show ? 'block' : 'hidden'} absolute top-0 left-0 right-0 bg-black min-h-screen z-40`}>

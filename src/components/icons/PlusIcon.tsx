@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function PlusIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const PlusIcon = (props: IconProps): ReactNode => {
+const PlusIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

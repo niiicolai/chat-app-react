@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function EllipsisIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const EllipsisIcon = (props: IconProps): ReactNode => {
+const EllipsisIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

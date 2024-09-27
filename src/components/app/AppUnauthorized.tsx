@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @function AppUnauthorized
  * @description The unauthorized app component
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function AppUnauthorized(): ReactNode {
+function AppUnauthorized(): JSX.Element {
   return (
     <div className="App w-full h-screen bg-black text-white">
         <div className="flex items-center justify-center h-full">

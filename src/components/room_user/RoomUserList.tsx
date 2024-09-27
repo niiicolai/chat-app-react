@@ -5,7 +5,7 @@ import useRoomUsers from "../../hooks/useRoomUsers";
 import Alert from "../utils/Alert";
 import Spinner from "../utils/Spinner";
 import Modal from "../utils/Modal";
-import { useContext, ReactNode } from "react";
+import { useContext, JSX } from "react";
 import { ToastContext } from "../../context/toastContext";
 
 /**
@@ -20,9 +20,9 @@ interface RoomUserListProps {
 /**
  * @function RoomUserList
  * @param {RoomUserListProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomUserList = (props: RoomUserListProps): ReactNode => {
+const RoomUserList = (props: RoomUserListProps): JSX.Element => {
     const { addToast } = useContext(ToastContext);
     const { showUsers, setShowUsers } = props;
     const { roomUsers, setRoomUsers, error, isLoading } = useRoomUsers();

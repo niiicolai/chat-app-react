@@ -1,6 +1,6 @@
 import RoomFile from "../../models/room_file";
 import FileIcon from "../icons/FileIcon";
-import { ReactNode } from "react";
+import { JSX } from "react";
 
 /**
  * @interface ChannelMessageUploadProps
@@ -22,10 +22,10 @@ interface ChannelMessageUploadProps {
 
 /**
  * @function ChannelMessageUpload
- * @param {any} props
- * @returns {ReactNode}
+ * @param {ChannelMessageUploadProps} props
+ * @returns {JSX.Element}
  */
-const ChannelMessageUpload = (props: ChannelMessageUploadProps): ReactNode => {
+const ChannelMessageUpload = (props: ChannelMessageUploadProps): JSX.Element => {
     const { channelMessage } = props;
     const channel_message_upload = channelMessage?.channel_message_upload;
     const type = channel_message_upload?.channel_message_upload_type_name;

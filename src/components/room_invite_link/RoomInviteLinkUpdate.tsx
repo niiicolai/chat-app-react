@@ -4,7 +4,7 @@ import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import RoomInviteLink from "../../models/room_invite_link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, JSX } from "react";
 
 /**
  * @interface RoomInviteLinkUpdateProps
@@ -19,9 +19,9 @@ interface RoomInviteLinkUpdateProps {
 /**
  * @function RoomInviteLinkUpdate
  * @param {RoomInviteLinkUpdateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps) => {
+const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps): JSX.Element => {
     const { linkEdit, setLinkEdit, update } = props;
     const [ expiresAt, setExpiresAt ] = useState(linkEdit?.expires_at || '');
     const [isLoading, setIsLoading] = useState(false);

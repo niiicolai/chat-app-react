@@ -1,11 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
- * @interface PhoneIconProps
- * @description The props for the PhoneIcon component
+ * @function PhoneIcon
+ * @param {IconProps} props
+ * @returns {JSX.Element}
  */
-const PhoneIcon = (props: IconProps): ReactNode => {
+const PhoneIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

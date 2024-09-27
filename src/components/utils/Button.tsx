@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @constant types
@@ -18,7 +18,7 @@ const types: { [key: string]: string } = {
  */
 interface ButtonProps {
     onClick?: () => void;
-    slot: ReactNode;
+    slot: JSX.Element | string;
     type?: string;
     display?: string;
     button?: 'button' | 'submit' | 'reset';
@@ -28,9 +28,9 @@ interface ButtonProps {
 /**
  * @function Button
  * @param {ButtonProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Button = (props: ButtonProps): ReactNode => {
+const Button = (props: ButtonProps): JSX.Element => {
     const { button, onClick, slot, display, title, type } = props;
     const displayClass = display ? display : 'px-6 py-1 w-full block';
     const styling = type ? types[type] : types.primary;

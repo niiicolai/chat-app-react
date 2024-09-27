@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ReactNode } from "react";
+import { JSX } from "react";
 import Alert from "../components/utils/Alert";
 import Button from "../components/utils/Button";
 import Spinner from "../components/utils/Spinner";
@@ -8,9 +8,9 @@ import useJoinRoom from "../hooks/useJoinRoom";
 /**
  * @function JoinRoomView
  * @description The join room view
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function JoinRoomView(): ReactNode {
+function JoinRoomView(): JSX.Element {
     const { room, roomInviteLink, error, isLoading } = useJoinRoom();
     const navigate = useNavigate();
     const toApp = () => {

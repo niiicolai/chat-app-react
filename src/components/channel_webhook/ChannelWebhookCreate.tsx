@@ -3,7 +3,7 @@ import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
-import { useContext, ReactNode, FormEvent } from "react";
+import { useContext, JSX, FormEvent } from "react";
 import { ChannelContext } from "../../context/channelContext";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -21,9 +21,9 @@ interface ChannelWebhookCreateProps {
 /**
  * @function ChannelWebhookCreate
  * @param {ChannelWebhookCreateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelWebhookCreate = (props: ChannelWebhookCreateProps): ReactNode => {
+const ChannelWebhookCreate = (props: ChannelWebhookCreateProps): JSX.Element => {
     const { channels } = useContext(ChannelContext);
     const { showWebhookCreate, setShowWebhookCreate, create } = props;
     const [uuid, setUuid] = useState(uuidv4());

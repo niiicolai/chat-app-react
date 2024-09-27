@@ -5,7 +5,7 @@ import Link from "../components/utils/Link";
 import InputControl from "../components/utils/InputControl";
 import GhostIcon from "../components/icons/GhostIcon";
 import UserService from "../services/userService";
-import { useContext, useState, ReactNode, FormEvent } from "react";
+import { useContext, useState, JSX, FormEvent } from "react";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -13,9 +13,9 @@ import { v4 as uuidv4 } from "uuid";
 /**
  * @function SignupView
  * @description The signup view
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-const SignupView = (): ReactNode => {
+const SignupView = (): JSX.Element => {
     const { setUser } = useContext(UserContext);
     const [uuid, setUuid] = useState(uuidv4());
     const [isLoading, setIsLoading] = useState(false);

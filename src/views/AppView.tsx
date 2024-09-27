@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import ChannelProvider from '../providers/ChannelProvider';
 import RoomProvider from '../providers/RoomProvider';
 import UserProvider from '../providers/UserProvider';
@@ -8,9 +8,9 @@ import AppMain from '../components/app/AppMain';
 /**
  * @function AppView
  * @description The app view
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function AppView(): ReactNode {
+function AppView(): JSX.Element {
   return (
     <UserProvider slot={
       <RoomProvider slot={

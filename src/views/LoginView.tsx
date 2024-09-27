@@ -6,15 +6,15 @@ import InputControl from "../components/utils/InputControl";
 import GhostIcon from "../components/icons/GhostIcon";
 import UserService from "../services/userService";
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState, ReactNode, FormEvent } from "react";
+import { useContext, useState, JSX, FormEvent } from "react";
 import { UserContext } from "../context/userContext";
 
 /**
  * @function LoginView
  * @description The login view
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-const LoginView = (): ReactNode => {
+const LoginView = (): JSX.Element => {
     const { setUser } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);

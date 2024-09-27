@@ -6,7 +6,7 @@ import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Channel from "../../models/channel";
 import ChannelService from "../../services/channelService";
-import { FormEvent, ReactNode, useContext, useState } from "react";
+import { FormEvent, JSX, useContext, useState } from "react";
 import { ChannelContext } from "../../context/channelContext";
 
 /**
@@ -21,9 +21,9 @@ interface ChannelUpdateProps {
 /**
  * @function ChannelUpdate
  * @param {ChannelUpdateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelUpdate = (props: ChannelUpdateProps): ReactNode => {
+const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
     const { editChannel, setEditChannel } = props;
     const { selectedChannel, setChannels, channels, setSelectedChannel } = useContext(ChannelContext);
     const [file, setFile] = useState('' as string | Blob);

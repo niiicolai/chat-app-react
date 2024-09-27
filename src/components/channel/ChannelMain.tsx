@@ -3,14 +3,14 @@ import ChannelList from "./ChannelList";
 import ChannelHeader from "./ChannelHeader";
 import ChannelUpdate from "./ChannelUpdate";
 import Channel from "../../models/channel";
-import { useState, useContext, ReactNode } from "react";
+import { useState, useContext, JSX } from "react";
 import { ChannelContext } from "../../context/channelContext";
 
 /**
  * @function ChannelMain
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelMain = (): ReactNode => {
+const ChannelMain = (): JSX.Element => {
     const [ editChannel, setEditChannel ] = useState<Channel | null>(null);
     const { selectedChannel } = useContext(ChannelContext);
 

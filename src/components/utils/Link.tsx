@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @constant types
@@ -18,15 +18,15 @@ const types: { [key: string]: string } = {
 interface LinkProps {
     type?: string;
     href: string;
-    slot: ReactNode;
+    slot: JSX.Element;
 }
 
 /**
  * @function Link
  * @param {LinkProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Link = (props: LinkProps): ReactNode => {
+const Link = (props: LinkProps): JSX.Element => {
     const { href, slot, type } = props;
     const styling = type ? types[type] : types.primary;
 

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @constant types
@@ -22,9 +22,9 @@ interface AlertProps {
 /**
  * @function Alert
  * @param {AlertProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Alert = (props: AlertProps): ReactNode => {
+const Alert = (props: AlertProps): JSX.Element => {
     const { message, type } = props;
     const styling = type ? types[type] : types.error;
     return (

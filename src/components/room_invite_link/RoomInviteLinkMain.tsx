@@ -4,7 +4,7 @@ import RoomInviteLink from "../../models/room_invite_link";
 import RoomInviteLinkList from "./RoomInviteLinkList";
 import RoomInviteLinkCreate from "./RoomInviteLinkCreate";
 import RoomInviteLinkUpdate from "./RoomInviteLinkUpdate";
-import { useState, ReactNode, FormEvent, useContext } from "react";
+import { useState, JSX, FormEvent, useContext } from "react";
 import { ToastContext } from "../../context/toastContext";
 
 /**
@@ -19,9 +19,9 @@ interface RoomInviteLinkMainProps {
 /**
  * @function RoomInviteLinkMain
  * @param {RoomInviteLinkMainProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): ReactNode => {
+const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): JSX.Element => {
     const { showLinks, setShowLinks } = props;
     const { inviteLinks, setInviteLinks, error, isLoading } = useRoomInviteLinks();
     const [showLinkCreate, setShowLinkCreate] = useState(false);

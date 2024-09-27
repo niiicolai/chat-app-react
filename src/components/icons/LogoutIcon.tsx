@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function LogoutIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const LogoutIcon = (props: IconProps): ReactNode => {
+const LogoutIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

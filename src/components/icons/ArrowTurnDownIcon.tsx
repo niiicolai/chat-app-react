@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function ArrowTurnDownIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ArrowTurnDownIcon = (props: IconProps): ReactNode => {
+const ArrowTurnDownIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

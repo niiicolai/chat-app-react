@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function PenIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const PenIcon = (props: IconProps): ReactNode => {
+const PenIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (

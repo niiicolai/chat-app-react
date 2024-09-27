@@ -4,7 +4,7 @@ import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import { v4 as uuidv4 } from "uuid";
-import { useState, useContext, ReactNode, FormEvent } from "react";
+import { useState, useContext, JSX, FormEvent } from "react";
 import { RoomContext } from "../../context/roomContext";
 
 /**
@@ -20,9 +20,9 @@ interface RoomInviteLinkCreateProps {
 /**
  * @function RoomInviteLinkCreate
  * @param {RoomInviteLinkCreateProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomInviteLinkCreate = (props: RoomInviteLinkCreateProps): ReactNode => {
+const RoomInviteLinkCreate = (props: RoomInviteLinkCreateProps): JSX.Element => {
     const { selectedRoom } = useContext(RoomContext);
     const { showLinkCreate, setShowLinkCreate, create } = props;
     const [uuid, setUuid] = useState(uuidv4());

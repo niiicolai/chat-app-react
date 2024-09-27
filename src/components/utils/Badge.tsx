@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @constant types
@@ -17,16 +17,16 @@ const types: { [key: string]: string } = {
  */
 interface BadgeProps {
     type?: string;
-    slot: ReactNode;
+    slot: JSX.Element | string;
     title: string;
 }
 
 /**
  * @function Badge
  * @param {BadgeProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Badge = (props: BadgeProps): ReactNode => {
+const Badge = (props: BadgeProps): JSX.Element => {
     const { slot, title, type } = props;
     const styling = type ? types[type] : types.primary;
     

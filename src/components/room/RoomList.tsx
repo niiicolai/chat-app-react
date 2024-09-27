@@ -1,7 +1,7 @@
 import Modal from "../utils/Modal";
 import RoomListItem from "./RoomListItem";
 import Room from "../../models/room";
-import { useContext, ReactNode } from "react";
+import { useContext, JSX } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
 
@@ -17,9 +17,9 @@ interface RoomListProps {
 /**
  * @function RoomList
  * @param {RoomListProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const RoomList = (props: RoomListProps): ReactNode => {
+const RoomList = (props: RoomListProps): JSX.Element => {
   const { setSelectedRoom, rooms } = useContext(RoomContext);
   const { setSelectedChannel } = useContext(ChannelContext);
   const { browseRooms, setBrowseRooms } = props;

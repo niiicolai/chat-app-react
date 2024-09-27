@@ -5,13 +5,13 @@ import ChannelMessageUpdate from "./ChannelMessageUpdate";
 import ChannelMessageList from "./ChannelMessageList";
 import useChannelMessages from "../../hooks/useChannelMessages";
 import ChannelMessage from "../../models/channel_message";
-import { useState, ReactNode, FormEvent } from "react";
+import { useState, JSX, FormEvent } from "react";
 
 /**
  * @function ChannelMessageMain
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ChannelMessageMain = (): ReactNode => {
+const ChannelMessageMain = (): JSX.Element => {
     const { messages, setMessages, error, isLoading } = useChannelMessages();
     const [editMessage, setEditMessage] = useState<ChannelMessage | null>(null);
 

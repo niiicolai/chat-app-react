@@ -1,13 +1,13 @@
 import Button from "./Button";
 import EllipsisIcon from "../icons/EllipsisIcon";
-import { useState, ReactNode } from "react";
+import { useState, JSX } from "react";
 
 /**
  * @interface ResMenuProps
  * @description The props for the ResMenu component
  */
 interface ResMenuProps {
-    slot: ReactNode;
+    slot: JSX.Element;
     type: string;
     title: string;
     stickDirection: string;
@@ -17,9 +17,9 @@ interface ResMenuProps {
 /**
  * @function ResMenu
  * @param {ResMenuProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ResMenu = (props: ResMenuProps): ReactNode => {
+const ResMenu = (props: ResMenuProps): JSX.Element => {
     const [ show, setShow ] = useState(false);
     const { slot, type, title, stickDirection } = props;
     const display = props.display || "w-8 h-8 flex items-center justify-center";

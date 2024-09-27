@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { JSX } from 'react';
 
 /**
  * @interface AvatarProps
@@ -7,15 +7,15 @@ import { ReactNode } from 'react';
 interface AvatarProps {
     alternativeName: string | null | undefined;
     src?: string | null | undefined;
-    alternativeIcon?: ReactNode;
+    alternativeIcon?: JSX.Element;
 }
 
 /**
  * @function Avatar
  * @param {AvatarProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const Avatar = (props: AvatarProps): ReactNode => {
+const Avatar = (props: AvatarProps): JSX.Element => {
     const { src, alternativeName, alternativeIcon } = props;
     const alt = alternativeName || "U";
     

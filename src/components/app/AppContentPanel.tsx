@@ -1,14 +1,14 @@
 import RoomHeader from "../room/RoomHeader";
 import ChannelMain from "../channel/ChannelMain";
-import { useContext, ReactNode } from "react";
+import { useContext, JSX } from "react";
 import { RoomContext } from "../../context/roomContext";
 
 /**
  * @function AppContentPanel
  * @description The app content panel
- * @returns {ReactNode} ReactNode
+ * @returns {JSX.Element} JSX.Element
  */
-function AppContentPanel(): ReactNode {
+function AppContentPanel(): JSX.Element {
     const { selectedRoom } = useContext(RoomContext);
 
     if (!selectedRoom) return (

@@ -1,12 +1,12 @@
 import { ToastContext } from "../../context/toastContext";
-import { useContext, ReactNode } from "react";
+import { useContext, JSX } from "react";
 import ToastListItem from "./ToastListItem";
 
 /**
  * @function ToastList
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const ToastList = (): ReactNode => {
+const ToastList = (): JSX.Element => {
     const { toasts } = useContext(ToastContext);
     return (
         <div className="fixed top-3 left-3 z-50 flex flex-col gap-2">

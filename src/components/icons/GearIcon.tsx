@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
+import { JSX } from "react";
 import IconProps from "./_IconProps";
 
 /**
  * @function GearIcon
  * @param {IconProps} props
- * @returns {ReactNode}
+ * @returns {JSX.Element}
  */
-const GearIcon = (props: IconProps): ReactNode => {
+const GearIcon = (props: IconProps): JSX.Element => {
     const { fill, width } = props;
     
     return (
