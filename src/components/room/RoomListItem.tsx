@@ -1,6 +1,22 @@
 import Button from "../utils/Button";
+import Room from "../../models/room";
+import { ReactNode } from "react";
 
-const RoomListItem = (props: any) => {
+/**
+ * @interface RoomListItemProps
+ * @description The props for the RoomListItem component
+ */
+interface RoomListItemProps {
+    room: Room;
+    setRoom: (room: Room) => void;
+}
+
+/**
+ * @function RoomListItem
+ * @param {RoomListItemProps} props
+ * @returns {ReactNode}
+ */
+const RoomListItem = (props: RoomListItemProps): ReactNode => {
     const { room, setRoom } = props;
 
     return (

@@ -2,6 +2,10 @@ import type ChannelWebhookMessage from "./channel_webhook_message";
 import type ChannelMessageUpload from "./channel_message_upload";
 import type User from "./user";
 
+/**
+ * @interface ChannelMessage
+ * @description The ChannelMessage interface
+ */
 export default interface ChannelMessage {
     uuid: string;
     body: string;

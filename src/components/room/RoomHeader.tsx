@@ -1,10 +1,14 @@
 import Progress from "../utils/Progress";
 import Badge from "../utils/Badge";
 import RoomOptions from "./RoomOptions";
-import { useContext } from "react";
+import { useContext, ReactNode } from "react";
 import { RoomContext } from "../../context/roomContext";
 
-const RoomHeader = () => {
+/**
+ * @function RoomHeader
+ * @returns {ReactNode}
+ */
+const RoomHeader = (): ReactNode => {
     const { selectedRoom } = useContext(RoomContext);
 
     return (

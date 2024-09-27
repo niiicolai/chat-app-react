@@ -1,11 +1,21 @@
+import { ReactNode } from 'react';
 
+/**
+ * @interface AvatarProps
+ * @description The props for the Avatar component
+ */
 interface AvatarProps {
     alternativeName: string | null | undefined;
-    src: string | null | undefined;
-    alternativeIcon: any;
+    src?: string | null | undefined;
+    alternativeIcon?: ReactNode;
 }
 
-const Avatar = (props: AvatarProps) => {
+/**
+ * @function Avatar
+ * @param {AvatarProps} props
+ * @returns {ReactNode}
+ */
+const Avatar = (props: AvatarProps): ReactNode => {
     const { src, alternativeName, alternativeIcon } = props;
     const alt = alternativeName || "U";
     

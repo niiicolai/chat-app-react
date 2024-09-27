@@ -1,38 +1,68 @@
-import ChannelMessageService from "../../services/channelMessageService";
-import useChannelMessages from "../../hooks/useChannelMessages";
 import PaperPlaneIcon from "../icons/PaperPlaneIcon";
-import InputControl from "../utils/InputControl";
+import Spinner from "../utils/Spinner";
 import Button from "../utils/Button";
 import { v4 as uuidv4 } from "uuid";
-import { useContext } from "react";
+import { FormEvent, useContext } from "react";
 import { ChannelContext } from "../../context/channelContext";
-import { useState } from "react";
+import { ToastContext } from "../../context/toastContext";
+import { useState, ReactNode } from "react";
 
+/**
+ * @interface ChannelMessageCreateProps
+ * @description The props for the ChannelMessageCreate component
+ */
 interface ChannelMessageCreateProps {
-    create: (e: any, file: any) => Promise<void>;
+    create: (e: FormEvent<HTMLFormElement>, file: string | Blob) => Promise<void>;
 }
 
-const ChannelMessageCreate = (props: ChannelMessageCreateProps) => {
+/**
+ * @function ChannelMessageCreate
+ * @param {ChannelMessageCreateProps} props
+ * @returns {ReactNode}
+ */
+const ChannelMessageCreate = (props: ChannelMessageCreateProps): ReactNode => {
     const { selectedChannel } = useContext(ChannelContext);
+    const { addToast } = useContext(ToastContext);
     const [message, setMessage] = useState("");
     const [uuid, setUuid] = useState(uuidv4());
-    const [file, setFile] = useState('' as any);
+    const [file, setFile] = useState('' as string | Blob);
+    const [isLoading, setIsLoading] = useState(false);
     const { create } = props;
 
-    const createHandler = (e: any) => {
-        create(e, file).then(() => {
+    const createHandler = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        create(e, file)
+        .then(() => {
             setUuid(uuidv4());
             setMessage("");
             setFile('');
+            addToast({ message: 'Message sent', type: 'success', duration: 5000 });
+        })
+        .catch((err: unknown) => {
+            if (err instanceof Error) {
+                addToast({ message: err.message, type: 'error', duration: 5000 });
+            } else {
+                addToast({ message: 'An unknown error occurred', type: 'error', duration: 5000 });
+            }
+        })
+        .finally(() => {
+            setIsLoading(false);
         });
     };
 
-    const fileHandler = (e: any) => {
-        if (!e.target.files.length) {
+    const messageHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        setMessage(e.currentTarget.value);
+    }
+
+    const fileHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const target = e.target as HTMLInputElement;
+        if (!target.files || !target.files.length) {
             setFile('');
             return;
         }
-        setFile(e.target.files[0]);
+        setFile(target.files[0]);
     }
 
     return (
@@ -58,18 +88,23 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps) => {
                             </button>
                         )}
                         
-                        <input type="file" name="file" id="ch-msg-create-file" className="hidden" onChange={(e) => fileHandler(e)} />
+                        <input type="file" name="file" id="ch-msg-create-file" className="hidden" onChange={fileHandler} />
                         <input
                             type="text"
                             name="body"
                             placeholder="Enter message"
                             value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            onChange={messageHandler}
                             className="w-full focus:outline-none focus:bg-slate-800 bg-black px-3"
                         />
 
                         <Button type="primary" button="submit" display="w-24 flex items-center justify-center rounded-none" slot={
-                            <PaperPlaneIcon fill="white" width="1em" />
+                            <span>
+                                {isLoading
+                                    ? <Spinner isLoading={isLoading} width="2em" fill="white" />
+                                    : <PaperPlaneIcon fill="white" width="1em" />
+                                }
+                            </span>
                         } />
                     </form>
                 </div>

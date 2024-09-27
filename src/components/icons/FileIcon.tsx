@@ -1,7 +1,14 @@
+import { ReactNode } from "react";
+import IconProps from "./_IconProps";
 
-
-const FileIcon = (props: any) => {
+/**
+ * @function FileIcon
+ * @param {IconProps} props
+ * @returns {ReactNode}
+ */
+const FileIcon = (props: IconProps): ReactNode => {
     const { fill, width } = props;
+    
     return (
         // Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.
         <svg xmlns="http://www.w3.org/2000/svg" fill={fill} width={width} viewBox="0 0 384 512">

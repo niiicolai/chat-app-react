@@ -3,13 +3,23 @@ import TrashIcon from "../icons/TrashIcon";
 import Badge from "../utils/Badge";
 import Button from "../utils/Button";
 import RoomFile from "../../models/room_file";
+import { ReactNode } from "react";
 
+/**
+ * @interface RoomFileListItemProps
+ * @description The props for the RoomFileListItem component
+ */
 interface RoomFileListItemProps {
     file: RoomFile;
     destroyFile: (uuid: string) => void;
 }
 
-const RoomFileListItem = (props: RoomFileListItemProps) => {
+/**
+ * @function RoomFileListItem
+ * @param {RoomFileListItemProps} props
+ * @returns {ReactNode}
+ */
+const RoomFileListItem = (props: RoomFileListItemProps): ReactNode => {
     const { file, destroyFile } = props;
     return (
         <li key={file.uuid} className="flex flex-col justify-between gap-3 border border-gray-800 rounded-md p-3">
@@ -28,10 +38,13 @@ const RoomFileListItem = (props: RoomFileListItemProps) => {
                         <div className="flex flex-col items-center justify-center">
                             <ChannelMessageUpload channelMessage={{
                                 channel_message_upload: {
+                                    uuid: file.channel_message_upload.uuid,
                                     channel_message_upload_type_name: file.channel_message_upload.channel_message_upload_type_name,
-                                    room_file: {
-                                        src: file.src
-                                    }
+                                    channel_message: {
+                                        uuid: file.channel_message_upload.channel_message.uuid,
+                                        body: file.channel_message_upload.channel_message.body
+                                    },
+                                    room_file: file
                                 }
                             }} />
                             <div className="flex items-center gap-1 mt-2 justify-center">

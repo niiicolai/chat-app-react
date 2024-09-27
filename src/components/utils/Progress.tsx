@@ -1,5 +1,10 @@
+import { ReactNode } from 'react';
 
-const types: { [key: string]: any } = {
+/**
+ * @constant types
+ * @description Progress CSS types
+ */
+const types: { [key: string]: { fill: string, bgg: string } } = {
     primary: { fill: 'bg-indigo-500', bgg: 'bg-gray-500 text-white' },
     secondary: { fill: 'bg-gray-700', bgg: 'bg-gray-500 text-white' },
     error: { fill: 'bg-red-500', bgg: 'bg-gray-500 text-white' },
@@ -7,12 +12,30 @@ const types: { [key: string]: any } = {
     warning: { fill: 'bg-orange-500', bgg: 'bg-gray-500 text-white' },
 };
 
-const Progress = (props: any) => {
+/**
+ * @interface ProgressProps
+ * @description The props for the Progress component
+ */
+interface ProgressProps {
+    slot: ReactNode;
+    type?: string;
+    value: number;
+    max: number;
+}
+
+/**
+ * @function Progress
+ * @param {ProgressProps} props
+ * @returns {ReactNode}
+ */
+const Progress = (props: ProgressProps): ReactNode => {
     const { slot, type, value, max } = props;
-    const percentage = (value / max) * 100;
+    const percentage = ( value / max ) * 100;
+    const styling = type ? types[type] : types.primary;
+
     return (
-        <div className={`relative flex items-center justify-between gap-2 ${types[type].bgg} p-2 rounded-md overflow-hidden`}>
-            <div style={{ width: `${percentage}%` }} className={`${types[type].fill} rounded-md absolute left-0 top-0 bottom-0`} />
+        <div className={`${ styling.bgg } relative flex items-center justify-between gap-2 p-2 rounded-md overflow-hidden`}>
+            <div style={{ width: `${ percentage }%` }} className={`${ styling.fill } rounded-md absolute left-0 top-0 bottom-0`} />
             <div className="relative">{ slot }</div>
         </div>
     );

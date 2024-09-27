@@ -5,6 +5,10 @@ import type RoomFileSettings from "./room_file_settings";
 import type RoomUserSettings from "./room_user_settings";
 import type RoomJoinSettings from "./room_join_settings";
 
+/**
+ * @interface Room
+ * @description The Room interface
+ */
 export default interface Room {
     uuid: string;
     name: string;

@@ -1,4 +1,9 @@
+import { ReactNode } from 'react';
 
+/**
+ * @constant types
+ * @description Button CSS types
+ */
 const types: { [key: string]: string } = {
     primary: 'bg-indigo-500 text-white hover:bg-indigo-600 hover:ring-2 hover:ring-indigo-800',
     secondary: 'bg-gray-500 text-white hover:bg-gray-600 hover:ring-2 hover:ring-gray-800',
@@ -7,11 +12,46 @@ const types: { [key: string]: string } = {
     warning: 'bg-yellow-500 text-white hover:ring-2 hover:ring-yellow-800',
 };
 
-const Button = (props: any) => {
-    const { button, onClick, slot, display, title } = props;
+/**
+ * @interface ButtonProps
+ * @description The props for the Button component
+ */
+interface ButtonProps {
+    onClick?: () => void;
+    slot: ReactNode;
+    type?: string;
+    display?: string;
+    button?: 'button' | 'submit' | 'reset';
+    title?: string;
+}
+
+/**
+ * @function Button
+ * @param {ButtonProps} props
+ * @returns {ReactNode}
+ */
+const Button = (props: ButtonProps): ReactNode => {
+    const { button, onClick, slot, display, title, type } = props;
     const displayClass = display ? display : 'px-6 py-1 w-full block';
+    const styling = type ? types[type] : types.primary;
+    const buttonType = button ? button : 'button';
+    const finalTitle = title ? title : '';
+
+    if (!onClick) {
+        return (
+            <button type={buttonType}
+                className={`${styling} ${displayClass} transition-all rounded-md`}
+                title={finalTitle}>
+                {slot}
+            </button>
+        );
+    }
+
     return (
-        <button type={button} className={`${types[props.type]} ${displayClass} transition-all rounded-md`} onClick={onClick} title={title}>
+        <button type={buttonType}
+            className={`${styling} ${displayClass} transition-all rounded-md`}
+            onClick={onClick}
+            title={finalTitle}>
             {slot}
         </button>
     );

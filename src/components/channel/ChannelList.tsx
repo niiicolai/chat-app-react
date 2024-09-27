@@ -1,9 +1,13 @@
 import ChannelListItem from "./ChannelListItem";
 import ResMenu from "../utils/ResMenu";
-import { useContext } from "react";
+import { useContext, ReactNode } from "react";
 import { ChannelContext } from "../../context/channelContext";
 
-const ChannelList = () => {
+/**
+ * @function ChannelList
+ * @returns {ReactNode}
+ */
+const ChannelList = (): ReactNode => {
     const { selectedChannel, setSelectedChannel, channels } = useContext(ChannelContext);
 
     if (!channels.length) return (

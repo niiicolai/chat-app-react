@@ -1,7 +1,34 @@
 import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
+import { validate as uuidValidate } from 'uuid';
 import TokenService from "./tokenService";
 import User from "../models/user";
 
+/**
+ * @interface UserResponse
+ * @description The user response
+ * @param {User} data - The user
+ */
+interface UserResponse extends BuilderResponse {
+    data: User;
+}
+
+/**
+ * @interface UserCreateResponse
+ * @description The user create response
+ * @param {string} token - The user authentication token
+ * @param {User} user - The user
+ */
+interface UserCreateResponse extends BuilderResponse {
+    data: {
+        token: string;
+        user: User;
+    };
+}
+
+/**
+ * @class UserService
+ * @description Service for the user
+ */
 export default class UserService {
     /**
      * @function findOne
@@ -11,14 +38,16 @@ export default class UserService {
      * @throws {BuilderError}
      */
     static findOne = async (uuid: string): Promise<User> => {
+        if (!uuidValidate(uuid)) throw new Error('Invalid uuid');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/user/${uuid}`)
                 .method(BuilderMethods.GET)
-                .execute() as BuilderResponse;
+                .execute() as UserResponse;
             return response.data;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
         }
     }
 
@@ -33,32 +62,45 @@ export default class UserService {
                 .endpoint(`/user/me`)
                 .method(BuilderMethods.GET)
                 .auth()
-                .execute() as BuilderResponse;
+                .execute() as UserResponse;
             return response.data;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
         }
     }
 
     /**
      * @function create
      * @description Create a user
-     * @param {FormData} formData - The user form data  
-     * @returns {Promise<User | Error>} user
+     * @param {FormData} formData - The user form data
+     * @param {string} formData.uuid - The user uuid
+     * @param {string} formData.username - The user username
+     * @param {string} formData.email - The user email
+     * @param {string} formData.password - The user password  
+     * @returns {Promise<User>} user
+     * @throws {Error} if the form data's uuid is invalid
+     * @throws {Error} if the form data's username is missing
+     * @throws {Error} if the form data's email is missing
+     * @throws {Error} if the form data's password is missing
      */
     static create = async (formData: FormData): Promise<User> => {
+        if (!uuidValidate(formData.get('uuid') as string)) throw new Error('Invalid uuid');
+        if (!formData.get('username')) throw new Error('Username is required');
+        if (!formData.get('email')) throw new Error('Email is required');
+        if (!formData.get('password')) throw new Error('Password is required');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/user`)
                 .method(BuilderMethods.POST)
                 .body(formData)
-                .execute() as BuilderResponse;
+                .execute() as UserCreateResponse;
 
             const { token, user } = response.data;
             TokenService.setToken(token);
             return user;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
         }
     }
 
@@ -66,37 +108,47 @@ export default class UserService {
      * @function update
      * @description Update a user
      * @param {FormData} formData - The user form data
+     * @param {string} formData.email - The user email (optional)
+     * @param {string} formData.username - The user username (optional)
+     * @param {string} formData.password - The user password (optional)
      * @returns {Promise<User>} user
+     * @throws {Error} if the form data's email is not a string
+     * @throws {Error} if the form data's username is not a string
+     * @throws {Error} if the form data's password is not a string
      */
-    static update = async (formData: FormData): Promise<string> => {
+    static update = async (formData: FormData): Promise<User> => {
+        if (formData.get('email') && typeof formData.get('email') !== 'string') throw new Error('Email must be a string');
+        if (formData.get('username') && typeof formData.get('username') !== 'string') throw new Error('Username must be a string');
+        if (formData.get('password') && typeof formData.get('password') !== 'string') throw new Error('Password must be a string');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/user/me`)
                 .method(BuilderMethods.PATCH)
                 .body(formData)
                 .auth()
-                .execute() as BuilderResponse;
-            return response.data.message;
-        } catch (error: any) {
-            throw new Error(error.message);
+                .execute() as UserResponse;
+
+            return response.data;
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
         }
     }
 
     /**
      * @function destroy
      * @description Destroy a user
-     * @returns {Promise<User>} user
+     * @returns {Promise<void>} void
      */
-    static destroy = async (): Promise<string> => {
+    static destroy = async (): Promise<void> => {
         try {
-            const response = await ApiService.builder()
+            await ApiService.builder()
                 .endpoint(`/user/me`)
                 .method(BuilderMethods.DELETE)
                 .auth()
                 .execute() as BuilderResponse;
-            return response.data.message;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
         }
     }
 
@@ -104,9 +156,14 @@ export default class UserService {
      * @function login
      * @description Login a user
      * @param {FormData} formData - The user form data
-     * @returns {Promise<User | Error>} user
+     * @returns {Promise<User>} user
+     * @throws {Error} if the form data's email is missing
+     * @throws {Error} if the form data's password is missing
      */
     static login = async (formData: FormData): Promise<User> => {
+        if (!formData.get('email')) throw new Error('Email is required');
+        if (!formData.get('password')) throw new Error('Password is required');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/user/login`)
@@ -115,13 +172,13 @@ export default class UserService {
                     email: formData.get('email'),
                     password: formData.get('password')
                 })
-                .execute() as BuilderResponse;
+                .execute() as UserCreateResponse;
 
             const { token, user } = response.data;
             TokenService.setToken(token);
             return user;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
         }
     }
 
@@ -143,5 +200,19 @@ export default class UserService {
     static isAuthenticated = (): boolean => {
         const token = TokenService.getToken();
         return (token && !TokenService.isTokenExpired(token)) === true;
+    }
+
+    /**
+     * @function handleError
+     * @description Handle an error
+     * @param {unknown} error - The error
+     * @returns {Error} error
+     */
+    private static handleError = (error: unknown): Error => {
+        if (error instanceof Error) {
+            return new Error(error.message);
+        } else {
+            return new Error('An unknown error occurred');
+        }
     }
 }

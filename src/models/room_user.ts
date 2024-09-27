@@ -1,5 +1,9 @@
 import type User from "./user";
 
+/**
+ * @interface RoomUser
+ * @description The RoomUser interface
+ */
 export default interface RoomUser {
     uuid: string;
     room_uuid: string;

@@ -1,7 +1,20 @@
 import TokenService from "./tokenService";
 
+/**
+ * @constant API_URL
+ * @description The API URL
+ * @example https://api.example.com
+ */
 const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_URL should be set in the .env file');
+
+/**
+ * @constant API_PREFIX
+ * @description The API prefix
+ * @example /api
+ */
 const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+if (!API_PREFIX) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_PREFIX should be set in the .env file');
 
 /**
  * @interface ApiServiceBuilder
@@ -30,7 +43,7 @@ interface BuilderMethods {
     header: (key: string, value: string) => BuilderMethods;
     body: (body: object | FormData) => BuilderMethods;
     auth: () => BuilderMethods;
-    execute: () => Promise<BuilderResponse | BuilderError>;
+    execute: () => Promise<BuilderResponse>;
 }
 
 /**
@@ -54,12 +67,12 @@ interface BuilderOptions {
 /**
  * @interface BuilderResponse
  * @description Interface for the builder response
- * @property {any} data - The data from the response
+ * @property {unknown} data - The data from the response
  * @property {number} status - The status code from the response
  * @property {string} statusText - The status text from the response
  */
 export interface BuilderResponse {
-    data: any;
+    data: unknown;
     status: number;
     statusText: string;
 }
@@ -107,10 +120,10 @@ export default class ApiService {
 
         /**
          * @function parameter
-         * @description Set a parameter for the request
-         * @param {string}
-         * @param {string}
-         * @returns {BuilderMethods} builder
+         * @description Set a URL parameter for the request (e.g. /endpoint?param=value)
+         * @param {string} key
+         * @param {string | number | undefined} value
+         * @returns {BuilderMethods} builder methods
          */
         b.methods.parameter = (key: string, value: string | number | undefined): BuilderMethods => {
             if (!value) return b.methods;
@@ -182,7 +195,7 @@ export default class ApiService {
          * @throws {BuilderError}
          * @returns {Promise<BuilderResponse>} response
          */
-        b.methods.execute = async (): Promise<BuilderResponse | BuilderError> => {
+        b.methods.execute = async (): Promise<BuilderResponse> => {
             if (!b.options.endpoint) throw new BuilderError('Endpoint is required');
             if (!b.options.method) throw new BuilderError('Method is required');
 
@@ -213,12 +226,11 @@ export default class ApiService {
                 };
             }
 
-            const data = await response.json();
-
             if (!response.ok) {
-                throw new BuilderError(data.error);
+                throw new BuilderError(response.statusText);
             }
             
+            const data = await response.json();
             return {
                 data,
                 status: response.status,

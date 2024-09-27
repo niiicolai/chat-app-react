@@ -1,3 +1,8 @@
+
+/**
+ * @interface RoomFile
+ * @description The RoomFile interface
+ */
 export default interface RoomFile {
     uuid: string;
     src: string;

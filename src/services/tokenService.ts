@@ -4,6 +4,7 @@
  * @description Local storage key for the JWT token
  */
 const AUTH_LS_KEY = import.meta.env.VITE_AUTH_LS_KEY;
+if (!AUTH_LS_KEY) console.error('CONFIGURATION ERROR(tokenService.ts): VITE_AUTH_LS_KEY should be set in the .env file');
 
 /**
  * @interface Token

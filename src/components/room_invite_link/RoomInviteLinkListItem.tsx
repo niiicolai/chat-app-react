@@ -3,20 +3,41 @@ import Button from "../utils/Button";
 import PenIcon from "../icons/PenIcon";
 import TrashIcon from "../icons/TrashIcon";
 import CopyIcon from "../icons/CopyIcon";
+import { ToastContext } from "../../context/toastContext";
+import { useContext, ReactNode } from "react";
 
+/**
+ * @constant CLIENT_URL
+ * @description The client url
+ * @example 'http://localhost:5173'
+ */
+const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
+if (!CLIENT_URL) console.error('CONFIGURATION ERROR(RoomInviteLinkListItem.tsx): VITE_CLIENT_URL should be set in the .env file');
+
+/**
+ * @interface RoomInviteLinkListItemProps
+ * @description The props for the RoomInviteLinkListItem component
+ */
 interface RoomInviteLinkListItemProps {
     link: RoomInviteLink;
     setLinkEdit: (link: RoomInviteLink | null) => void;
     destroyLink: (uuid: string) => void;
 }
 
-const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps) => {
+/**
+ * @function RoomInviteLinkListItem
+ * @param {RoomInviteLinkListItemProps} props
+ * @returns {ReactNode}
+ */
+const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps): ReactNode => {
     const { link, setLinkEdit, destroyLink } = props;
-
-    const CLIENT_URL = import.meta.env.VITE_CLIENT_URL;
+    const { addToast } = useContext(ToastContext);
     const url = new URL(`/room/${link.uuid}/join`, CLIENT_URL).toString();
     const isExpired = link.expires_at && new Date(link.expires_at) < new Date() ? 'Yes' : 'No';
-    const copyToClipboard = () => navigator.clipboard.writeText(url);
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(url);
+        addToast({ message: 'Invite link copied to clipboard', type: 'success', duration: 5000 });
+    };
 
     return (
         <li className="flex flex-col gap-1 border border-gray-800 p-3 rounded-md break-all">

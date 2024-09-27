@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, ReactNode } from "react";
 import { ChannelContext } from "../../context/channelContext";
 import TrashIcon from "../icons/TrashIcon";
 import PenIcon from "../icons/PenIcon";
@@ -6,11 +6,20 @@ import Button from "../utils/Button";
 import Channel from "../../models/channel";
 import ChannelService from "../../services/channelService";
 
+/**
+ * @interface ChannelHeaderProps
+ * @description The props for the ChannelHeader component
+ */
 interface ChannelHeaderProps {
     setEditChannel: (channel: Channel | null) => void;
 }
 
-const ChannelHeader = (props: ChannelHeaderProps) => {
+/**
+ * @function ChannelHeader
+ * @param {ChannelHeaderProps} props
+ * @returns {ReactNode}
+ */
+const ChannelHeader = (props: ChannelHeaderProps): ReactNode => {
     const { setEditChannel } = props;
     const { channels, setChannels, selectedChannel, setSelectedChannel } = useContext(ChannelContext);
     const [showSettings, setShowSettings] = useState(false);
@@ -20,8 +29,7 @@ const ChannelHeader = (props: ChannelHeaderProps) => {
     const destroy = async (uuid: string | undefined) => {
         if (!uuid) return;
         await ChannelService.destroy(uuid);
-        const updatedChannels = channels.filter((channel: any) => channel.uuid !== uuid);
-        setChannels(updatedChannels);
+        setChannels(channels.filter((channel: Channel) => channel.uuid !== uuid));
         if (selectedChannel?.uuid === uuid) {
             setSelectedChannel(null);
         }

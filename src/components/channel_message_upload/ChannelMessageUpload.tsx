@@ -1,34 +1,62 @@
+import RoomFile from "../../models/room_file";
 import FileIcon from "../icons/FileIcon";
+import { ReactNode } from "react";
 
+/**
+ * @interface ChannelMessageUploadProps
+ * @description The props for the ChannelMessageUpload component
+ */
+interface ChannelMessageUploadProps {
+    channelMessage: {
+        channel_message_upload: {
+            uuid: string;
+            channel_message_upload_type_name: string;
+            channel_message: {
+                uuid: string;
+                body: string;
+            }
+            room_file: RoomFile;
+        };
+    };
+}
 
-const ChannelMessageUpload = (props: any) => {
+/**
+ * @function ChannelMessageUpload
+ * @param {any} props
+ * @returns {ReactNode}
+ */
+const ChannelMessageUpload = (props: ChannelMessageUploadProps): ReactNode => {
     const { channelMessage } = props;
     const channel_message_upload = channelMessage?.channel_message_upload;
     const type = channel_message_upload?.channel_message_upload_type_name;
+    const file = channel_message_upload?.room_file;
 
-    if (!channel_message_upload) return null;
-
-    return (
-        <div>
-            {type === 'Image' &&
+    switch (type) {
+        case 'Image':
+            return (
                 <div className="w-full overflow-hidden rounded-md border border-gray-800">
-                    <img src={channelMessage.channel_message_upload.room_file.src} alt={channelMessage.channel_message_upload.room_file.src} className="w-full" />
+                    {file && <img src={file.src} alt={file.src} className="w-full" />}
                 </div>
-            }
-            {type === 'Video' &&
+            );
+        case 'Video':
+            return (
                 <video controls className="w-full overflow-hidden rounded-md border border-gray-800">
-                    <source src={channelMessage.channel_message_upload.room_file.src} />    
+                    {file && <source src={file.src} />}
                 </video>
-            }
-            {type !== 'Image' && type !== 'Video' &&
-                <a href={channelMessage.channel_message_upload.room_file.src} target="_blank" rel="noreferrer" 
-                    className="w-48 bg-gray-500 text-xs p-3 block w-full flex gap-2 items-center hover:ring-2 hover:ring-indigo-500 rounded-md border border-gray-800">
-                    <div><FileIcon fill="#FFF" width="1em" /></div>
-                    <div className="whitespace-nowrap overflow-hidden overflow-ellipsis">{channelMessage.channel_message_upload.room_file.src}</div>
-                </a>
-            }
-        </div>
-    )
+            );
+        default:
+            return (
+                <div>
+                    {file &&
+                        <a href={file.src} target="_blank" rel="noreferrer"
+                            className="w-48 bg-gray-500 text-xs p-3 block w-full flex gap-2 items-center hover:ring-2 hover:ring-indigo-500 rounded-md border border-gray-800">
+                            <div><FileIcon fill="#FFF" width="1em" /></div>
+                            <div className="whitespace-nowrap overflow-hidden overflow-ellipsis">{file.src}</div>
+                        </a>
+                    }
+                </div>
+            );
+    }
 }
 
 export default ChannelMessageUpload;

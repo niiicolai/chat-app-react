@@ -1,6 +1,31 @@
 import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
+import { validate as uuidValidate } from 'uuid';
 import RoomUser from "../models/room_user";
 
+/**
+ * @interface RoomUserResponse
+ * @description The room user response
+ * @param {RoomUser} data - The room user
+ */
+interface RoomUserResponse extends BuilderResponse {
+    data: RoomUser;
+}
+
+/**
+ * @interface RoomUsersResponse
+ * @description The room users response
+ * @param {RoomUser[]} data - room users
+ */
+interface RoomUsersResponse extends BuilderResponse {
+    data: {
+        data: RoomUser[];
+    };
+}
+
+/**
+ * @class RoomInviteLinkService
+ * @description Service for the room invite link
+ */
 export default class RoomInviteLinkService {
 
     /**
@@ -8,17 +33,20 @@ export default class RoomInviteLinkService {
      * @description Find a room user by uuid
      * @param {string} uuid - The room user uuid
      * @returns {Promise<RoomUser>} room user
+     * @throws {Error} if the uuid is invalid
      */
     static findOne = async (uuid: string): Promise<RoomUser> => {
+        if (!uuidValidate(uuid)) throw new Error('Invalid uuid');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/room_user/${uuid}`)
                 .method(BuilderMethods.GET)
-                .execute() as BuilderResponse;
+                .execute() as RoomUserResponse;
 
             return response.data;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw RoomInviteLinkService.handleError(error);
         }
     }
 
@@ -31,6 +59,10 @@ export default class RoomInviteLinkService {
      * @returns {Promise<RoomUser[]>} room users
      */
     static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<RoomUser[]> => {
+        if (!uuidValidate(room_uuid)) throw new Error('Invalid room_uuid');
+        if (page && typeof page !== 'number') throw new Error('If provided, page must be a number');
+        if (limit && typeof limit !== 'number') throw new Error('If provided, limit must be a number');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/room_users`)
@@ -39,12 +71,12 @@ export default class RoomInviteLinkService {
                 .parameter('room_uuid', room_uuid)
                 .method(BuilderMethods.GET)
                 .auth()
-                .execute() as BuilderResponse;
+                .execute() as RoomUsersResponse;
 
             const { data } = response.data;
             return data;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw RoomInviteLinkService.handleError(error);
         }
     }
 
@@ -52,21 +84,26 @@ export default class RoomInviteLinkService {
      * @function update
      * @description Update a room user
      * @param {string} uuid - The room user uuid
-     * @param {FormData} formData - The room user form data
+     * @param {string} room_user_role_name - The room user role name
      * @returns {Promise<RoomUser>} room user
+     * @throws {Error} if the uuid is invalid
+     * @throws {Error} if the room_user_role_name is missing
      */
-    static update = async (uuid: string, obj: any): Promise<RoomUser> => {
+    static update = async (uuid: string, room_user_role_name: string): Promise<RoomUser> => {
+        if (!uuidValidate(uuid)) throw new Error('Invalid uuid');
+        if (!room_user_role_name) throw new Error('Missing room_user_role_name');
+
         try {
             const response = await ApiService.builder()
                 .endpoint(`/room_user/${uuid}`)
                 .method(BuilderMethods.PATCH)
-                .body(obj)
+                .body({ room_user_role_name })
                 .auth()
-                .execute() as BuilderResponse;
+                .execute() as RoomUserResponse;
 
             return response.data;
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error: unknown) {
+            throw RoomInviteLinkService.handleError(error);
         }
     }
 
@@ -74,19 +111,34 @@ export default class RoomInviteLinkService {
      * @function destroy
      * @description Destroy a room user
      * @param {string} uuid - The room user uuid
-     * @returns {Promise<string>} message
+     * @returns {Promise<void>} void
+     * @throws {Error} if the uuid is invalid
      */
-    static destroy = async (uuid: string): Promise<string> => {
+    static destroy = async (uuid: string): Promise<void> => {
+        if (!uuidValidate(uuid)) throw new Error('Invalid uuid');
+
         try {
-            const response = await ApiService.builder()
+            await ApiService.builder()
                 .endpoint(`/room_user/${uuid}`)
                 .method(BuilderMethods.DELETE)
                 .auth()
-                .execute() as BuilderResponse;
+                .execute();
+        } catch (error: unknown) {
+            throw RoomInviteLinkService.handleError(error);
+        }
+    }
 
-            return response.data;
-        } catch (error: any) {
-            throw new Error(error.message);
+    /**
+     * @function handleError
+     * @description Handle an error
+     * @param {unknown} error - The error
+     * @returns {Error} error
+     */
+    private static handleError = (error: unknown): Error => {
+        if (error instanceof Error) {
+            return new Error(error.message);
+        } else {
+            return new Error('An unknown error occurred');
         }
     }
 }

@@ -1,3 +1,8 @@
+
+/**
+ * @interface RoomInviteLink
+ * @description The RoomInviteLink interface
+ */
 export default interface RoomInviteLink {
     uuid: string;
     room_uuid: string;
