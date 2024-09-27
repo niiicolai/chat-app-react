@@ -19,9 +19,12 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run ESLint
         run: npm run eslint
+
+      - name: Build
+        run: npm run build    
 
       - name: Build sitemap
         run: npm run sitemap
