@@ -30,8 +30,9 @@ const ChannelListItem = (props: ChannelListItemProps): JSX.Element => {
                 type="primary"
                 slot={
                     <span className="block py-3 text-left">
-                        <CoverImg src={channel.room_file?.src} overlay={true} />
-                        
+                        {channel?.room_file?.src &&
+                            <CoverImg src={channel?.room_file?.src} overlay={true} />
+                        }
                         <span className="relative flex gap-2 items-center z-30">
                             <ChannelIcon channel_type_name={channel.channel_type_name} />
                             <span className="block font-bold text-xs z-30 overflow-hidden truncate ...">
