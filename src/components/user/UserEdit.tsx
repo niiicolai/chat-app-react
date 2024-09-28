@@ -59,8 +59,8 @@ const EditUser = (props: EditUserProps): JSX.Element => {
             await UserService.destroyAvatar();
             const me = await UserService.me();
             setUser(me);
-            setFile('');
             setError('');
+            if (file) { setFile('') }
             addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
         } catch (error: unknown) {
             if (error instanceof Error) {

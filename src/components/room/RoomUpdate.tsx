@@ -49,8 +49,8 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
                 setSelectedRoom(room);
             }
             setEditRoom(null);
-            setFile('');
             setError('');
+            if (file) { setFile('') }
             addToast({ message: 'Room updated', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
