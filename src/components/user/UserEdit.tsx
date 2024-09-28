@@ -1,4 +1,5 @@
 import InputControl from "../utils/InputControl";
+import InputControlTracked from "../utils/InputControlTracked";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
@@ -28,6 +29,7 @@ const EditUser = (props: EditUserProps): JSX.Element => {
     const { user, setUser } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [file, setFile] = useState(user?.avatar_src as string | Blob);
 
     const update = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -38,6 +40,8 @@ const EditUser = (props: EditUserProps): JSX.Element => {
             const me = await UserService.me();
             setUser(me);
             setEditUser(false);
+            setFile('');
+            setError('');
             addToast({ message: 'User updated', type: 'success', duration: 5000 });
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -50,6 +54,32 @@ const EditUser = (props: EditUserProps): JSX.Element => {
         }
     }
 
+    const destroyAvatar = async () => {
+        try {
+            await UserService.destroyAvatar();
+            const me = await UserService.me();
+            setUser(me);
+            setFile('');
+            setError('');
+            addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("An unknown error occurred");
+            }
+        }
+    }
+
+    const fileHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const target = e.target as HTMLInputElement;
+        if (!target.files || !target.files.length) {
+            setFile('');
+            return;
+        }
+        setFile(target.files[0]);
+    }
+
     return (
         <Modal title="Edit User" show={editUser} setShow={setEditUser} slot={
             <div>
@@ -60,10 +90,51 @@ const EditUser = (props: EditUserProps): JSX.Element => {
                 </p>
 
                 <form onSubmit={update}>
-                    <InputControl id="user-edit-username" type="text" label="Username" name="username" defaultValue={user?.username} />
-                    <InputControl id="user-edit-email" type="email" label="Email" name="email" defaultValue={user?.email} />
-                    <InputControl id="user-edit-password" type="password" label="Password" name="password" />
-                    <InputControl id="user-edit-file" type="file" label="Avatar" name="file" />
+                    <InputControl
+                        id="user-edit-username"
+                        type="text"
+                        label="Username"
+                        name="username"
+                        defaultValue={user?.username}
+                    />
+
+                    <InputControl
+                        id="user-edit-email"
+                        type="email"
+                        label="Email"
+                        name="email"
+                        defaultValue={user?.email}
+                    />
+
+                    <InputControl
+                        id="user-edit-password"
+                        type="password"
+                        label="Password"
+                        name="password"
+                    />
+
+                    <InputControlTracked
+                        id="user-edit-file"
+                        type="file"
+                        label="Avatar"
+                        name="file"
+                        value={user?.avatar_src as string}
+                        onChange={fileHandler}
+                        footerSlot={
+                            <div>
+                                {user?.avatar_src &&
+                                    <div className="p-3">
+                                        <Button
+                                            type="error"
+                                            onClick={() => destroyAvatar()}
+                                            button="button"
+                                            slot="Delete Avatar"
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        }
+                    />
 
                     <div className="flex flex-col gap-2">
                         <Button type="primary" button="submit" slot={

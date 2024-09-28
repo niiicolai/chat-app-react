@@ -32,6 +32,7 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
     const { selectedRoom } = useContext(RoomContext);
     const { setChannels, channels } = useContext(ChannelContext);
     const { channelTypes } = useChannelTypes();
+    const [uuid, setUuid] = useState(uuidv4());
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [channelTypeName, setChannelTypeName] = useState('');
@@ -54,6 +55,7 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
             setFile('');
             setError('');
             setChannelTypeName('');
+            setUuid(uuidv4());
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -98,7 +100,7 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
                         </p>
 
                         <form onSubmit={create}>
-                            <input type="hidden" name="uuid" value={uuidv4()} />
+                            <input type="hidden" name="uuid" value={uuid} />
                             <input type="hidden" name="room_uuid" value={selectedRoom.uuid} />
 
                             <InputControlTracked

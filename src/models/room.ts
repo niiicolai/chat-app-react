@@ -14,7 +14,6 @@ export default interface Room {
     name: string;
     description: string;
     room_category_name: string;
-    avatar_src: string;
     created_at: string;
     updated_at: string;
     bytes_used: number;
@@ -24,5 +23,5 @@ export default interface Room {
     fileSettings: RoomFileSettings;
     userSettings: RoomUserSettings;
     joinSettings: RoomJoinSettings;
-    avatar: RoomAvatar;
+    avatar: RoomAvatar | null;
 }

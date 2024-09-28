@@ -15,6 +15,7 @@ import { ChannelContext } from "../../context/channelContext";
 interface ChannelWebhookUpdateProps {
     webhookEdit: ChannelWebhook;
     setWebhookEdit: (webhook: ChannelWebhook | null) => void;
+    destroyAvatar: () => void;
     update: (e: FormEvent<HTMLFormElement>, file: string | Blob) => Promise<void>;
 }
 
@@ -24,8 +25,8 @@ interface ChannelWebhookUpdateProps {
  * @returns {JSX.Element}
  */
 const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => {
+    const { webhookEdit, setWebhookEdit, update, destroyAvatar } = props;
     const { channels } = useContext(ChannelContext);
-    const { webhookEdit, setWebhookEdit, update } = props;
     const [file, setFile] = useState('' as string | Blob);
     const [error, setError] = useState('' as string);
     const [isLoading, setIsLoading] = useState(false);
@@ -37,8 +38,9 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
 
         update(e, file)
         .then(() => {
-            setFile('')
-            setError('')
+            setFile('');
+            setError('');
+            setWebhookEdit(null);
         })
         .catch((err: unknown) => {
             if (err instanceof Error) {
@@ -51,6 +53,8 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
             setIsLoading(false);
         });
     }
+
+    
 
     const fileHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const target = e.target as HTMLInputElement;
@@ -107,6 +111,20 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
                         name="file"
                         value={webhookEdit?.room_file?.src || ''}
                         onChange={fileHandler}
+                        footerSlot={
+                            <div>
+                                {webhookEdit?.room_file?.src &&
+                                    <div className="p-3">
+                                        <Button
+                                            type="error"
+                                            onClick={() => destroyAvatar()}
+                                            button="button"
+                                            slot="Delete Avatar"
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        }
                     />
 
                     <div className="flex flex-col gap-2">

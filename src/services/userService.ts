@@ -153,6 +153,25 @@ export default class UserService {
     }
 
     /**
+     * @function uploadAvatar
+     * @description Upload an avatar
+     * @param {File} file - The avatar file
+     * @returns {Promise<User>} user
+     * @throws {Error} if the file is missing
+     */
+    static destroyAvatar = async (): Promise<void> => {
+        try {
+            await ApiService.builder()
+                .endpoint(`/user/me/avatar`)
+                .method(BuilderMethods.DELETE)
+                .auth()
+                .execute() as BuilderResponse;
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
+        }
+    }
+
+    /**
      * @function login
      * @description Login a user
      * @param {FormData} formData - The user form data

@@ -1,6 +1,7 @@
 import useRoomCategories from "../../hooks/useRoomCategories";
 import InputControl from "../utils/InputControl";
 import RoomService from "../../services/roomService";
+import RoomFileService from "../../services/roomFileService";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
 import Spinner from "../utils/Spinner";
@@ -9,6 +10,7 @@ import Room from "../../models/room";
 import { FormEvent, JSX, useContext, useState } from "react";
 import { ToastContext } from "../../context/toastContext";
 import { RoomContext } from "../../context/roomContext";
+import InputControlTracked from "../utils/InputControlTracked";
 
 /**
  * @interface RoomUpdateProps
@@ -30,6 +32,7 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
     const { categories } = useRoomCategories();
     const [error, setError] = useState('' as string);
     const [isLoading, setIsLoading] = useState(false);
+    const [file, setFile] = useState('' as string | Blob);
     const { editRoom, setEditRoom } = props;
     const show = editRoom !== null;
 
@@ -46,6 +49,8 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
                 setSelectedRoom(room);
             }
             setEditRoom(null);
+            setFile('');
+            setError('');
             addToast({ message: 'Room updated', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
@@ -56,6 +61,35 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
         } finally {
             setIsLoading(false);
         }
+    }
+
+    const destroyAvatar = async () => {
+        try {
+            await RoomFileService.destroy(editRoom?.avatar?.room_file?.uuid as string);
+            setFile('');
+            setRooms(rooms.map((r) => r.uuid === editRoom?.uuid ? { ...editRoom, avatar: null } : r));
+            if (selectedRoom && selectedRoom?.uuid === editRoom?.uuid) {
+                selectedRoom.avatar = null;
+                setSelectedRoom(selectedRoom);
+            }
+            setEditRoom(null);
+            addToast({ message: 'Avatar deleted', type: 'success', duration: 5000 });
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
+        }
+    }
+
+    const fileHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const target = e.target as HTMLInputElement;
+        if (!target.files || !target.files.length) {
+            setFile('');
+            return;
+        }
+        setFile(target.files[0]);
     }
 
     return (
@@ -70,8 +104,23 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
                 {editRoom && (
                     <form onSubmit={updateRoom} className="text-white">
                         <input type="hidden" name="uuid" value={editRoom.uuid} />
-                        <InputControl id="room-update-name" type="text" label="Name" name="name" defaultValue={editRoom.name} />
-                        <InputControl id="room-update-description" type="text" label="Desc" name="description" defaultValue={editRoom.description} />
+
+                        <InputControl
+                            id="room-update-name"
+                            type="text"
+                            label="Name"
+                            name="name"
+                            defaultValue={editRoom.name}
+                        />
+
+                        <InputControl
+                            id="room-update-description"
+                            type="text"
+                            label="Desc"
+                            name="description"
+                            defaultValue={editRoom.description}
+                        />
+
                         <InputControl
                             id="room-update-room_category_name"
                             name="room_category_name"
@@ -86,12 +135,28 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
                                 ))
                             }
                         />
-                        <InputControl 
-                            id="room-update-file" 
-                            type="file" 
-                            label="Avatar" 
-                            name="file" 
-                            defaultValue={editRoom.avatar?.room_file?.src} 
+
+                        <InputControlTracked
+                            id="room-update-file"
+                            type="file"
+                            label="Avatar"
+                            name="file"
+                            value={editRoom.avatar?.room_file?.src as string}
+                            onChange={fileHandler}
+                            footerSlot={
+                                <div>
+                                    {editRoom.avatar?.room_file &&
+                                        <div className="p-3">
+                                            <Button
+                                                type="error"
+                                                onClick={() => destroyAvatar()}
+                                                button="button"
+                                                slot="Delete Avatar"
+                                            />
+                                        </div>
+                                    }
+                                </div>
+                            }
                         />
 
                         <div className="flex flex-col gap-2">

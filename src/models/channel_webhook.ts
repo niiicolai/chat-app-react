@@ -13,5 +13,5 @@ export default interface ChannelWebhook {
     created_at: string;
     updated_at: string;
     channel: Channel;
-    room_file: RoomFile;
+    room_file: RoomFile | null;
 }

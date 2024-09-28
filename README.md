@@ -12,22 +12,22 @@ A React.js SPA made for the chat backend application found at https://github.com
 ## Features
 | Feature                | Subfeature                   | Status  |
 |------------------------|------------------------------|---------|
-| **Mobile**              | Responsive                   | [x]     |
-| **CSS Styles**          | Tailwind CSS                 | [x]     |
-| **User**                | Login                        | [x]     |
+| **Mobile**             | Responsive                   | [x]     |
+| **CSS Styles**         | Tailwind CSS                 | [x]     |
+| **User**               | Login                        | [x]     |
 |                        | Registration                 | [x]     |
 |                        | Logout                       | [x]     |
 |                        | Edit Profile                 | [x]     |
-|                        | Delete Avatar                | [ ]     |
+|                        | Delete Avatar                | [x]     |
 |                        | Google Registration+Login    | [ ]     |
-| **Room**                | Create                       | [x]     |
+| **Room**               | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Select                       | [x]     |
 |                        | Leave                        | [x]     |
 |                        | Edit Settings                | [x]     |
-|                        | Delete Avatar                | [ ]     |
+|                        | Delete Avatar                | [x]     |
 |                        | Total File Usage Overview    | [x]     |
 |                        | Channel Usage Overview       | [ ]     |
 |                        | Room User Usage Overview     | [ ]     |
@@ -35,35 +35,35 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Message Retention Overview   | [ ]     |
 |                        | Display Rules Text           | [ ]     |
 |                        | Pagination                   | [ ]     |
-| **Room Invite Link**    | Create                       | [x]     |
+| **Room Invite Link**   | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Join                         | [x]     |
 |                        | Pagination                   | [ ]     |
-| **Room Files**          | List                         | [x]     |
+| **Room Files**         | List                         | [x]     |
 |                        | Delete                       | [x]     |
 |                        | Pagination                   | [ ]     |
-| **Room Users**          | Set to Admin                 | [x]     |
+| **Room Users**         | Set to Admin                 | [x]     |
 |                        | Set to Moderator             | [x]     |
 |                        | Set to Member                | [x]     |
 |                        | Kick                         | [x]     |
 |                        | Client Role Check            | [ ]     |
 |                        | Pagination                   | [ ]     |
-| **Channel**             | Create                       | [x]     |
+| **Channel**            | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
-|                        | Delete Avatar                | [ ]     |
+|                        | Delete Avatar                | [x]     |
 |                        | Pagination                   | [ ]     |
-| **Channel Webhook**     | Create                       | [x]     |
+| **Channel Webhook**    | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Send Test Message            | [x]     |
-|                        | Delete Avatar                | [ ]     |
+|                        | Delete Avatar                | [x]     |
 |                        | Pagination                   | [ ]     |
-| **Channel Message**     | Create                       | [x]     |
+| **Channel Message**    | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
@@ -71,19 +71,19 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Delete File                  | [x]     |
 |                        | Scroll To Bottom Event       | [ ]     |
 |                        | Infinite Scroll              | [ ]     |
-| **Toast**               | Create                       | [x]     |
+| **Toast**              | Create                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Delete                       | [x]     |
-| **Websocket**           | Connect                      | [x]     |
+| **Websocket**          | Connect                      | [x]     |
 |                        | Join Channel                 | [ ]     |
 |                        | Handle Message Events        | [ ]     |
-| **Logging**             | Exceptions                   | [ ]     |
-| **Testing**             | end2end tests                | [ ]     |
-| **Routing**             | React Router                 | [x]     |
+| **Logging**            | Exceptions                   | [ ]     |
+| **Testing**            | end2end tests                | [ ]     |
+| **Routing**            | React Router                 | [x]     |
 |                        | Sitemap                      | [x]     |
-| **CI/CD**               | GitHub Actions               | [x]     |
+| **CI/CD**              | GitHub Actions               | [x]     |
 |                        | GitHub Secrets               | [x]     |
-| **Deployment**          | DigitalOcean                 | [x]     |
+| **Deployment**         | DigitalOcean                 | [x]     |
 
 
 ## Development Environment Setup
@@ -110,12 +110,12 @@ npm test
 npm run eslint
 ```
 
-## Sitemap
+### Build Sitemap
 ```
 npm run sitemap
 ```
 
-## Build Static files
+### Build Static files
 ```
 npm run build
 ```

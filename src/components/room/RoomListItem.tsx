@@ -31,7 +31,7 @@ const RoomListItem = (props: RoomListItemProps): JSX.Element => {
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                                 backgroundRepeat: 'no-repeat',
-                                backgroundImage: room.avatar.room_file
+                                backgroundImage: room?.avatar?.room_file
                                     ? `url(${room.avatar.room_file.src})`
                                     : 'none',
                             }} />

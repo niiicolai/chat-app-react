@@ -12,5 +12,5 @@ export default interface Channel {
     channel_type_name: string;
     created_at: string;
     updated_at: string;
-    room_file: RoomFile;
+    room_file: RoomFile | null;
 }

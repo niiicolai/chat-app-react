@@ -15,7 +15,7 @@ const RoomHeader = (): JSX.Element => {
         <div className="w-full text-white">
             {selectedRoom && (
                 <div className="p-3 bg-gray-800" style={{
-                    backgroundImage: selectedRoom.avatar.room_file ? `url(${selectedRoom.avatar.room_file.src})` : 'none',
+                    backgroundImage: selectedRoom?.avatar?.room_file ? `url(${selectedRoom.avatar.room_file.src})` : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>

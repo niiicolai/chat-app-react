@@ -113,8 +113,8 @@ export default class ChannelService {
      * @throws {Error} if the channel_type_name is not provided
      */
     static create = async (formData: FormData): Promise<Channel> => {
-        if (uuidValidate(formData.get('uuid') as string)) throw new Error('Invalid uuid');
-        if (uuidValidate(formData.get('room_uuid') as string)) throw new Error('Invalid room_uuid');
+        if (!uuidValidate(formData.get('uuid') as string)) throw new Error('Invalid uuid');
+        if (!uuidValidate(formData.get('room_uuid') as string)) throw new Error('Invalid room_uuid');
         if (!formData.get('name')) throw new Error('Name is required');
         if (!formData.get('description')) throw new Error('Description is required');
         if (!formData.get('channel_type_name')) throw new Error('Channel type name is required');

@@ -118,8 +118,8 @@ export default class ChannelMessageService {
      * @throws {Error} if the body is not provided
      */
     static create = async (formData: FormData): Promise<ChannelMessage> => {
-        if (uuidValidate(formData.get('uuid') as string)) throw new Error('Invalid uuid');
-        if (uuidValidate(formData.get('channel_uuid') as string)) throw new Error('Invalid channel_uuid');
+        if (!uuidValidate(formData.get('uuid') as string)) throw new Error('Invalid uuid');
+        if (!uuidValidate(formData.get('channel_uuid') as string)) throw new Error('Invalid channel_uuid');
         if (!formData.get('body')) throw new Error('body is required');
 
         try {

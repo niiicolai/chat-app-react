@@ -12,6 +12,7 @@ interface InputControlTrackedProps {
     options?: JSX.Element[];
     onChange: (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     value: string;
+    footerSlot?: JSX.Element;
 }
 
 /**
@@ -20,9 +21,9 @@ interface InputControlTrackedProps {
  * @returns {JSX.Element}
  */
 const InputControlTracked = (props: InputControlTrackedProps): JSX.Element => {
-    const { id, type, label, name, options, onChange, value } = props;
+    const { id, type, label, name, options, onChange, value, footerSlot } = props;
     const inputClassNames = "text-black w-full border p-3 rounded-md text-black text-sm focus:ring-2 focus:ring-indigo-800 focus:outline-none";
-    
+
     return (
         <div className="mb-3 flex items-center gap-6">
             <label className="block mb-1 w-24">{label}</label>
@@ -55,6 +56,7 @@ const InputControlTracked = (props: InputControlTrackedProps): JSX.Element => {
                         onChange={onChange}
                     />
                     {value && <img src={value} alt={value} />}
+                    {footerSlot}
                 </div>
 
             }

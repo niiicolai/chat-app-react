@@ -6,8 +6,10 @@ import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Channel from "../../models/channel";
 import ChannelService from "../../services/channelService";
+import RoomFileService from "../../services/roomFileService";
 import { FormEvent, JSX, useContext, useState } from "react";
 import { ChannelContext } from "../../context/channelContext";
+import { ToastContext } from "../../context/toastContext";
 
 /**
  * @interface ChannelUpdateProps
@@ -25,6 +27,7 @@ interface ChannelUpdateProps {
  */
 const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
     const { editChannel, setEditChannel } = props;
+    const { addToast } = useContext(ToastContext);
     const { selectedChannel, setChannels, channels, setSelectedChannel } = useContext(ChannelContext);
     const [file, setFile] = useState('' as string | Blob);
     const [error, setError] = useState('' as string);
@@ -49,6 +52,7 @@ const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
             if (selectedChannel?.uuid === response.uuid) {
                 setSelectedChannel(response);
             }
+            addToast({ message: 'Channel updated', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -57,6 +61,29 @@ const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
             }
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const destroyAvatar = async () => {
+        try {
+            if (!editChannel || !editChannel.room_file) return;
+            await RoomFileService.destroy(editChannel.room_file.uuid);
+            setFile('');
+            setError('');
+            setChannels(channels.map((channel: Channel) => channel.uuid === editChannel.uuid
+                ? { ...editChannel, room_file: null } : channel));
+            if (selectedChannel && selectedChannel.uuid === editChannel.uuid) {
+                selectedChannel.room_file = null;
+                setSelectedChannel(selectedChannel);
+            }
+            setEditChannel(null);
+            addToast({ message: 'Avatar deleted', type: 'success', duration: 5000 });
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError('An unknown error occurred');
+            }
         }
     };
 
@@ -103,6 +130,20 @@ const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
                             label="Avatar"
                             name="file" value={editChannel?.room_file?.src || ''}
                             onChange={fileHandler}
+                            footerSlot={
+                                <div>
+                                    {editChannel?.room_file?.src &&
+                                        <div className="p-3">
+                                            <Button
+                                                type="error"
+                                                onClick={() => destroyAvatar()}
+                                                button="button"
+                                                slot="Delete Avatar"
+                                            />
+                                        </div>
+                                    }
+                                </div>
+                            }
                         />
 
                         <div className="flex flex-col gap-2">
