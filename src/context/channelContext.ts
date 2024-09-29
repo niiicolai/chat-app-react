@@ -9,10 +9,14 @@ export const ChannelContext = createContext<{
     selectedChannel: Channel | null,
     setSelectedChannel: (channel: Channel | null) => void,
     channels: Channel[],
-    setChannels: (channels: Channel[]) => void
+    setChannels: (channels: Channel[]) => void,
+    total: number,
+    setTotal: (total: number) => void
 }>({
     selectedChannel: null,
     setSelectedChannel: () => { },
     channels: [],
-    setChannels: () => { }
+    setChannels: () => { },
+    total: 0,
+    setTotal: () => { }
 });

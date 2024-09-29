@@ -36,7 +36,7 @@ const RoomHeader = (): JSX.Element => {
                                         </span>
                                     }
                                 />
-                            </div>
+                            </div>                            
                         </div>
 
                         <RoomOptions />

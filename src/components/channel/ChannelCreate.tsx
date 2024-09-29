@@ -30,7 +30,7 @@ interface ChannelCreateProps {
 const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
     const { showCreateChannel, setShowCreateChannel } = props;
     const { selectedRoom } = useContext(RoomContext);
-    const { setChannels, channels } = useContext(ChannelContext);
+    const { setChannels, channels, total, setTotal } = useContext(ChannelContext);
     const { channelTypes } = useChannelTypes();
     const [uuid, setUuid] = useState(uuidv4());
     const [name, setName] = useState('');
@@ -56,6 +56,7 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
             setError('');
             setChannelTypeName('');
             setUuid(uuidv4());
+            setTotal(total + 1);
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);

@@ -29,11 +29,12 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Edit Settings                | [x]     |
 |                        | Delete Avatar                | [x]     |
 |                        | Total File Usage Overview    | [x]     |
-|                        | Channel Usage Overview       | [ ]     |
-|                        | Room User Usage Overview     | [ ]     |
-|                        | File Retention Overview      | [ ]     |
-|                        | Message Retention Overview   | [ ]     |
-|                        | Display Rules Text           | [ ]     |
+|                        | Single File Setting Overview | [x]     |
+|                        | Channel Usage Overview       | [x]     |
+|                        | Room User Usage Overview     | [x]     |
+|                        | File Retention Overview      | [x]     |
+|                        | Message Retention Overview   | [x]     |
+|                        | Display Rules Text           | [x]     |
 |                        | Pagination                   | [ ]     |
 | **Room Invite Link**   | Create                       | [x]     |
 |                        | Update                       | [x]     |

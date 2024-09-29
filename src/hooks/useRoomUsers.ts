@@ -12,6 +12,7 @@ interface UseRoomUsers {
     setRoomUsers: (roomUsers: RoomUser[]) => void;
     error: string;
     isLoading: boolean;
+    total: number;
 }
 
 /**
@@ -21,6 +22,7 @@ interface UseRoomUsers {
  */
 const useRoomUsers = (): UseRoomUsers => {
     const { selectedRoom } = useContext(RoomContext);
+    const [total, setTotal] = useState(0);
     const [roomUsers, setRoomUsers] = useState<RoomUser[]>([]);
     const [error, setError] = useState("");
     const [isLoading, setLoading] = useState(false);
@@ -30,7 +32,11 @@ const useRoomUsers = (): UseRoomUsers => {
 
         setLoading(true);
         RoomUserService.findAll(selectedRoom.uuid)
-            .then(setRoomUsers)
+            .then(({ data, total }: { data: RoomUser[], total: number }) => {
+                setRoomUsers(data);
+                setTotal(total);
+                setError("");
+            })
             .catch((err: unknown) => {
                 if (err instanceof Error) setError(err.message);
                 else setError("An unknown error occurred");
@@ -45,6 +51,7 @@ const useRoomUsers = (): UseRoomUsers => {
         setRoomUsers,
         isLoading,
         error,
+        total
     };
 }
 

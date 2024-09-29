@@ -21,7 +21,7 @@ interface ChannelHeaderProps {
  */
 const ChannelHeader = (props: ChannelHeaderProps): JSX.Element => {
     const { setEditChannel } = props;
-    const { channels, setChannels, selectedChannel, setSelectedChannel } = useContext(ChannelContext);
+    const { channels, setChannels, selectedChannel, setSelectedChannel, total, setTotal } = useContext(ChannelContext);
     const [showSettings, setShowSettings] = useState(false);
     const onMouseEnter = () => setShowSettings(true);
     const onMouseLeave = () => setShowSettings(false);
@@ -33,6 +33,7 @@ const ChannelHeader = (props: ChannelHeaderProps): JSX.Element => {
         if (selectedChannel?.uuid === uuid) {
             setSelectedChannel(null);
         }
+        setTotal(total - 1);
     };
 
     return (

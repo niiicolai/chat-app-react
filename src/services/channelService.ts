@@ -20,6 +20,7 @@ interface ChannelResponse extends BuilderResponse {
 interface ChannelsResponse extends BuilderResponse {
     data: {
         data: Channel[];
+        total: number;
     };
 }
 
@@ -73,7 +74,7 @@ export default class ChannelService {
      * @throws {Error} if the page is not a number
      * @throws {Error} if the limit is not a number
      */
-    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<Channel[]> => {
+    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<{ data: Channel[], total: number }> => {
         if (!uuidValidate(room_uuid)) throw new Error('Invalid room_uuid');
         if (page && typeof page !== 'number') throw new Error('If provided, page must be a number');
         if (limit && typeof limit !== 'number') throw new Error('If provided, limit must be a number');
@@ -88,8 +89,7 @@ export default class ChannelService {
                 .auth()
                 .execute() as ChannelsResponse;
 
-            const { data } = response.data;
-            return data;
+            return response.data;
         } catch (error: unknown) {
             throw ChannelService.handleError(error);
         }

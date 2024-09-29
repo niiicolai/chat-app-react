@@ -6,10 +6,12 @@ import Room from "../../models/room";
 import Channel from "../../models/channel";
 import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
+import Progress from "../utils/Progress";
 import { useContext, useState, JSX, FormEvent } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
 import { ToastContext } from "../../context/toastContext";
+import useRoomUsers from "../../hooks/useRoomUsers";
 
 /**
  * @interface RoomSettingUpdateProps
@@ -27,12 +29,13 @@ interface RoomSettingUpdateProps {
  */
 const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
     const { rooms, setRooms, setSelectedRoom, selectedRoom } = useContext(RoomContext);
-    const { channels } = useContext(ChannelContext);
+    const { channels, total: channelsTotal } = useContext(ChannelContext);
     const { addToast } = useContext(ToastContext);
     const { editSettings, setEditSettings } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const show = editSettings ? true : false;
+    const { total: roomUsersTotal } = useRoomUsers();
 
     const updateRoomSettings = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -70,27 +73,103 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
             <div>
                 <Alert type="error" message={error} />
 
+                {selectedRoom && (
+                    <div>
+                        <p className="text-md mb-3">
+                            Fixed settings for the room
+                        </p>
+
+                        <div className="border-b border-gray-800 pb-3 mb-3 flex flex-col gap-3">
+                            <div className="w-full">
+                                <Progress type="primary" value={roomUsersTotal} max={selectedRoom.userSettings.maxUsers}
+                                    slot={
+                                        <span className="flex items-center gap-1 justify-center text-xs overflow-hidden truncate ...">
+                                            <span>Members:</span>
+                                            <span>{roomUsersTotal} / {selectedRoom.userSettings.maxUsers}</span>
+                                        </span>
+                                    }
+                                />
+                            </div>
+
+                            <div className="w-full">
+                                <Progress type="primary" value={channelsTotal} max={selectedRoom.channelSettings.maxChannels}
+                                    slot={
+                                        <span className="flex items-center gap-1 justify-center text-xs overflow-hidden truncate ...">
+                                            <span>Channels:</span>
+                                            <span>{channelsTotal} / {selectedRoom.channelSettings.maxChannels}</span>
+                                        </span>
+                                    }
+                                />
+                            </div>
+
+                            <div className="w-full">
+                                <span className="bg-gray-500 rounded-md p-2 flex items-center gap-1 justify-start text-xs overflow-hidden truncate ...">
+                                    <span>Message File Max Size:</span>
+                                    <span>{selectedRoom.fileSettings.singleFileMb} MB</span>
+                                </span>
+                            </div>
+
+                            <div className="w-full">
+                                <span className="bg-gray-500 rounded-md p-2 flex items-center gap-1 justify-start text-xs overflow-hidden truncate ...">
+                                    <span>Message Retention:</span>
+                                    <span>{selectedRoom.channelSettings.messagesDaysToLive} Days</span>
+                                </span>
+                            </div>
+
+                            <div className="w-full">
+                                <span className="bg-gray-500 rounded-md p-2 flex items-center gap-1 justify-start text-xs overflow-hidden truncate ...">
+                                    <span>Message File Retention:</span>
+                                    <span>{selectedRoom.fileSettings.fileDaysToLive} Days</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 <p className="text-md mb-3">
                     Enter the details to update a room setting
                 </p>
 
                 {editSettings && (
-                    <form onSubmit={updateRoomSettings} className="text-white">
-                        <InputControl id="join_channel_uuid" type="select" label="Join Channel UUID" name="join_channel_uuid" defaultValue={editSettings.joinSettings.channelUuid} options={channels.map((channel: Channel) => (
-                            <option key={channel.uuid} value={channel.uuid}>
-                                {channel.name}
-                            </option>
-                        ))} />
-                        <InputControl id="join_message" type="text" label="Join Message" name="join_message" defaultValue={editSettings.joinSettings.message} />
-                        <InputControl id="rules_text" type="text" label="Rules Text" name="rules_text" defaultValue={editSettings.rulesSettings.text} />
+                    <div>
+                        <form onSubmit={updateRoomSettings} className="text-white">
+                            <InputControl
+                                id="update_settings_join_channel_uuid"
+                                type="select"
+                                label="Join Channel"
+                                name="join_channel_uuid"
+                                defaultValue={editSettings.joinSettings.channelUuid}
+                                options={channels.map((channel: Channel) => (
+                                    <option key={channel.uuid} value={channel.uuid}>
+                                        {channel.name}
+                                    </option>
+                                )
+                                )} />
 
-                        <div className="flex flex-col gap-2">
-                            <Button type="primary" button="submit" slot={
-                                <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Update"}</span>
-                            } />
-                            <Button type="secondary" button="button" slot="Cancel" onClick={() => setEditSettings(null)} />
-                        </div>
-                    </form>
+                            <InputControl
+                                id="update_settings_join_message"
+                                type="text"
+                                label="Join Message ({name} will be replaced with the user's name)"
+                                name="join_message"
+                                defaultValue={editSettings.joinSettings.message}
+                            />
+
+                            <InputControl
+                                id="update_settings_rules_text"
+                                type="textarea"
+                                label="Rules Text (Markdown)"
+                                name="rules_text"
+                                defaultValue={editSettings.rulesSettings.text}
+                            />
+
+                            <div className="flex flex-col gap-2">
+                                <Button type="primary" button="submit" slot={
+                                    <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Update"}</span>
+                                } />
+                                <Button type="secondary" button="button" slot="Cancel" onClick={() => setEditSettings(null)} />
+                            </div>
+                        </form>
+                    </div>
                 )}
             </div>
         } />

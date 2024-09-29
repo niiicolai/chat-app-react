@@ -1,15 +1,135 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+/**
+ * Markdown styles
+ */
+.markdown h1 {
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.markdown h2 {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.markdown h3 {
+  font-size: 1.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.markdown h4 {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.markdown h5 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.markdown h6 {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: inherit;
+}
+.markdown p {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: inherit;
+}
+.markdown a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+.markdown a:hover {
+  text-decoration: underline;
+}
+.markdown strong {
+  font-weight: 700;
+}
+.markdown em {
+  font-style: italic;
+}
+.markdown ul {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  color: inherit;
+}
+.markdown ol {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  color: inherit;
+}
+.markdown li {
+  margin-bottom: 0.5rem;
+  color: inherit;
+}
+.markdown blockquote {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid rgba(255, 255, 255, 0.87);
+  color: inherit;
+}
+.markdown code {
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9em;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: inherit;
+}
+.markdown pre {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: inherit;
+}
+.markdown table {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  color: inherit;
+}
+.markdown th {
+  padding: 0.5rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.87);
+  color: inherit;
+}
+.markdown td {
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.87);
+  color: inherit;
+}
+.markdown img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: inherit;
 }
