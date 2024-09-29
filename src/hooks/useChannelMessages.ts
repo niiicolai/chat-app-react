@@ -54,7 +54,7 @@ const useChannelMessages = (): UseChannelMessages => {
          * Load the channel messages
          */
         paginate(1, limit, (data: ChannelMessage[], pages?: number) => {
-            setMessages(data);
+            setMessages(data.reverse());
             setMaxPages(pages ?? 1);
         });
 
