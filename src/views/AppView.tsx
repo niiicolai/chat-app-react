@@ -3,6 +3,7 @@ import ChannelProvider from '../providers/ChannelProvider';
 import RoomProvider from '../providers/RoomProvider';
 import UserProvider from '../providers/UserProvider';
 import ToastProvider from "../providers/ToastProvider";
+import WebsocketProvider from "../providers/WebsocketProvider";
 import AppMain from '../components/app/AppMain';
 
 /**
@@ -16,7 +17,9 @@ function AppView(): JSX.Element {
       <RoomProvider slot={
         <ChannelProvider slot={
           <ToastProvider slot={
-            <AppMain />
+            <WebsocketProvider slot={
+              <AppMain />
+            } />
           } />
         } />
       } />

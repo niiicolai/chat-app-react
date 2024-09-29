@@ -27,10 +27,11 @@ const WS_PROTOCOL = 'echo-protocol';
  * @interface SocketMessage
  * @description The socket message interface
  */
-interface SocketMessage {
+export interface SocketMessage {
     type: string;
     channel?: string;
     error?: string;
+    payload?: unknown;
 }
 
 /**
@@ -38,7 +39,7 @@ interface SocketMessage {
  * @description The user hook interface
  */
 interface UseWebsocket {
-    onChatMessage: (cb: (data: SocketMessage) => void) => void;
+    onMessage: (cb: (data: SocketMessage) => void) => void;
     joinChannel: (channel: string) => void;
     leaveChannel: () => void;
     socket: WebSocket | null;
@@ -77,13 +78,25 @@ const useWebsocket = (): UseWebsocket => {
         }
     };
 
-    const onChatMessage = (cb: (data: SocketMessage) => void): void => {
-        onChatMessageCallbacks.current?.push(cb);
+    const onMessage = (cb: (data: SocketMessage) => void): void => {
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.error) {
+                console.error('WebSocket error:', data.error);
+                return;
+            }
+
+            cb(data);
+        };
     };
 
     const joinChannel = (channel: string): void => {
         if (!socket) {
             throw new Error('No WebSocket connection found');
+        }
+        // Check if the socket is connected
+        if (socket.readyState !== WebSocket.OPEN) {
+            throw new Error('WebSocket connection not open');
         }
         const token = TokenService.getToken();
         if (!token) {
@@ -100,7 +113,7 @@ const useWebsocket = (): UseWebsocket => {
     };
 
     return {
-        onChatMessage,
+        onMessage,
         joinChannel,
         leaveChannel,
         socket

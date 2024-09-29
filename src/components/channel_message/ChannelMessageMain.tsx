@@ -4,16 +4,48 @@ import ChannelMessageCreate from "./ChannelMessageCreate";
 import ChannelMessageUpdate from "./ChannelMessageUpdate";
 import ChannelMessageList from "./ChannelMessageList";
 import useChannelMessages from "../../hooks/useChannelMessages";
+import { SocketMessage } from "../../hooks/useWebsockets";
 import ChannelMessage from "../../models/channel_message";
-import { useState, JSX, FormEvent } from "react";
-
+import { useState, JSX, FormEvent, useEffect, useContext } from "react";
+import { ChannelContext } from "../../context/channelContext";
+import { WebsocketContext } from "../../context/websocketContext";
+import { UserContext } from "../../context/userContext";
 /**
  * @function ChannelMessageMain
  * @returns {JSX.Element}
  */
 const ChannelMessageMain = (): JSX.Element => {
     const { messages, setMessages, error, isLoading } = useChannelMessages();
-    const [editMessage, setEditMessage] = useState<ChannelMessage | null>(null);
+    const { joinChannel, leaveChannel, onMessage } = useContext(WebsocketContext);
+    const [ editMessage, setEditMessage ] = useState<ChannelMessage | null>(null);
+    const { selectedChannel } = useContext(ChannelContext);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        joinChannel(`channel-${selectedChannel?.uuid}`);
+        onMessage((data: SocketMessage) => {
+            const message = data.payload as ChannelMessage;
+            if (message?.user?.uuid === user?.uuid) return;
+
+            switch (data.type) {
+                case 'chat_message_created':         
+                    setMessages([data.payload as ChannelMessage, ...messages]);
+                    break;
+                case 'chat_message_updated':
+                    setMessages(messages.map((message: ChannelMessage) => message.uuid === (data.payload as ChannelMessage).uuid
+                        ? data.payload as ChannelMessage
+                        : message
+                    ));
+                    break;
+                case 'chat_message_deleted':
+                    setMessages(messages.filter((message: ChannelMessage) => message.uuid !== (data.payload as ChannelMessage).uuid));
+                    break;
+                default:
+                    break;
+            }
+        });
+        return () => leaveChannel();
+    }, [messages]);
 
     const create = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
         e.preventDefault();

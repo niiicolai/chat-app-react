@@ -75,8 +75,8 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | List                         | [x]     |
 |                        | Delete                       | [x]     |
 | **Websocket**          | Connect                      | [x]     |
-|                        | Join Channel                 | [ ]     |
-|                        | Handle Message Events        | [ ]     |
+|                        | Join Channel                 | [x]     |
+|                        | Handle Message Events        | [x]     |
 | **Logging**            | Exceptions                   | [ ]     |
 | **Testing**            | end2end tests                | [ ]     |
 | **Routing**            | React Router                 | [x]     |
