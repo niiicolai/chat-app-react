@@ -48,7 +48,7 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
                         <li>
                             <Button type="primary" title="Show rules" display={`${showRules ? 'ring-2 ring-gray-500 hover:ring-gray-500' : ''} w-full text-xs p-1`}
                             onClick={showRulesHandler} slot={
-                                <span className="text-white">Rules</span>
+                                <span className="text-white">README</span>
                             } />
                         </li>
                         {channels.map((channel) =>

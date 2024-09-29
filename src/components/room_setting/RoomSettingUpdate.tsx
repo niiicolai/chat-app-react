@@ -157,7 +157,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
                             <InputControl
                                 id="update_settings_rules_text"
                                 type="textarea"
-                                label="Rules Text (Markdown)"
+                                label="README (Markdown)"
                                 name="rules_text"
                                 defaultValue={editSettings.rulesSettings.text}
                             />
