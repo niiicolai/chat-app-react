@@ -42,16 +42,7 @@ const useChannelWebhooks = (): UseChannelWebhooks => {
     const [pages, setPages] = useState(1);
     const limit = 10;
 
-    useEffect(() => {
-        paginate(1, limit, (data: ChannelWebhook[], pages?: number) => {
-            setWebhooks(data);
-            setPages(pages ?? 1);
-        });
-
-        return () => { }
-    }, [selectedRoom]);
-
-    const paginate = async (page: number, limit: number, onPaginate: (data: ChannelWebhook[], pages?: number) => void) => {
+    const paginate = async (page: number, limit: number, onPaginate: (data: ChannelWebhook[], pages?: number) => void): Promise<void> => {
         if (!selectedRoom) return;
         setLoading(true);
 
@@ -66,6 +57,19 @@ const useChannelWebhooks = (): UseChannelWebhooks => {
             setLoading(false);
         }
     }
+
+    useEffect(() => {
+        if (!selectedRoom) return;
+
+        paginate(1, limit, (data: ChannelWebhook[], pages?: number) => {
+            setWebhooks(data);
+            setPages(pages ?? 1);
+        });
+
+        return () => { }
+    }, [selectedRoom]);
+
+    
 
     const previousPage = () => {
         if (!selectedRoom) return;

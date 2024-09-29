@@ -2,8 +2,6 @@ import RoomInviteLinkListItem from "./RoomInviteLinkListItem";
 import RoomInviteLink from "../../models/room_invite_link";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
-import Spinner from "../utils/Spinner";
-import Alert from "../utils/Alert";
 import Paginator from "../utils/Paginator";
 import { JSX, useContext } from "react";
 import { RoomContext } from "../../context/roomContext";

@@ -86,9 +86,9 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Audio Call                   | [ ]     |
 |                        | Screen Sharing               | [ ]     |
 | **Logging**            | Exceptions                   | [ ]     |
-| **Testing**            | end2end tests                | [ ]     |
-|                        | unit tests                   | [ ]     |
-|                        | integration tests            | [ ]     |
+| **Testing**            | End2end tests                | [ ]     |
+|                        | Unit tests                   | [ ]     |
+|                        | Integration tests            | [ ]     |
 | **Routing**            | React Router                 | [x]     |
 |                        | Sitemap                      | [x]     |
 | **CI/CD**              | GitHub Actions               | [x]     |
