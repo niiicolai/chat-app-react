@@ -9,6 +9,7 @@ import TrashIcon from "../icons/TrashIcon";
 import PenIcon from "../icons/PenIcon";
 import Button from "../utils/Button";
 import Badge from "../utils/Badge";
+import User from "../../models/user";
 
 /**
  * @interface ChannelMessageListItemProps
@@ -19,6 +20,8 @@ interface ChannelMessageListItemProps {
     destroyMessage: (uuid: string) => void;
     destroyFile: (msg: ChannelMessage) => void;
     channelMessage: ChannelMessage;
+    isModOrAdmin: boolean;
+    authenticatedUser: User | null;
 }
 
 /**
@@ -27,10 +30,11 @@ interface ChannelMessageListItemProps {
  * @returns {JSX.Element}
  */
 const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element => {
-    const { channelMessage, setEditMessage, destroyMessage, destroyFile } = props;
+    const { channelMessage, setEditMessage, destroyMessage, destroyFile, isModOrAdmin, authenticatedUser } = props;
     const [showSettings, setShowSettings] = useState(false);
     const handleMouseEnter = () => setShowSettings(true);
     const handleMouseLeave = () => setShowSettings(false);
+    const canModify = isModOrAdmin || authenticatedUser?.uuid === channelMessage.user?.uuid;
 
     return (
         <li key={channelMessage.uuid} className="relative flex justify-between gap-3 hover:bg-gray-800 p-2 rounded-md" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -100,7 +104,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                                 }
                             }} />
 
-                            {showSettings && (
+                            {showSettings && canModify && (
                                 <Button type="error" display="h-5 w-5 flex items-center justify-center absolute right-3 top-3" button="button" title="Delete file" onClick={()=>destroyFile(channelMessage)} slot={
                                     <TrashIcon fill="white" width=".6em" />
                                 } />
@@ -109,7 +113,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                     }
                 </div>
             </div>
-            {showSettings && (
+            {showSettings && canModify && (
                 <div className="bg-gray-700 p-1 rounded-md flex gap-1 absolute top-3 right-3">
                     <Button type="primary" display="h-5 w-5 flex items-center justify-center" title="Edit message" onClick={() => setEditMessage(channelMessage)} button="button" slot={
                         <PenIcon fill="white" width=".6em" />

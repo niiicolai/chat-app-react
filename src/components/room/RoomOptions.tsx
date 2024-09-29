@@ -38,8 +38,9 @@ const RoomOptions = (): JSX.Element => {
     const [showUsers, setShowUsers] = useState(false);
     const [showFiles, setShowFiles] = useState(false);
     const [showLinks, setShowLinks] = useState(false);
-    const { selectedRoom, setSelectedRoom, rooms, setRooms } = useContext(RoomContext);
+    const { selectedRoom, setSelectedRoom, rooms, setRooms, selectedRoomUser } = useContext(RoomContext);
     const { addToast } = useContext(ToastContext);
+    const canModify = selectedRoomUser?.room_user_role_name === 'Admin';
 
     const destroyRoom = async (uuid: string | undefined) => {
         if (!uuid) return;
@@ -78,15 +79,15 @@ const RoomOptions = (): JSX.Element => {
     }
 
     const roomOptions = [
-        { title: 'Create Channel', icon: <PlusIcon fill="white" width="1em" />, onClick: () => setShowCreateChannel(!showCreateChannel), type: 'primary' },
-        { title: 'Users', icon: <UsersIcon fill="white" width="1.2em" />, onClick: () => setShowUsers(!showUsers), type: 'primary' },
-        { title: 'Files', icon: <FileIcon fill="white" width="1em" />, onClick: () => setShowFiles(!showFiles), type: 'primary' },
-        { title: 'Invite Links', icon: <LinkIcon fill="white" width="1.2em" />, onClick: () => setShowLinks(!showLinks), type: 'primary' },
-        { title: 'Webhooks', icon: <BotIcon fill="white" width="1.2em" />, onClick: () => setShowWebhooks(!showWebhooks), type: 'primary' },
-        { title: 'Room Settings', icon: <GearIcon fill="white" width="1em" />, onClick: () => setEditSettings(editSettings ? null : selectedRoom), type: 'primary' },
-        { title: 'Edit Room', icon: <PenIcon fill="white" width="1em" />, onClick: () => setEditRoom(editRoom ? null : selectedRoom), type: 'primary' },
-        { title: 'Delete Room', icon: <TrashIcon fill="white" width=".8em " />, onClick: () => destroyRoom(selectedRoom?.uuid), type: 'error' },
-        { title: 'Leave Room', icon: <DoorIcon fill="white" width="1em" />, onClick: () => leaveRoom(selectedRoom?.uuid), type: 'error' },
+        { title: 'Create Channel', icon: <PlusIcon fill="white" width="1em" />, onClick: () => setShowCreateChannel(!showCreateChannel), type: 'primary', requirePermission: true },
+        { title: 'Users', icon: <UsersIcon fill="white" width="1.2em" />, onClick: () => setShowUsers(!showUsers), type: 'primary', requirePermission: false },
+        { title: 'Files', icon: <FileIcon fill="white" width="1em" />, onClick: () => setShowFiles(!showFiles), type: 'primary', requirePermission: false },
+        { title: 'Invite Links', icon: <LinkIcon fill="white" width="1.2em" />, onClick: () => setShowLinks(!showLinks), type: 'primary', requirePermission: false },
+        { title: 'Webhooks', icon: <BotIcon fill="white" width="1.2em" />, onClick: () => setShowWebhooks(!showWebhooks), type: 'primary', requirePermission: true },
+        { title: 'Room Settings', icon: <GearIcon fill="white" width="1em" />, onClick: () => setEditSettings(editSettings ? null : selectedRoom), type: 'primary', requirePermission: true },
+        { title: 'Edit Room', icon: <PenIcon fill="white" width="1em" />, onClick: () => setEditRoom(editRoom ? null : selectedRoom), type: 'primary', requirePermission: true },
+        { title: 'Delete Room', icon: <TrashIcon fill="white" width=".8em " />, onClick: () => destroyRoom(selectedRoom?.uuid), type: 'error', requirePermission: true },
+        { title: 'Leave Room', icon: <DoorIcon fill="white" width="1em" />, onClick: () => leaveRoom(selectedRoom?.uuid), type: 'error', requirePermission: false },
     ]
     return (
         <div>
@@ -106,7 +107,7 @@ const RoomOptions = (): JSX.Element => {
                     <div className="flex flex-col sm:flex-row p-3 sm:p-0 gap-2">
                         {roomOptions.map((option, index) => (
                             <Button key={index} type={option.type} title={option.title}
-                                display="w-8 h-8 flex items-center justify-center"
+                                display={`w-8 h-8 flex items-center justify-center ${canModify || !option.requirePermission ? '' : 'hidden'}`} 
                                 onClick={option.onClick}
                                 slot={option.icon}
                             />

@@ -49,7 +49,7 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Set to Moderator             | [x]     |
 |                        | Set to Member                | [x]     |
 |                        | Kick                         | [x]     |
-|                        | Client Role Check            | [ ]     |
+|                        | Client Role Check            | [x]     |
 |                        | Pagination                   | [ ]     |
 | **Channel**            | Create                       | [x]     |
 |                        | Update                       | [x]     |

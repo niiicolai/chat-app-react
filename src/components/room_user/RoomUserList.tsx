@@ -7,6 +7,7 @@ import Spinner from "../utils/Spinner";
 import Modal from "../utils/Modal";
 import { useContext, JSX } from "react";
 import { ToastContext } from "../../context/toastContext";
+import { RoomContext } from "../../context/roomContext";
 
 /**
  * @interface RoomUserListProps
@@ -26,6 +27,9 @@ const RoomUserList = (props: RoomUserListProps): JSX.Element => {
     const { addToast } = useContext(ToastContext);
     const { showUsers, setShowUsers } = props;
     const { roomUsers, setRoomUsers, error, isLoading } = useRoomUsers();
+    const { selectedRoomUser } = useContext(RoomContext);
+    const isAdmin = selectedRoomUser?.room_user_role_name === 'Admin';
+    const isMod = selectedRoomUser?.room_user_role_name === 'Moderator';
 
     const update = async (uuid: string, room_user_role_name: string) => {
         if (!uuid) return;
@@ -53,7 +57,7 @@ const RoomUserList = (props: RoomUserListProps): JSX.Element => {
 
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
                     {roomUsers.map((roomUser) => (
-                        <RoomUserListItem roomUser={roomUser} key={roomUser.uuid} update={update} destroy={destroy} />
+                        <RoomUserListItem roomUser={roomUser} key={roomUser.uuid} update={update} destroy={destroy} isAdmin={isAdmin} isMod={isMod} />
                     ))}
                     {!roomUsers.length && <li className="text-white">No room users found</li>}
                 </ul>

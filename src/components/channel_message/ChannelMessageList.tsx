@@ -4,6 +4,8 @@ import Alert from "../utils/Alert";
 import Spinner from "../utils/Spinner";
 import { useContext, JSX } from "react";
 import { ChannelContext } from "../../context/channelContext";
+import { RoomContext } from "../../context/roomContext";
+import { UserContext } from "../../context/userContext";
 
 /**
  * @interface ChannelMessageListProps
@@ -26,6 +28,9 @@ interface ChannelMessageListProps {
 const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
     const { messages, isLoading, error, setEditMessage, destroyMessage, destroyFile } = props;
     const { selectedChannel } = useContext(ChannelContext);
+    const { selectedRoomUser } = useContext(RoomContext);
+    const { user } = useContext(UserContext);
+    const isModOrAdmin = selectedRoomUser?.room_user_role_name === 'Admin' || selectedRoomUser?.room_user_role_name === 'Moderator';
 
     const emptyStateMessages = [
         'Looks like you&rsquo;re the early bird! Send a message to kick things off! 🐦💬',
@@ -62,6 +67,8 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
                                 setEditMessage={setEditMessage}
                                 destroyMessage={destroyMessage}
                                 destroyFile={destroyFile}
+                                isModOrAdmin={isModOrAdmin}
+                                authenticatedUser={user}
                             />
                         ))}
                     </ul>

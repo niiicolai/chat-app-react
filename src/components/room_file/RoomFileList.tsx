@@ -5,6 +5,7 @@ import Spinner from "../utils/Spinner";
 import Alert from "../utils/Alert";
 import Modal from "../utils/Modal";
 import { ToastContext } from "../../context/toastContext";
+import { RoomContext } from "../../context/roomContext";
 import { useContext, JSX } from "react";
 
 /**
@@ -24,7 +25,9 @@ interface RoomFileListProps {
 const RoomFileList = (props: RoomFileListProps): JSX.Element => {
     const { showFiles, setShowFiles } = props;
     const { addToast } = useContext(ToastContext);
+    const { selectedRoomUser } = useContext(RoomContext);
     const { files, setFiles, error, isLoading } = useRoomFiles();
+    const isAdmin = selectedRoomUser?.room_user_role_name === 'Admin';
 
     const destroy = async (uuid: string) => {
         try {
@@ -48,7 +51,7 @@ const RoomFileList = (props: RoomFileListProps): JSX.Element => {
                 
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                     {files.map((file) => (
-                        <RoomFileListItem file={file} key={file.uuid} destroyFile={destroy} />
+                        <RoomFileListItem file={file} key={file.uuid} destroyFile={destroy} isAdmin={isAdmin} />
                     ))}
                     {!files.length && <li className="text-white">No files found</li>}
                 </ul>

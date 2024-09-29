@@ -2,6 +2,7 @@ import { useState, JSX } from 'react';
 import { RoomContext } from '../context/roomContext';
 import useRooms from '../hooks/useRooms';
 import Room from '../models/room';
+import RoomUser from '../models/room_user';
 
 /**
  * @interface RoomProviderProps
@@ -20,10 +21,11 @@ interface RoomProviderProps {
 function RoomProvider(props: RoomProviderProps): JSX.Element {
     const { rooms, setRooms } = useRooms();
     const [ selectedRoom, setSelectedRoom ] = useState<Room | null>(null);
+    const [ selectedRoomUser, setSelectedRoomUser ] = useState<RoomUser | null>(null);
     const { slot } = props;
 
     return (
-        <RoomContext.Provider value={{ selectedRoom, rooms, setSelectedRoom, setRooms }}>
+        <RoomContext.Provider value={{ selectedRoom, rooms, setSelectedRoom, setRooms, selectedRoomUser, setSelectedRoomUser }}>
             {slot}
         </RoomContext.Provider>
     );

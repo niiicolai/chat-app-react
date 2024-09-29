@@ -22,6 +22,7 @@ interface RoomInviteLinkListItemProps {
     link: RoomInviteLink;
     setLinkEdit: (link: RoomInviteLink | null) => void;
     destroyLink: (uuid: string) => void;
+    isAdmin: boolean;
 }
 
 /**
@@ -30,7 +31,7 @@ interface RoomInviteLinkListItemProps {
  * @returns {JSX.Element}
  */
 const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps): JSX.Element => {
-    const { link, setLinkEdit, destroyLink } = props;
+    const { link, setLinkEdit, destroyLink, isAdmin } = props;
     const { addToast } = useContext(ToastContext);
     const url = new URL(`/room/${link.uuid}/join`, CLIENT_URL).toString();
     const isExpired = link.expires_at && new Date(link.expires_at) < new Date() ? 'Yes' : 'No';
@@ -58,11 +59,11 @@ const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps): JSX.Element
             <div className="bg-gray-700 p-2 rounded-md flex gap-1">
                 <Button type="primary" display="h-5 w-5 flex items-center justify-center" title="Copy invite link" onClick={() => copyToClipboard()} button="button" slot={
                     <CopyIcon fill="white" width=".8em" />
-                } />
-                <Button type="primary" display="h-5 w-5 flex items-center justify-center" title="Edit invite link" onClick={() => setLinkEdit(link)} button="button" slot={
+                } />                
+                <Button type="primary" display={`${isAdmin?'':'hidden'} h-5 w-5 flex items-center justify-center`} title="Edit invite link" onClick={() => setLinkEdit(link)} button="button" slot={
                     <PenIcon fill="white" width=".8em" />
                 } />
-                <Button type="error" display="h-5 w-5 flex items-center justify-center" button="button" title="Delete invite link" onClick={() => destroyLink(link.uuid)} slot={
+                <Button type="error" display={`${isAdmin?'':'hidden'} h-5 w-5 flex items-center justify-center`} button="button" title="Delete invite link" onClick={() => destroyLink(link.uuid)} slot={
                     <TrashIcon fill="white" width=".6em" />
                 } />
             </div>

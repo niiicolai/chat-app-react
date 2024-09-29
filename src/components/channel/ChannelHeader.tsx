@@ -1,5 +1,6 @@
 import { useContext, useState, JSX } from "react";
 import { ChannelContext } from "../../context/channelContext";
+import { RoomContext } from "../../context/roomContext";
 import TrashIcon from "../icons/TrashIcon";
 import PenIcon from "../icons/PenIcon";
 import Button from "../utils/Button";
@@ -21,10 +22,12 @@ interface ChannelHeaderProps {
  */
 const ChannelHeader = (props: ChannelHeaderProps): JSX.Element => {
     const { setEditChannel } = props;
+    const { selectedRoomUser } = useContext(RoomContext);
     const { channels, setChannels, selectedChannel, setSelectedChannel, total, setTotal } = useContext(ChannelContext);
     const [showSettings, setShowSettings] = useState(false);
     const onMouseEnter = () => setShowSettings(true);
     const onMouseLeave = () => setShowSettings(false);
+    const isAdmin = selectedRoomUser?.room_user_role_name === 'Admin';
 
     const destroy = async (uuid: string | undefined) => {
         if (!uuid) return;
@@ -40,7 +43,7 @@ const ChannelHeader = (props: ChannelHeaderProps): JSX.Element => {
         <div className="border-b border-gray-800 flex items-center justify-between gap-3 p-3 relative" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             {selectedChannel && <p className="text-sm text-white">{selectedChannel.description}</p>}
 
-            {showSettings &&
+            {showSettings && isAdmin &&
                 <div className="bg-gray-800 p-1 rounded-md absolute right-3 flex gap-2" style={{ top: '50%', transform: 'translateY(-50%)' }}>
                     <Button type="primary" display="h-5 w-5 flex items-center justify-center" button="button" title="Edit Channel" onClick={() => setEditChannel(selectedChannel)} slot={
                         <PenIcon fill="white" width=".6em" />

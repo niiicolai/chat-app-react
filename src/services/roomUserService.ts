@@ -51,6 +51,22 @@ export default class RoomInviteLinkService {
         }
     }
 
+    static findAuthenticatedUser = async (room_uuid: string): Promise<RoomUser> => {
+        if (!uuidValidate(room_uuid)) throw new Error('Invalid room_uuid');
+
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/room_user/me/${room_uuid}`)
+                .method(BuilderMethods.GET)
+                .auth()
+                .execute() as RoomUserResponse;
+
+            return response.data;
+        } catch (error: unknown) {
+            throw RoomInviteLinkService.handleError(error);
+        }
+    }
+
     /**
      * @function findAll
      * @description Find all room users for a room

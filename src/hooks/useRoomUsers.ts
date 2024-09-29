@@ -4,8 +4,8 @@ import RoomUserService from "../services/roomUserService";
 import RoomUser from "../models/room_user";
 
 /**
- * @interface UseRoomUser
- * @description The room user hook interface
+ * @interface UseRoomUsers
+ * @description The room users hook interface
  */
 interface UseRoomUsers {
     roomUsers: RoomUser[];
@@ -17,8 +17,8 @@ interface UseRoomUsers {
 
 /**
  * @function useRoomUsers
- * @description The room user hook
- * @returns {UseRoomUsers} The room user hook
+ * @description The room users hook
+ * @returns {UseRoomUsers} The room users hook
  */
 const useRoomUsers = (): UseRoomUsers => {
     const { selectedRoom } = useContext(RoomContext);
