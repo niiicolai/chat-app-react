@@ -14,6 +14,8 @@ interface UseChannels {
     isLoading: boolean;
     total: number;
     setTotal: (total: number) => void;
+    pages: number;
+    setPages: (pages: number) => void;
 }
 
 /**
@@ -26,16 +28,19 @@ const useChannels = (): UseChannels => {
     const [channels, setChannels] = useState<Channel[]>([]);
     const [isLoading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
+    const [pages, setPages] = useState(1);
     const [error, setError] = useState("");
+    const limit = 5;
 
     useEffect(() => {
         if (!selectedRoom) return;
 
         setLoading(true);
-        ChannelService.findAll(selectedRoom.uuid)
-            .then(({ data: channels, total }: { data: Channel[], total: number }) => {                
-                setChannels(channels);
+        ChannelService.findAll(selectedRoom.uuid, 1, limit)
+            .then(({ data, total, pages }: { data: Channel[], total: number, pages: number }) => {            
+                setChannels(data);
                 setTotal(total);
+                setPages(pages ?? 1);
                 setError("");
             })
             .catch((err: unknown) => {
@@ -53,7 +58,9 @@ const useChannels = (): UseChannels => {
         isLoading,
         error,
         total,
-        setTotal
+        setTotal,
+        pages,
+        setPages
     };
 }
 

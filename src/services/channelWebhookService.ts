@@ -19,6 +19,8 @@ interface ChannelWebhookResponse extends BuilderResponse {
 interface ChannelWebhooksResponse extends BuilderResponse {
     data: {
         data: ChannelWebhook[];
+        total: number;
+        pages: number;
     };
 }
 
@@ -71,7 +73,7 @@ export default class ChannelWebhookService {
      * @throws {Error} if the page is not a number
      * @throws {Error} if the limit is not a number
      */
-    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<ChannelWebhook[]> => {
+    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<{ data: ChannelWebhook[], total: number, pages: number }> => {
         if (!uuidValidate(room_uuid)) throw new Error('Invalid room_uuid');
         if (page && typeof page !== 'number') throw new Error('If provided, page must be a number');
         if (limit && typeof limit !== 'number') throw new Error('If provided, limit must be a number');
@@ -86,8 +88,7 @@ export default class ChannelWebhookService {
                 .auth()
                 .execute() as ChannelWebhooksResponse;
 
-            const { data } = response.data;
-            return data;
+            return response.data;
         } catch (error: unknown) {
             throw ChannelWebhookService.handleError(error);
         }

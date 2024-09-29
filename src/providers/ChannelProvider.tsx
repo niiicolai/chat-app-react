@@ -18,12 +18,12 @@ interface ChannelProviderProps {
  * @returns {JSX.Element} JSX.Element
  */
 function ChannelProvider(props: ChannelProviderProps): JSX.Element {
-    const { channels, setChannels, total, setTotal } = useChannels();
+    const { channels, setChannels, total, setTotal, pages, setPages } = useChannels();
     const [ selectedChannel, setSelectedChannel ] = useState<Channel | null>(null);
     const { slot } = props;
 
     return (
-        <ChannelContext.Provider value={{ selectedChannel, channels, setSelectedChannel, setChannels, total, setTotal }}>
+        <ChannelContext.Provider value={{ selectedChannel, channels, setSelectedChannel, setChannels, total, setTotal, pages, setPages }}>
             {slot}
         </ChannelContext.Provider>
     );

@@ -12,12 +12,16 @@ export const RoomContext = createContext<{
     setSelectedRoom: (room: Room | null) => void,
     setSelectedRoomUser: (roomUser: RoomUser | null) => void,
     setRooms: (rooms: Room[]) => void
+    pages: number;
+    setPages: (pages: number) => void;
 }>({
     selectedRoom: null,
     selectedRoomUser: null,
     rooms: [],
     setSelectedRoom: () => { },
     setSelectedRoomUser: () => { },
-    setRooms: () => { }
+    setRooms: () => { },
+    pages: 1,
+    setPages: () => { }
 });
 

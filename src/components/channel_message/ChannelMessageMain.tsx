@@ -15,75 +15,13 @@ import { UserContext } from "../../context/userContext";
  * @returns {JSX.Element}
  */
 const ChannelMessageMain = (): JSX.Element => {
-    const { messages, setMessages, error, isLoading } = useChannelMessages();
-    const { joinChannel, leaveChannel, onMessage } = useContext(WebsocketContext);
-    const [ editMessage, setEditMessage ] = useState<ChannelMessage | null>(null);
-    const { selectedChannel } = useContext(ChannelContext);
-    const { user } = useContext(UserContext);
-
-    useEffect(() => {
-        joinChannel(`channel-${selectedChannel?.uuid}`);
-        onMessage((data: SocketMessage) => {
-            const message = data.payload as ChannelMessage;
-            if (message?.user?.uuid === user?.uuid) return;
-
-            switch (data.type) {
-                case 'chat_message_created':         
-                    setMessages([data.payload as ChannelMessage, ...messages]);
-                    break;
-                case 'chat_message_updated':
-                    setMessages(messages.map((message: ChannelMessage) => message.uuid === (data.payload as ChannelMessage).uuid
-                        ? data.payload as ChannelMessage
-                        : message
-                    ));
-                    break;
-                case 'chat_message_deleted':
-                    setMessages(messages.filter((message: ChannelMessage) => message.uuid !== (data.payload as ChannelMessage).uuid));
-                    break;
-                default:
-                    break;
-            }
-        });
-        return () => leaveChannel();
-    }, [messages]);
-
-    const create = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
-        e.preventDefault();
-        const form = new FormData(e.currentTarget);
-        // override the file
-        form.set('file', file);
-        const response = await ChannelMessageService.create(form);
-        setMessages([response, ...messages]);
-    };
-
-    const update = async (e: FormEvent<HTMLFormElement>) => {
-        if (!editMessage) return;
-        e.preventDefault();
-        const form = new FormData(e.currentTarget);
-        const uuid = form.get('uuid') as string;
-        const body = form.get('body') as string;
-        const response = await ChannelMessageService.update(uuid, { body });
-        setMessages(messages.map((message: ChannelMessage) => message.uuid === response.uuid 
-            ? response 
-            : message
-        ));
-    };
-
-    const destroy = async (uuid: string) => {
-        await ChannelMessageService.destroy(uuid);
-        setMessages(messages.filter((message: ChannelMessage) => message.uuid !== uuid));
-    };
-
-    const destroyFile = async (msg: ChannelMessage) => {
-        if (!msg.channel_message_upload) return;
-        const { uuid } = msg;
-        const { uuid: fileUuid } = msg.channel_message_upload.room_file;
-        await RoomFileService.destroy(fileUuid);
-        setMessages(messages.map((message: ChannelMessage) => message.uuid === uuid
-            ? { ...message, channel_message_upload: null }
-            : message
-        ));
-    };
+    const { 
+        messages, error, isLoading, 
+        nextPage, maxPages, page, 
+        create, update, destroy, 
+        destroyFile, editMessage, 
+        setEditMessage 
+    } = useChannelMessages();
 
     return (
         <div className="overflow-y-auto">
@@ -94,14 +32,17 @@ const ChannelMessageMain = (): JSX.Element => {
                 setEditMessage={setEditMessage}
                 destroyMessage={destroy}
                 destroyFile={destroyFile}
+                nextPage={nextPage}
+                maxPages={maxPages}
+                page={page}
             />
 
-            {!editMessage 
+            {!editMessage
                 ? <ChannelMessageCreate create={create} />
-                : <ChannelMessageUpdate 
-                    editMessage={editMessage} 
-                    update={update} 
-                    setEditMessage={setEditMessage} 
+                : <ChannelMessageUpdate
+                    editMessage={editMessage}
+                    update={update}
+                    setEditMessage={setEditMessage}
                 />
             }
         </div>

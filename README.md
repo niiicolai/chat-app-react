@@ -19,7 +19,10 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Logout                       | [x]     |
 |                        | Edit Profile                 | [x]     |
 |                        | Delete Avatar                | [x]     |
-|                        | Google Registration+Login    | [ ]     |
+|                        | Forgot password              | [ ]     |
+|                        | E-mail verification          | [ ]     |
+|                        | Two Factor Authentication    | [ ]     |
+|                        | Google Sign up + Login       | [ ]     |
 | **Room**               | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
@@ -35,35 +38,35 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | File Retention Overview      | [x]     |
 |                        | Message Retention Overview   | [x]     |
 |                        | Display Rules Text           | [x]     |
-|                        | Pagination                   | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Room Invite Link**   | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Join                         | [x]     |
-|                        | Pagination                   | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Room Files**         | List                         | [x]     |
 |                        | Delete                       | [x]     |
-|                        | Pagination                   | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Room Users**         | Set to Admin                 | [x]     |
 |                        | Set to Moderator             | [x]     |
 |                        | Set to Member                | [x]     |
 |                        | Kick                         | [x]     |
 |                        | Client Role Check            | [x]     |
-|                        | Pagination                   | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Channel**            | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Delete Avatar                | [x]     |
-|                        | Pagination                   | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Channel Webhook**    | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Send Test Message            | [x]     |
 |                        | Delete Avatar                | [x]     |
-|                        | Pagination                   | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Channel Message**    | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
@@ -71,15 +74,21 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Add File                     | [x]     |
 |                        | Delete File                  | [x]     |
 |                        | Scroll To Bottom Event       | [ ]     |
-|                        | Infinite Scroll              | [ ]     |
+|                        | Pagination                   | [x]     |
 | **Toast**              | Create                       | [x]     |
 |                        | List                         | [x]     |
 |                        | Delete                       | [x]     |
 | **Websocket**          | Connect                      | [x]     |
 |                        | Join Channel                 | [x]     |
 |                        | Handle Message Events        | [x]     |
+| **WebRTC**             | Connect                      | [ ]     |
+|                        | Video Call                   | [ ]     |
+|                        | Audio Call                   | [ ]     |
+|                        | Screen Sharing               | [ ]     |
 | **Logging**            | Exceptions                   | [ ]     |
 | **Testing**            | end2end tests                | [ ]     |
+|                        | unit tests                   | [ ]     |
+|                        | integration tests            | [ ]     |
 | **Routing**            | React Router                 | [x]     |
 |                        | Sitemap                      | [x]     |
 | **CI/CD**              | GitHub Actions               | [x]     |

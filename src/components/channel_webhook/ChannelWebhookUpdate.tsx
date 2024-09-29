@@ -15,7 +15,7 @@ import { ChannelContext } from "../../context/channelContext";
 interface ChannelWebhookUpdateProps {
     webhookEdit: ChannelWebhook;
     setWebhookEdit: (webhook: ChannelWebhook | null) => void;
-    destroyAvatar: () => void;
+    destroyAvatar: (channelWebhook: ChannelWebhook) => Promise<void>;
     update: (e: FormEvent<HTMLFormElement>, file: string | Blob) => Promise<void>;
 }
 
@@ -54,7 +54,23 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
         });
     }
 
-    
+    const destroyAvatarHandler = () => {
+        if (!webhookEdit) return;
+
+        destroyAvatar(webhookEdit)
+        .then(() => {
+            setFile('');
+            setError('');
+            setWebhookEdit(null);
+        })
+        .catch((err: unknown) => {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
+        });
+    }
 
     const fileHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const target = e.target as HTMLInputElement;
@@ -117,7 +133,7 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
                                     <div className="p-3">
                                         <Button
                                             type="error"
-                                            onClick={() => destroyAvatar()}
+                                            onClick={() => destroyAvatarHandler()}
                                             button="button"
                                             slot="Delete Avatar"
                                         />

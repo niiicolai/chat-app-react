@@ -12,6 +12,8 @@ interface UseRooms {
     setRooms: (rooms: Room[]) => void;
     error: string;
     isLoading: boolean;
+    pages: number;
+    setPages: (pages: number) => void;
 }
 
 /**
@@ -23,27 +25,40 @@ const useRooms = (): UseRooms => {
     const [rooms, setRooms] = useState<Room[]>([]);
     const [error, setError] = useState("");
     const [isLoading, setLoading] = useState(false);
+    const [pages, setPages] = useState(1);
+    const limit = 10;
 
     useEffect(() => {
         if (UserService.isAuthenticated()) {
-            setLoading(true);
-            RoomService.findAll()
-                .then(setRooms)
-                .catch((err: unknown) => {
-                    if (err instanceof Error) setError(err.message);
-                    else setError("An unknown error occurred");
-                })
-                .finally(() => setLoading(false));
+            paginate(1, limit);
         }
 
         return () => { }
     }, []);
+
+    const paginate = async (page: number, limit: number) => {
+        setLoading(true);
+
+        try {
+            const { data, pages } = await RoomService.findAll(page, limit);
+            setRooms(data);
+            setPages(pages ?? 1);
+            setError("");
+        } catch (err: unknown) {
+            if (err instanceof Error) setError(err.message);
+            else setError("An unknown error occurred");
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return {
         rooms,
         setRooms,
         error,
         isLoading,
+        pages,
+        setPages,
     };
 }
 

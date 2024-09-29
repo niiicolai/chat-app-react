@@ -2,6 +2,7 @@ import ChannelMessageListItem from "./ChannelMessageListItem";
 import ChannelMessage from "../../models/channel_message";
 import Alert from "../utils/Alert";
 import Spinner from "../utils/Spinner";
+import Button from "../utils/Button";
 import { useContext, JSX } from "react";
 import { ChannelContext } from "../../context/channelContext";
 import { RoomContext } from "../../context/roomContext";
@@ -18,6 +19,9 @@ interface ChannelMessageListProps {
     messages: ChannelMessage[];
     isLoading: boolean;
     error: string | null;
+    nextPage: () => void;
+    maxPages: number;
+    page: number;
 }
 
 /**
@@ -26,16 +30,16 @@ interface ChannelMessageListProps {
  * @returns {JSX.Element}
  */
 const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
-    const { messages, isLoading, error, setEditMessage, destroyMessage, destroyFile } = props;
+    const { messages, isLoading, error, setEditMessage, destroyMessage, destroyFile, nextPage, maxPages, page } = props;
     const { selectedChannel } = useContext(ChannelContext);
     const { selectedRoomUser } = useContext(RoomContext);
     const { user } = useContext(UserContext);
     const isModOrAdmin = selectedRoomUser?.room_user_role_name === 'Admin' || selectedRoomUser?.room_user_role_name === 'Moderator';
 
     const emptyStateMessages = [
-        'Looks like you&rsquo;re the early bird! Send a message to kick things off! 🐦💬',
-        'You&rsquo;re the first one here! Why not say hello? 👋💬',
-        'It&rsquo;s quiet in here... be the first to break the silence! 🗨️'
+        'Looks like you are the early bird! Send a message to kick things off! 🐦💬',
+        'You are the first one here! Why not say hello? 👋💬',
+        'It is quiet in here... be the first to break the silence! 🗨️'
     ];
 
     const emptyStateMessage = emptyStateMessages[Math.floor(Math.random() * emptyStateMessages.length)];
@@ -60,6 +64,22 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
 
                 {selectedChannel &&
                     <ul className="flex flex-col justify-end gap-3 mb-3">
+                        <li className="flex justify-center">
+                            {page < maxPages &&
+                                <Button type="primary" title="Load more" display="w-full p-2 text-xs" onClick={nextPage} slot={
+                                    <span className="flex items-center justify-between gap-3">
+                                        <span>Load older messages</span>
+                                        <span>
+                                            Displaying for page {page == 1 ? '1' : `1-${page}`} of {maxPages}
+                                        </span>
+                                    </span>
+                                } />
+                            }
+                            {page > 1 && page === maxPages &&
+                                <span className="text-xs text-gray-500">No more messages to load</span>
+                            }
+                        </li>
+
                         {messages.map((message: ChannelMessage) => (
                             <ChannelMessageListItem
                                 key={message.uuid}

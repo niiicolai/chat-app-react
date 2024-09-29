@@ -19,13 +19,13 @@ interface RoomProviderProps {
  * @returns {JSX.Element} JSX.Element
  */
 function RoomProvider(props: RoomProviderProps): JSX.Element {
-    const { rooms, setRooms } = useRooms();
+    const { rooms, setRooms, pages, setPages } = useRooms();
     const [ selectedRoom, setSelectedRoom ] = useState<Room | null>(null);
     const [ selectedRoomUser, setSelectedRoomUser ] = useState<RoomUser | null>(null);
     const { slot } = props;
 
     return (
-        <RoomContext.Provider value={{ selectedRoom, rooms, setSelectedRoom, setRooms, selectedRoomUser, setSelectedRoomUser }}>
+        <RoomContext.Provider value={{ selectedRoom, rooms, setSelectedRoom, setRooms, selectedRoomUser, setSelectedRoomUser, pages, setPages }}>
             {slot}
         </RoomContext.Provider>
     );

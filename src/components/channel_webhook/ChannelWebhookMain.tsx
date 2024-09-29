@@ -4,10 +4,7 @@ import ChannelWebhookList from "./ChannelWebhookList";
 import ChannelWehookCreate from "./ChannelWebhookCreate";
 import ChannelWebhookUpdate from "./ChannelWebhookUpdate";
 import ChannelWebhookTest from "./ChannelWebhookTest";
-import ChannelWebhookService from "../../services/channelWebhookService";
-import RoomFileService from "../../services/roomFileService";
-import { useState, JSX, FormEvent, useContext } from "react";
-import { ToastContext } from "../../context/toastContext";
+import { useState, JSX } from "react";
 
 /**
  * @interface ChannelWebhookMainProps
@@ -24,66 +21,17 @@ interface ChannelWebhookMainProps {
  * @returns {JSX.Element}
  */
 const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
-    const { showWebhooks, setShowWebhooks } = props;
-    const { addToast } = useContext(ToastContext);
-    const { webhooks, setWebhooks } = useChannelWebhooks();
     const [showWebhookCreate, setShowWebhookCreate] = useState(false);
     const [webhookTest, setWebhookTest] = useState<ChannelWebhook | null>(null);
     const [webhookEdit, setWebhookEdit] = useState<ChannelWebhook | null>(null);
-
-    const create = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        formData.set('file', file);
-        const response = await ChannelWebhookService.create(formData);
-        setWebhooks([...webhooks, response]);
-        setShowWebhookCreate(false);
-        addToast({ message: 'Channel webhook created', type: 'success', duration: 5000 });
-    };
-
-    const update = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        formData.set('file', file);
-        const uuid = formData.get('uuid') as string;
-        if (!uuid) return;
-        const response = await ChannelWebhookService.update(uuid, formData);
-        setWebhooks(webhooks.map((webhook: ChannelWebhook) => webhook.uuid === uuid ? response : webhook));
-        setWebhookEdit(null);
-        addToast({ message: 'Channel webhook updated', type: 'success', duration: 5000 });
-    };
-
-    const destroy = async (uuid: string) => {
-        await ChannelWebhookService.destroy(uuid);
-        setWebhooks(webhooks.filter((webhook: ChannelWebhook) => webhook.uuid !== uuid));
-        addToast({ message: 'Channel webhook destroyed', type: 'success', duration: 5000 });
-    };
-
-    const testWebhook = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const uuid = formData.get('uuid') as string;
-        const message = formData.get('message') as string;
-        await ChannelWebhookService.test(uuid, { message });
-        setWebhookTest(null);
-        addToast({ message: 'Webhook test sent', type: 'success', duration: 5000 });
-    };
-
-    const destroyAvatar = async () => {
-        if (!webhookEdit?.room_file) return;
-        await RoomFileService.destroy(webhookEdit.room_file.uuid);
-        setWebhookEdit(null);
-        setWebhooks(webhooks.map((webhook: ChannelWebhook) => webhook.uuid === webhookEdit.uuid
-            ? { ...webhookEdit, room_file: null } : webhook));
-        addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
-    }
+    const cwCtrl = useChannelWebhooks();
 
     if (webhookTest) {
         return (
             <ChannelWebhookTest
                 webhookTest={webhookTest}
                 setWebhookTest={setWebhookTest}
-                testWebhook={testWebhook}
+                testWebhook={cwCtrl.testWebhook}
             />
         );
     } else if (showWebhookCreate) {
@@ -91,7 +39,7 @@ const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
             <ChannelWehookCreate
                 showWebhookCreate={showWebhookCreate}
                 setShowWebhookCreate={setShowWebhookCreate}
-                create={create}
+                create={cwCtrl.create}
             />
         );
     } else if (webhookEdit) {
@@ -99,21 +47,27 @@ const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
             <ChannelWebhookUpdate
                 webhookEdit={webhookEdit}
                 setWebhookEdit={setWebhookEdit}
-                update={update}
-                destroyAvatar={destroyAvatar}
+                update={cwCtrl.update}
+                destroyAvatar={cwCtrl.destroyAvatar}
             />
         );
     }
 
     return (
         <ChannelWebhookList
-            webhooks={webhooks}
-            showWebhooks={showWebhooks}
+            webhooks={cwCtrl.webhooks}
+            showWebhooks={props.showWebhooks}
             setShowWebhookCreate={setShowWebhookCreate}
             setWebhookTest={setWebhookTest}
-            setShowWebhooks={setShowWebhooks}
+            setShowWebhooks={props.setShowWebhooks}
             setWebhookEdit={setWebhookEdit}
-            destroyWebhook={destroy}
+            destroyWebhook={cwCtrl.destroy}
+            page={cwCtrl.page}
+            pages={cwCtrl.pages}
+            previousPage={cwCtrl.previousPage}
+            nextPage={cwCtrl.nextPage}
+            isLoading={cwCtrl.isLoading}
+            error={cwCtrl.error}
         />
     );
 };

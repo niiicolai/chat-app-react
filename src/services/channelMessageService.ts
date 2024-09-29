@@ -20,6 +20,9 @@ interface ChannelMessageResponse extends BuilderResponse {
 interface ChannelMessagesResponse extends BuilderResponse {
     data: {
         data: ChannelMessage[];
+        total: number;
+        page: number;
+        pages: number;
     };
 }
 
@@ -82,7 +85,7 @@ export default class ChannelMessageService {
      * @throws {Error} if the page is not a number
      * @throws {Error} if the limit is not a number
      */
-    static findAll = async (channel_uuid: string, page?: number, limit?: number): Promise<ChannelMessage[]> => {
+    static findAll = async (channel_uuid: string, page?: number, limit?: number): Promise<{ data: ChannelMessage[], total: number, page?: number, pages?: number }> => {
         if (!uuidValidate(channel_uuid)) throw new Error('Invalid channel_uuid');
         if (page && typeof page !== 'number') throw new Error('If provided, page must be a number');
         if (limit && typeof limit !== 'number') throw new Error('If provided, limit must be a number');
@@ -97,8 +100,8 @@ export default class ChannelMessageService {
                 .auth()
                 .execute() as ChannelMessagesResponse;
 
-            const { data } = response.data;
-            return data;
+            const { data, total, pages } = response.data;
+            return { data, total, page, pages };
         } catch (error: unknown) {
             throw ChannelMessageService.handleError(error);
         }

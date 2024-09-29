@@ -20,6 +20,8 @@ interface RoomResponse extends BuilderResponse {
 interface RoomsResponse extends BuilderResponse {
     data: {
         data: Room[];
+        total: number;
+        pages: number;
     };
 }
 
@@ -84,7 +86,7 @@ export default class RoomService {
      * @throws {Error} if the page is not a number
      * @throws {Error} if the limit is not a number
      */
-    static findAll = async (page?: number, limit?: number): Promise<Room[]> => {
+    static findAll = async (page?: number, limit?: number): Promise<{ data: Room[], total: number, pages: number }> => {
         if (page && typeof page !== 'number') throw new Error('If provided, page must be a number');
         if (limit && typeof limit !== 'number') throw new Error('If provided, limit must be a number');
 
@@ -97,8 +99,7 @@ export default class RoomService {
                 .auth()
                 .execute() as RoomsResponse;
 
-            const { data } = response.data;
-            return data;
+            return response.data;
         } catch (error: unknown) {
             throw RoomService.handleError(error);
         }

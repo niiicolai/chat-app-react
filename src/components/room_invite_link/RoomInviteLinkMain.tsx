@@ -1,11 +1,9 @@
 import useRoomInviteLinks from "../../hooks/useRoomInviteLinks";
-import RoomInviteLinkService from "../../services/roomInviteLinkService";
 import RoomInviteLink from "../../models/room_invite_link";
 import RoomInviteLinkList from "./RoomInviteLinkList";
 import RoomInviteLinkCreate from "./RoomInviteLinkCreate";
 import RoomInviteLinkUpdate from "./RoomInviteLinkUpdate";
-import { useState, JSX, FormEvent, useContext } from "react";
-import { ToastContext } from "../../context/toastContext";
+import { useState, JSX } from "react";
 
 /**
  * @interface RoomInviteLinkMainProps
@@ -23,41 +21,12 @@ interface RoomInviteLinkMainProps {
  */
 const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): JSX.Element => {
     const { showLinks, setShowLinks } = props;
-    const { inviteLinks, setInviteLinks, error, isLoading } = useRoomInviteLinks();
+    const { inviteLinks, error, isLoading, page, pages, nextPage, previousPage, create, update, destroy } = useRoomInviteLinks();
     const [showLinkCreate, setShowLinkCreate] = useState(false);
     const [linkEdit, setLinkEdit] = useState<RoomInviteLink | null>(null);
-    const { addToast } = useContext(ToastContext);
 
     const setShowLinksHandler = (show: boolean) => {
         setShowLinks(show);
-    };
-
-    const create = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const uuid = formData.get('uuid') as string;
-        const expires_at = formData.get('expires_at') as string;
-        const room_uuid = formData.get('room_uuid') as string;
-        const response = await RoomInviteLinkService.create({ uuid, room_uuid, expires_at });
-        setInviteLinks([...inviteLinks, response]);
-        addToast({ message: 'Invite link created', type: 'success', duration: 5000 });
-    };
-
-    const update = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const uuid = formData.get('uuid') as string;
-        const expires_at = formData.get('expires_at') as string;
-        if (!uuid) return;
-        const response = await RoomInviteLinkService.update(uuid, { expires_at });
-        setInviteLinks(inviteLinks.map((link: RoomInviteLink) => link.uuid === response.uuid ? response : link));
-        addToast({ message: 'Invite link updated', type: 'success', duration: 5000 });
-    };
-
-    const destroy = async (uuid: string) => {
-        await RoomInviteLinkService.destroy(uuid);
-        setInviteLinks(inviteLinks.filter((link: RoomInviteLink) => link.uuid !== uuid));
-        addToast({ message: 'Invite link deleted', type: 'success', duration: 5000 });
     };
 
     if (showLinkCreate) return (
@@ -85,6 +54,10 @@ const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): JSX.Element => {
             setLinkEdit={setLinkEdit}
             setShowLinks={setShowLinksHandler}
             destroyLink={destroy}
+            nextPage={nextPage}
+            previousPage={previousPage}
+            page={page}
+            pages={pages}
         />
     );
 };

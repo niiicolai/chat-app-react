@@ -5,11 +5,11 @@ import { JSX } from 'react';
  * @description Button CSS types
  */
 const types: { [key: string]: string } = {
-    primary: 'bg-indigo-500 text-white hover:bg-indigo-600 hover:ring-2 hover:ring-indigo-800',
-    secondary: 'bg-gray-500 text-white hover:bg-gray-600 hover:ring-2 hover:ring-gray-800',
-    error: 'bg-red-500 text-white hover:ring-2 hover:ring-red-800',
-    success: 'bg-green-500 text-white hover:ring-2 hover:ring-green-800',
-    warning: 'bg-yellow-500 text-white hover:ring-2 hover:ring-yellow-800',
+    primary: 'bg-indigo-500 text-white hover:bg-indigo-600 hover:ring-2 hover:ring-indigo-800 disabled:bg-gray-500 disabled:cursor-not-allowed',
+    secondary: 'bg-gray-500 text-white hover:bg-gray-600 hover:ring-2 hover:ring-gray-800 disabled:bg-gray-500 disabled:cursor-not-allowed',
+    error: 'bg-red-500 text-white hover:ring-2 hover:ring-red-800 disabled:bg-gray-500 disabled:cursor-not-allowed',
+    success: 'bg-green-500 text-white hover:ring-2 hover:ring-green-800 disabled:bg-gray-500 disabled:cursor-not-allowed',
+    warning: 'bg-yellow-500 text-white hover:ring-2 hover:ring-yellow-800 disabled:bg-gray-500 disabled:cursor-not-allowed',
 };
 
 /**
@@ -23,6 +23,7 @@ interface ButtonProps {
     display?: string;
     button?: 'button' | 'submit' | 'reset';
     title?: string;
+    disabled?: boolean;
 }
 
 /**
@@ -31,15 +32,16 @@ interface ButtonProps {
  * @returns {JSX.Element}
  */
 const Button = (props: ButtonProps): JSX.Element => {
-    const { button, onClick, slot, display, title, type } = props;
+    const { button, onClick, slot, display, title, type, disabled } = props;
     const displayClass = display ? display : 'px-6 py-1 w-full block';
     const styling = type ? types[type] : types.primary;
     const buttonType = button ? button : 'button';
     const finalTitle = title ? title : '';
+    const finalDisabled = disabled === true ? true : false;
 
     if (!onClick) {
         return (
-            <button type={buttonType}
+            <button type={buttonType} disabled={finalDisabled}
                 className={`${styling} ${displayClass} transition-all rounded-md`}
                 title={finalTitle}>
                 {slot}
@@ -48,7 +50,7 @@ const Button = (props: ButtonProps): JSX.Element => {
     }
 
     return (
-        <button type={buttonType}
+        <button type={buttonType} disabled={finalDisabled}
             className={`${styling} ${displayClass} transition-all rounded-md`}
             onClick={onClick}
             title={finalTitle}>

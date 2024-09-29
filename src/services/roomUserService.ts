@@ -20,6 +20,7 @@ interface RoomUsersResponse extends BuilderResponse {
     data: {
         data: RoomUser[];
         total: number;
+        pages: number;
     };
 }
 
@@ -75,7 +76,7 @@ export default class RoomInviteLinkService {
      * @param {params} limit - The limit number (optional)
      * @returns {Promise<RoomUser[]>} room users
      */
-    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<{ data: RoomUser[], total: number }> => {
+    static findAll = async (room_uuid: string, page?: number, limit?: number): Promise<{ data: RoomUser[], total: number, pages: number }> => {
         if (!uuidValidate(room_uuid)) throw new Error('Invalid room_uuid');
         if (page && typeof page !== 'number') throw new Error('If provided, page must be a number');
         if (limit && typeof limit !== 'number') throw new Error('If provided, limit must be a number');
