@@ -81,9 +81,9 @@ const RoomList = (props: RoomListProps): JSX.Element => {
     <Modal title="Rooms" show={browseRooms} setShow={setBrowseRooms} slot={
       <div>
         <Paginator nextPage={nextPage} previousPage={previousPage} isLoading={isLoading} error={error} page={page} pages={pages} slot={
-          <ul className="flex flex-col gap-3 mb-3">
+          <ul className="flex flex-col gap-3 mb-3" data-testid="room-list">
             {rooms.map((room) => (<RoomListItem key={room.uuid} room={room} setRoom={selectRoom} />))}
-            {!rooms.length && <li className="text-white">No rooms found</li>}
+            {!rooms.length && <li className="text-white" data-testid="room-list-empty">No rooms found</li>}
           </ul>
         } />
       </div>

@@ -42,6 +42,19 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
         const formData = new FormData(event.currentTarget);
         const uuid = formData.get("uuid") as string;
         formData.delete("uuid");
+
+        if (formData.get("name") === "") {
+            setError("Name is required");
+            setIsLoading(false);
+            return;
+        }
+
+        if (formData.get("description") === "") {
+            setError("Description is required");
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const room = await RoomService.update(uuid, formData);
             setRooms(rooms.map((r) => r.uuid === room.uuid ? room : r));
@@ -51,7 +64,7 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
             setEditRoom(null);
             setError('');
             if (file) { setFile('') }
-            addToast({ message: 'Room updated', type: 'success', duration: 5000 });
+            addToast({ message: 'Room updated successfully', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -83,6 +96,14 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
         }
     }
 
+    const categoryHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const target = e.target as HTMLSelectElement;
+        const category = categories.find((category) => category.name === target.value);
+        if (category && editRoom) {
+            setEditRoom({ ...editRoom, room_category_name: category.name });
+        }
+    }
+
     const fileHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const target = e.target as HTMLInputElement;
         if (!target.files || !target.files.length) {
@@ -95,14 +116,14 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
     return (
         <Modal title="Update Room" show={show} setShow={() => setEditRoom(null)} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="room-edit-alert-message" />
 
                 <p className="text-md mb-3">
                     Enter the details to update a room
                 </p>
 
                 {editRoom && (
-                    <form onSubmit={updateRoom} className="text-white">
+                    <form onSubmit={updateRoom} className="text-white" data-testid="room-edit-form">
                         <input type="hidden" name="uuid" value={editRoom.uuid} />
 
                         <InputControl
@@ -121,12 +142,13 @@ const RoomUpdate = (props: RoomUpdateProps): JSX.Element => {
                             defaultValue={editRoom.description}
                         />
 
-                        <InputControl
+                        <InputControlTracked
                             id="room-update-room_category_name"
                             name="room_category_name"
                             type="select"
                             label="Category"
-                            defaultValue={editRoom.room_category_name}
+                            value={editRoom.room_category_name}
+                            onChange={categoryHandler}
                             options={
                                 categories.map((category) => (
                                     <option key={category.name} value={category.name}>

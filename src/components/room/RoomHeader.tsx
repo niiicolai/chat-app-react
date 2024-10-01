@@ -19,13 +19,13 @@ const RoomHeader = (): JSX.Element => {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>
-                    <h1 className="text-lg font-bold mb-3">
+                    <h1 className="text-lg font-bold mb-3" data-testid="room-header-title">
                         {selectedRoom.name}
                     </h1>
 
                     <div className="flex gap-3 text-xs mb-2 w-full justify-between">
                         <div className="flex gap-2 justify-start">
-                            <Badge type="primary" title="Room Category" slot={selectedRoom.room_category_name} />
+                            <Badge type="primary" title="Room Category" slot={selectedRoom.room_category_name} testId="room-header-category" />
 
                             <div className="w-24 sm:w-44">
                                 <Progress type="primary" value={selectedRoom.bytes_used} max={selectedRoom.fileSettings.totalFilesBytesAllowed}

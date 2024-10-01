@@ -85,9 +85,22 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Video Call                   | [ ]     |
 |                        | Audio Call                   | [ ]     |
 |                        | Screen Sharing               | [ ]     |
-| **Logging**            | Exceptions                   | [ ]     |
-| **Testing**            | End2end tests                | [ ]     |
-|                        | Unit tests                   | [ ]     |
+| **Logging**            | Rollbar                      | [x]     |
+|                        | Uncaught Exceptions          | [x]     |
+|                        | Unhandled Promise Rej.       | [x]     |
+| **End2end tests**      | Login                        | [x]     |
+|                        | Signup                       | [x]     |
+|                        | Room                         | [x]     |
+|                        | Room Settings                | [ ]     |
+|                        | Room Invite Links            | [ ]     |
+|                        | Room User                    | [ ]     |
+|                        | Room File                    | [ ]     |
+|                        | Channel                      | [x]     |
+|                        | Channel Message              | [ ]     |
+|                        | Channel Message Upload       | [ ]     |
+|                        | Channel Webhook              | [ ]     |
+|                        | User                         | [ ]     |
+| **Other tests**        | Unit tests                   | [ ]     |
 |                        | Integration tests            | [ ]     |
 | **Routing**            | React Router                 | [x]     |
 |                        | Sitemap                      | [x]     |
@@ -110,9 +123,14 @@ cp .env.example .env
 npm run dev
 ```
 
-### Test 
+### Unit and Integration Test (Vitest)
 ```
 npm test
+```
+
+### End to End Test (Cypress)
+```
+npm run cy:open
 ```
 
 ### ESLint
@@ -131,6 +149,7 @@ npm run build
 ```
 
 ## Docker
+Build a Docker image using the project's Dockerfile.
 
 ### Build
 ```

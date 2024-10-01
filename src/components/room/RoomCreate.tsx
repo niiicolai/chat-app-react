@@ -53,7 +53,7 @@ const RoomCreate = (props: RoomCreateProps): JSX.Element => {
             setError('');
             setShowCreateRoom(false);
             setSelectedRoom(room);
-            addToast({ message: 'Room created', type: 'success', duration: 5000 });
+            addToast({ message: 'Room created successfully', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -89,14 +89,14 @@ const RoomCreate = (props: RoomCreateProps): JSX.Element => {
     return (
         <Modal title="Create Room" show={showCreateRoom} setShow={setShowCreateRoom} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="room-create-alert-message" />
 
                 <p className="text-md mb-3">
                     Enter the details to create a room
                 </p>
 
 
-                <form onSubmit={submitHandler}>
+                <form onSubmit={submitHandler} data-testid="room-create-form">
                     <input type="hidden" name="uuid" value={uuid} />
                     <InputControlTracked id="room-create-name" type="text" label="Name" name="name" value={name} onChange={nameHandler} />
                     <InputControlTracked id="room-create-description" type="text" label="Desc" name="description" value={description} onChange={descriptionHandler} />

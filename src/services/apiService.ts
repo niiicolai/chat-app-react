@@ -226,11 +226,12 @@ export default class ApiService {
                 };
             }
 
+            const data = await response.json();
+
             if (!response.ok) {
-                throw new BuilderError(response.statusText);
+                throw new BuilderError(data);
             }
             
-            const data = await response.json();
             return {
                 data,
                 status: response.status,

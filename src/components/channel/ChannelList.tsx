@@ -74,7 +74,7 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
     }
 
     if (!channels.length) return (
-        <div className="w-full sm:w-64 flex flex-col items-center justify-center gap-3 p-3 text-center">
+        <div className="w-full sm:w-64 flex flex-col items-center justify-center gap-3 p-3 text-center" data-testid="channel-list-empty">
             <p className="text-white">No channels to join, but you can fix that! Start a new one now! 🚀</p>
         </div>
     )
@@ -85,7 +85,7 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
                 <div className="p-3 sm:p-0">
                     <p className="font-bold text-lg text-white mb-3 sm:hidden">Channels</p>
                     <Paginator isLoading={isLoading} error={error} nextPage={nextPage} previousPage={previousPage} page={page} pages={pages} slot={
-                        <ul className="flex flex-col gap-3">
+                        <ul className="flex flex-col gap-3" data-testid="channel-list">
                             <li>
                                 <Button type="primary" title="Show rules" display={`${showRules ? 'ring-2 ring-gray-500 hover:ring-gray-500' : ''} w-full text-xs p-1`}
                                     onClick={showRulesHandler} slot={

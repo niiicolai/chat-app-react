@@ -20,10 +20,11 @@ const RoomListItem = (props: RoomListItemProps): JSX.Element => {
     const { room, setRoom } = props;
 
     return (
-        <li key={room.uuid} className="hover:ring-2 hover:ring-indigo-800 relative rounded-md overflow-hidden">
+        <li key={room.uuid} className="hover:ring-2 hover:ring-indigo-800 relative rounded-md overflow-hidden" data-testid="room-list-item">
             <Button onClick={() => setRoom(room)}
                 button="button"
                 type="primary"
+                testId="room-list-item-button"
                 slot={
                     <span className="block p-3 text-left">
                         <span className="absolute left-0 right-0 top-0 bottom-0 z-10"

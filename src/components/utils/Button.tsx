@@ -24,6 +24,7 @@ interface ButtonProps {
     button?: 'button' | 'submit' | 'reset';
     title?: string;
     disabled?: boolean;
+    testId?: string;
 }
 
 /**
@@ -32,16 +33,17 @@ interface ButtonProps {
  * @returns {JSX.Element}
  */
 const Button = (props: ButtonProps): JSX.Element => {
-    const { button, onClick, slot, display, title, type, disabled } = props;
+    const { button, onClick, slot, display, title, type, disabled, testId } = props;
     const displayClass = display ? display : 'px-6 py-1 w-full block';
     const styling = type ? types[type] : types.primary;
     const buttonType = button ? button : 'button';
     const finalTitle = title ? title : '';
     const finalDisabled = disabled === true ? true : false;
+    const finalTestId = testId ? testId : '';
 
     if (!onClick) {
         return (
-            <button type={buttonType} disabled={finalDisabled}
+            <button type={buttonType} disabled={finalDisabled} data-testid={finalTestId}
                 className={`${styling} ${displayClass} transition-all rounded-md`}
                 title={finalTitle}>
                 {slot}
@@ -50,7 +52,7 @@ const Button = (props: ButtonProps): JSX.Element => {
     }
 
     return (
-        <button type={buttonType} disabled={finalDisabled}
+        <button type={buttonType} disabled={finalDisabled} data-testid={finalTestId}
             className={`${styling} ${displayClass} transition-all rounded-md`}
             onClick={onClick}
             title={finalTitle}>

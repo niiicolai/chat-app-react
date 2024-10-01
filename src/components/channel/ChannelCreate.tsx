@@ -11,6 +11,7 @@ import InputControlTracked from "../utils/InputControlTracked";
 import { useContext, useState, JSX, FormEvent } from "react";
 import { RoomContext } from "../../context/roomContext";
 import { ChannelContext } from "../../context/channelContext";
+import { ToastContext } from "../../context/toastContext";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -30,6 +31,7 @@ interface ChannelCreateProps {
 const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
     const { showCreateChannel, setShowCreateChannel } = props;
     const { selectedRoom } = useContext(RoomContext);
+    const { addToast } = useContext(ToastContext);
     const { setChannels, channels, total, setTotal } = useContext(ChannelContext);
     const { channelTypes } = useChannelTypes();
     const [uuid, setUuid] = useState(uuidv4());
@@ -57,6 +59,7 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
             setChannelTypeName('');
             setUuid(uuidv4());
             setTotal(total + 1);
+            addToast({ message: 'Channel created successfully', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -94,13 +97,13 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
             <div>
                 {selectedRoom && (
                     <div>
-                        <Alert type="error" message={error} />
+                        <Alert type="error" message={error} testId="channel-create-alert-message" />
 
                         <p className="text-md mb-3">
                             Enter the details to create a new channel.
                         </p>
 
-                        <form onSubmit={create}>
+                        <form onSubmit={create} data-testid="channel-create-form">
                             <input type="hidden" name="uuid" value={uuid} />
                             <input type="hidden" name="room_uuid" value={selectedRoom.uuid} />
 

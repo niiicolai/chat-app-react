@@ -32,10 +32,10 @@ function AppLeftPanel(): JSX.Element {
   }
 
   const actions = [
-    { name: 'Create Room', type: 'primary', onClick: () => { setShowCreateRoom(true) }, slot: <PlusIcon fill="white" width="1em" /> },
-    { name: 'Browse Rooms', type: 'primary', onClick: () => { setBrowseRooms(true) }, slot: <ListIcon fill="white" width="1em" /> },
-    { name: 'Edit Profile', type: 'primary', onClick: () => { setEditUser(true) }, slot: <UserGear fill="white" width="1em" /> },
-    { name: 'Logout', type: 'error', onClick: () => { logout() }, slot: <LogoutIcon fill="white" width="1em" /> }
+    { name: 'Create Room', type: 'primary', onClick: () => { setShowCreateRoom(true) }, slot: <PlusIcon fill="white" width="1em" />, testId: 'show-create-room-button' },
+    { name: 'Browse Rooms', type: 'primary', onClick: () => { setBrowseRooms(true) }, slot: <ListIcon fill="white" width="1em" />, testId: 'browse-rooms-button' },
+    { name: 'Edit Profile', type: 'primary', onClick: () => { setEditUser(true) }, slot: <UserGear fill="white" width="1em" />, testId: 'edit-profile-button' },
+    { name: 'Logout', type: 'error', onClick: () => { logout() }, slot: <LogoutIcon fill="white" width="1em" />, testId: 'logout-button' }
   ]
 
   return (
@@ -49,7 +49,7 @@ function AppLeftPanel(): JSX.Element {
       </div>
 
       <div className='flex flex-row sm:flex-col gap-2'>
-        {actions.map((action: { name:string, type:string, onClick: () => void, slot: JSX.Element }, index: number) => (
+        {actions.map((action: { name:string, type:string, onClick: () => void, slot: JSX.Element, testId: string }, index: number) => (
           <Button onClick={action.onClick}
             display="w-8 h-8 p-1 font-bold flex items-center justify-center"
             button="button"
@@ -57,6 +57,7 @@ function AppLeftPanel(): JSX.Element {
             slot={action.slot}
             title={action.name}
             key={index}
+            testId={action.testId}
           />))}
       </div>
       

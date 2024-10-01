@@ -47,7 +47,7 @@ const SignupView = (): JSX.Element => {
             <div className="text-white h-full flex items-center justify-center">
                 <div className="max-w-xl">
                     <div className="text-md overflow-hidden w-96 flex flex-col items-center justify-center gap-1 p-3 text-white">
-                        <Alert type="error" message={error} />
+                        <Alert type="error" message={error} testId="alert-message" />
 
                         <div className="flex items-center justify-center gap-6 w-full mb-3 text-3xl font-bold">
                             <GhostIcon fill="white" width="22" />

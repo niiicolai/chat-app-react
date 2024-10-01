@@ -17,6 +17,7 @@ const types: { [key: string]: string } = {
 interface AlertProps {
     type?: string | null;
     message?: string | null;
+    testId?: string | null;
 }
 
 /**
@@ -25,12 +26,12 @@ interface AlertProps {
  * @returns {JSX.Element}
  */
 const Alert = (props: AlertProps): JSX.Element => {
-    const { message, type } = props;
+    const { message, type, testId } = props;
     const styling = type ? types[type] : types.error;
     return (
         <>
             {message &&
-                <p className={`${styling} p-3 text-sm rounded-md text-center font-bold`}>
+                <p className={`${styling} p-3 text-sm rounded-md text-center font-bold`} data-testid={testId || ''}>
                     {props.message}
                 </p>
             }

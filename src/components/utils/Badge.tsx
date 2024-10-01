@@ -19,6 +19,7 @@ interface BadgeProps {
     type?: string;
     slot: JSX.Element | string;
     title: string;
+    testId?: string;
 }
 
 /**
@@ -27,11 +28,11 @@ interface BadgeProps {
  * @returns {JSX.Element}
  */
 const Badge = (props: BadgeProps): JSX.Element => {
-    const { slot, title, type } = props;
+    const { slot, title, type, testId } = props;
     const styling = type ? types[type] : types.primary;
     
     return (
-        <div title={title} className={`${styling} px-2 rounded-md inline-block text-xs flex items-center justify-center`} style={{ paddingTop: '.2em', paddingBottom: '.2em' }}>
+        <div title={title} className={`${styling} px-2 rounded-md inline-block text-xs flex items-center justify-center`} style={{ paddingTop: '.2em', paddingBottom: '.2em' }} data-testid={testId || ''}>
             {slot}
         </div>
     );

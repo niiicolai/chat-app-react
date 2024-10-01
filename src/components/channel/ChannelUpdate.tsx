@@ -38,11 +38,24 @@ const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
         e.preventDefault();
         setIsLoading(true);
 
+        const formData = new FormData(e.currentTarget);
+        formData.set('file', file);
+        const uuid = formData.get('uuid') as string;
+        if (!uuid) return;
+
+        if (formData.get('name') === '') {
+            setError('Name is required');
+            setIsLoading(false);
+            return;
+        }
+
+        if (formData.get('description') === '') {
+            setError('Description is required');
+            setIsLoading(false);
+            return;
+        }
+
         try {
-            const formData = new FormData(e.currentTarget);
-            const uuid = formData.get('uuid') as string;
-            formData.set('file', file);
-            if (!uuid) return;
             const response = await ChannelService.update(uuid, formData);
             setEditChannel(null);
             setFile(editChannel?.room_file?.src || '');
@@ -52,7 +65,7 @@ const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
             if (selectedChannel?.uuid === response.uuid) {
                 setSelectedChannel(response);
             }
-            addToast({ message: 'Channel updated', type: 'success', duration: 5000 });
+            addToast({ message: 'Channel updated successfully', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -100,13 +113,13 @@ const ChannelUpdate = (props: ChannelUpdateProps): JSX.Element => {
         <Modal title="Update Channel" show={show} setShow={() => setEditChannel(null)} slot={
             <div>
                 <div>
-                    <Alert type="error" message={error} />
+                    <Alert type="error" message={error} testId="channel-edit-alert-message" />
 
                     <p className="text-md mb-3">
                         Enter the details to update the channel.
                     </p>
 
-                    <form onSubmit={update}>
+                    <form onSubmit={update} data-testid="channel-edit-form">
                         <input type="hidden" name="uuid" value={editChannel?.uuid || ''} />
 
                         <InputControl

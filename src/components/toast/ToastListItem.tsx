@@ -33,7 +33,7 @@ const ToastListItem = (props: ToastListItemProps): JSX.Element => {
     return (
         <>
             {message &&
-                <p className={`${types[type]} p-3 text-sm rounded-md text-center font-bold`}>
+                <p className={`${types[type]} p-3 text-sm rounded-md text-center font-bold`} data-testid="toast-item-message">
                     {message}
                 </p>
             }
