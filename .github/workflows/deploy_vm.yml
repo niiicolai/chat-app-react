@@ -1,4 +1,4 @@
-name: VM Publish Production
+name: Publish VM Production and Docker Hub 
 
 on:
   push:
@@ -97,8 +97,10 @@ jobs:
           docker image prune -f
 
   deploy-to-docker-hub:
+    needs: 
+      - build
+      - test
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3

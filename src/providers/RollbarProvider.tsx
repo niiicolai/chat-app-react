@@ -1,7 +1,7 @@
 import { JSX } from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
-const environment = import.meta.env.VITE_ENVIRONMENT || 'development'; 
+const environment = import.meta.env.VITE_ENVIRONMENT || 'development';
 const accessToken = import.meta.env.VITE_ROLLBAR_CLIENT_ITEM_ACCESS_TOKEN;
 
 const rollbarConfig = {

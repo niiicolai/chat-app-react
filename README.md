@@ -5,9 +5,7 @@ A React.js SPA made for the chat backend application found at https://github.com
 ![example](example.png)
 
 ## Deployment Status
-[![VM Publish Production](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_vm.yml/badge.svg)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_vm.yml)
-
-[![Docker Hub Deploy](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_docker_hub.yml/badge.svg)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_docker_hub.yml)
+[![Publish VM Production and Docker Hub](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_vm.yml/badge.svg)](https://github.com/niiicolai/chat-app-react/actions/workflows/deploy_vm.yml)
 
 ## Features
 | Feature                | Subfeature                   | Status  |
@@ -106,7 +104,11 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Sitemap                      | [x]     |
 | **CI/CD**              | GitHub Actions               | [x]     |
 |                        | GitHub Secrets               | [x]     |
-| **Deployment**         | DigitalOcean                 | [x]     |
+|                        | DigitalOcean                 | [x]     |
+|                        | Docker Hub                   | [x]     |
+| **Design**             | [Mockup](mockup-design.png)  | [x]     |
+| **Presentation 1.**    | [Link](#)                    | [ ]     |
+| **Presentation 2.**    | [Link](#)                    | [ ]     |
 
 
 ## Development Environment Setup
