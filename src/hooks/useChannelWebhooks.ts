@@ -115,7 +115,7 @@ const useChannelWebhooks = (): UseChannelWebhooks => {
     const destroy = async (uuid: string) => {
         await ChannelWebhookService.destroy(uuid);
         setWebhooks(webhooks.filter((webhook: ChannelWebhook) => webhook.uuid !== uuid));
-        addToast({ message: 'Channel webhook destroyed', type: 'success', duration: 5000 });
+        addToast({ message: 'Channel webhook deleted', type: 'success', duration: 5000 });
     };
 
     const testWebhook = async (e: FormEvent<HTMLFormElement>) => {

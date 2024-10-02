@@ -73,11 +73,7 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
         paginate(page + 1, limit);
     }
 
-    if (!channels.length) return (
-        <div className="w-full sm:w-64 flex flex-col items-center justify-center gap-3 p-3 text-center" data-testid="channel-list-empty">
-            <p className="text-white">No channels to join, but you can fix that! Start a new one now! 🚀</p>
-        </div>
-    )
+
 
     return (
         <div className="p-3 w-64">
@@ -87,8 +83,13 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
                     <Paginator isLoading={isLoading} error={error} nextPage={nextPage} previousPage={previousPage} page={page} pages={pages} slot={
                         <ul className="flex flex-col gap-3" data-testid="channel-list">
                             <li>
-                                <Button type="primary" title="Show rules" display={`${showRules ? 'ring-2 ring-gray-500 hover:ring-gray-500' : ''} w-full text-xs p-1`}
-                                    onClick={showRulesHandler} slot={
+                                <Button
+                                    type="primary"
+                                    title="Show rules"
+                                    testId="channel-list-show-rules-button"
+                                    display={`${showRules ? 'ring-2 ring-gray-500 hover:ring-gray-500' : ''} w-full text-xs p-1`}
+                                    onClick={showRulesHandler}
+                                    slot={
                                         <span className="text-white">README</span>
                                     } />
                             </li>
@@ -98,6 +99,11 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
                                     channel={channel}
                                     setChannel={selectChannelHandler}
                                 />
+                            )}
+                            {!channels.length && (
+                                <li className="w-full flex flex-col items-center justify-center gap-3 p-3 text-center" data-testid="channel-list-empty">
+                                    <p className="text-white">No channels to join, but you can fix that! Start a new one now! 🚀</p>
+                                </li>
                             )}
                         </ul>
                     } />

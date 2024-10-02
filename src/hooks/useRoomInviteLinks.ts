@@ -90,7 +90,7 @@ const useRoomInviteLinks = (): UseRoomInviteLinks => {
         const room_uuid = formData.get('room_uuid') as string;
         const response = await RoomInviteLinkService.create({ uuid, room_uuid, expires_at });
         setInviteLinks([...inviteLinks, response]);
-        addToast({ message: 'Invite link created', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link created successfully', type: 'success', duration: 5000 });
     };
 
     const update = async (e: FormEvent<HTMLFormElement>) => {
@@ -101,13 +101,13 @@ const useRoomInviteLinks = (): UseRoomInviteLinks => {
         if (!uuid) return;
         const response = await RoomInviteLinkService.update(uuid, { expires_at });
         setInviteLinks(inviteLinks.map((link: RoomInviteLink) => link.uuid === response.uuid ? response : link));
-        addToast({ message: 'Invite link updated', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
     };
 
     const destroy = async (uuid: string) => {
         await RoomInviteLinkService.destroy(uuid);
         setInviteLinks(inviteLinks.filter((link: RoomInviteLink) => link.uuid !== uuid));
-        addToast({ message: 'Invite link deleted', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link deleted successfully', type: 'success', duration: 5000 });
     };
 
     return {

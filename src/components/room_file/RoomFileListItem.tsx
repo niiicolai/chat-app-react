@@ -11,7 +11,7 @@ import { JSX } from "react";
  */
 interface RoomFileListItemProps {
     file: RoomFile;
-    destroyFile: (uuid: string) => void;
+    setFileDelete: (file: RoomFile) => void;
     isAdmin: boolean;
 }
 
@@ -21,7 +21,7 @@ interface RoomFileListItemProps {
  * @returns {JSX.Element}
  */
 const RoomFileListItem = (props: RoomFileListItemProps): JSX.Element => {
-    const { file, destroyFile, isAdmin } = props;
+    const { file, setFileDelete, isAdmin } = props;
     return (
         <li key={file.uuid} className="flex flex-col justify-between gap-3 border border-gray-800 rounded-md p-3">
             <div className="flex flex-col sm:gap-1 gap-2">
@@ -58,7 +58,7 @@ const RoomFileListItem = (props: RoomFileListItemProps): JSX.Element => {
             </div>
             {isAdmin &&
                 <div>
-                    <Button type="error" display="h-6 w-full flex items-center justify-center" button="button" title="Delete File" onClick={() => destroyFile(file.uuid)} slot={
+                    <Button type="error" display="h-6 w-full flex items-center justify-center" button="button" title="Delete File" onClick={() => setFileDelete(file)} slot={
                         <TrashIcon fill="white" width=".7em" />
                     } />
                 </div>

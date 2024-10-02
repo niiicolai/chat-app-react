@@ -31,6 +31,7 @@ const Modal = (props: ModalProps): JSX.Element => {
                     type="secondary" 
                     button="button" 
                     display="w-8 h-8 flex items-center justify-center"
+                    testId="modal-close-button"
                     onClick={() => setShow(false)}                 
                     slot={<TimesIcon fill="white" width="1em" />}  
                 />

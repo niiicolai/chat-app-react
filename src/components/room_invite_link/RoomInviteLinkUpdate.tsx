@@ -24,8 +24,8 @@ interface RoomInviteLinkUpdateProps {
 const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps): JSX.Element => {
     const { linkEdit, setLinkEdit, update } = props;
     const [ expiresAt, setExpiresAt ] = useState(linkEdit?.expires_at || '');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const [ error, setError ] = useState<string | null>(null);
     const show = linkEdit ? true : false;
 
     const expiredAtHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -36,7 +36,14 @@ const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps): JSX.Element => 
         e.preventDefault();
         setIsLoading(true);
 
+        if (expiresAt && new Date(expiresAt) < new Date()) {
+            setError("The expiration date cannot be in the past");
+            setIsLoading(false);
+            return;
+        }
+
         update(e).then(() => {
+            setError('');
             setLinkEdit(null);
         })
         .catch((err: unknown) => {
@@ -54,13 +61,13 @@ const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps): JSX.Element => 
     return (
         <Modal title="Update Invite Link" show={show} setShow={()=>setLinkEdit(null)} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="room-invite-link-edit-alert-message" />
 
                 <p className="text-md mb-3">
                     Enter the details to update the invite link.
                 </p>
 
-                <form onSubmit={submitHandler}>
+                <form onSubmit={submitHandler} data-testid="room-invite-link-edit-form">
                     <input type="hidden" name="uuid" value={linkEdit?.uuid ||''} />
 
                     <div className="flex gap-1">
@@ -90,7 +97,7 @@ const RoomInviteLinkUpdate = (props: RoomInviteLinkUpdateProps): JSX.Element => 
                         <p className="text-sm text-gray-500">
                             Current Expires At:
                         </p>
-                        <p className="text-md">
+                        <p className="text-md" data-testid="room-invite-link-edit-expires-at-current">
                             {linkEdit?.expires_at || 'Never'}
                         </p>
                     </div>

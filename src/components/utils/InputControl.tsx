@@ -31,7 +31,7 @@ const InputControl = (props: InputControlProps): JSX.Element => {
                     id={id}
                     name={name}
                     defaultValue={defaultValue}
-                    className={inputClassNames}
+                    className={`${inputClassNames} min-h-24`}
                 />
             }
             {type === 'select' &&

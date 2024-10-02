@@ -104,7 +104,7 @@ const ChannelCreate = (props: ChannelCreateProps): JSX.Element => {
                         </p>
 
                         <form onSubmit={create} data-testid="channel-create-form">
-                            <input type="hidden" name="uuid" value={uuid} />
+                            <input type="hidden" name="uuid" value={uuid} data-testid="channel-create-uuid" />
                             <input type="hidden" name="room_uuid" value={selectedRoom.uuid} />
 
                             <InputControlTracked

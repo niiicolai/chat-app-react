@@ -1,6 +1,8 @@
 import InputControlTracked from "../utils/InputControlTracked";
 import Button from "../utils/Button";
 import Modal from "../utils/Modal";
+import Spinner from "../utils/Spinner";
+import Alert from "../utils/Alert";
 import ChannelWebhook from "../../models/channel_webhook";
 import { useState, JSX, FormEvent } from "react";
 
@@ -21,12 +23,27 @@ interface ChannelWebhookTestProps {
  */
 const ChannelWebhookTest = (props: ChannelWebhookTestProps): JSX.Element => {
     const { webhookTest, setWebhookTest, testWebhook } = props;
-    const [ message, setMessage ] = useState('');
+    const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const show = webhookTest !== null;
 
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+        setIsLoading(true);
+        
         testWebhook(e).then(() => {
             setMessage('');
+            setError('');
+        })
+        .catch((err: unknown) => {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("An unknown error occurred");
+            }
+        })
+        .finally(() => {
+            setIsLoading(false);
         });
     }
 
@@ -36,25 +53,34 @@ const ChannelWebhookTest = (props: ChannelWebhookTestProps): JSX.Element => {
     }
 
     return (
-        <Modal title="Test Channel Webhook" show={show} setShow={()=>setWebhookTest(null)} slot={
+        <Modal title="Test Channel Webhook" show={show} setShow={() => setWebhookTest(null)} slot={
             <div>
+                <Alert type="error" message={error} testId="channel-webhook-test-alert-message" />
+
                 <p className="text-md mb-3">
                     Enter the details to test the channel webhook.
                 </p>
 
-                <form onSubmit={submitHandler}>
+                <form onSubmit={submitHandler} data-testid="channel-webhook-test-form">
                     <input type="hidden" name="uuid" value={webhookTest.uuid} />
-                    <InputControlTracked 
-                        id="webhook-test-body" 
-                        type="text" 
-                        label="Message" 
-                        name="message" 
-                        value={message} 
-                        onChange={messageHandler} />
-                    
-                    <div className="flex flex-col gap-2">
-                        <Button type="primary" button="submit" slot="Test" />
-                    </div>
+
+                    <InputControlTracked
+                        id="webhook-test-body"
+                        type="text"
+                        label="Message"
+                        name="message"
+                        value={message}
+                        onChange={messageHandler}
+                    />
+
+                    <Button type="primary" button="submit" slot={
+                        <span>
+                            {isLoading
+                                ? <Spinner isLoading={isLoading} width="2em" fill="white" />
+                                : "Test"
+                            }
+                        </span>
+                    } />
                 </form>
             </div>
         } />

@@ -42,7 +42,7 @@ const Paginator = (props: PaginatorProps): JSX.Element => {
                 </div>
             }
 
-            {!isLoading &&
+            {!isLoading && pages > 1 &&
                 <div>
                     <div className="flex gap-2 mt-2">
                         <Button type="primary" onClick={previousPage} slot={<ArrowLeftIcon fill="white" width=".6em" />} display="w-10 p-2 flex items-center justify-center" disabled={page === 1} />

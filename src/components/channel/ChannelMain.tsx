@@ -26,7 +26,7 @@ const ChannelMain = (): JSX.Element => {
             {showRules && !selectedChannel && selectedRoom &&
                 <div className="bg-black w-full sm:flex flex-col justify-between sm:border-l border-t sm:border-t-0 border-gray-800 relative overflow-y-auto">
                     <div className="w-full flex flex-col items-center justify-center p-3 sm:border-l border-t sm:border-t-0 border-gray-800">
-                        <div className="markdown">
+                        <div className="markdown" data-testid="room-rules-text-output">
                             <ReactMarkdown>{selectedRoom.rulesSettings.text}</ReactMarkdown>
                         </div>
                     </div>

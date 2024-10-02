@@ -82,13 +82,13 @@ const ChannelWebhookCreate = (props: ChannelWebhookCreateProps): JSX.Element => 
     return (
         <Modal title="Create Channel Webhook" show={showWebhookCreate} setShow={setShowWebhookCreate} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="channel-webhook-create-alert-message" />
 
                 <p className="text-md mb-3">
                     Enter the details to create a new channel webhook.
                 </p>
 
-                <form onSubmit={createHandler}>
+                <form onSubmit={createHandler} data-testid="channel-webhook-create-form">
                     <input type="hidden" name="uuid" value={uuid} />
 
                     <InputControlTracked 

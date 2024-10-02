@@ -4,6 +4,7 @@ import ChannelWebhookList from "./ChannelWebhookList";
 import ChannelWehookCreate from "./ChannelWebhookCreate";
 import ChannelWebhookUpdate from "./ChannelWebhookUpdate";
 import ChannelWebhookTest from "./ChannelWebhookTest";
+import ChannelWebhookDelete from "./ChannelWebhookDelete";
 import { useState, JSX } from "react";
 
 /**
@@ -24,6 +25,7 @@ const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
     const [showWebhookCreate, setShowWebhookCreate] = useState(false);
     const [webhookTest, setWebhookTest] = useState<ChannelWebhook | null>(null);
     const [webhookEdit, setWebhookEdit] = useState<ChannelWebhook | null>(null);
+    const [webhookDelete, setWebhookDelete] = useState<ChannelWebhook | null>(null);
     const cwCtrl = useChannelWebhooks();
 
     if (webhookTest) {
@@ -51,6 +53,14 @@ const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
                 destroyAvatar={cwCtrl.destroyAvatar}
             />
         );
+    } else if (webhookDelete) {
+        return (
+            <ChannelWebhookDelete
+                webhookDelete={webhookDelete}
+                setWebhookDelete={setWebhookDelete}
+                destroyChannelWebhook={cwCtrl.destroy}
+            />
+        );
     }
 
     return (
@@ -61,7 +71,7 @@ const ChannelWebhookMain = (props: ChannelWebhookMainProps): JSX.Element => {
             setWebhookTest={setWebhookTest}
             setShowWebhooks={props.setShowWebhooks}
             setWebhookEdit={setWebhookEdit}
-            destroyWebhook={cwCtrl.destroy}
+            setWebhookDelete={setWebhookDelete}
             page={cwCtrl.page}
             pages={cwCtrl.pages}
             previousPage={cwCtrl.previousPage}

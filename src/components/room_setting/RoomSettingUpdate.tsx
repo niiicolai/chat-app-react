@@ -48,6 +48,25 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
         };
         const uuid = editSettings?.uuid;
         if (!uuid) return;
+
+        if (settings.join_message === "") {
+            setError("Join message is required");
+            setIsLoading(false);
+            return;
+        }
+
+        if (!settings.join_message.includes("{name}")) {
+            setError("Join message must contain {name}");
+            setIsLoading(false);
+            return;
+        }
+
+        if (settings.rules_text === "") {
+            setError("Rules text is required");
+            setIsLoading(false);
+            return;
+        }
+
         try {
             await RoomService.updateSettings(uuid, settings);
             const room = await RoomService.findOne(uuid);
@@ -56,7 +75,8 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
                 setSelectedRoom(room);
             }
             setEditSettings(null);
-            addToast({ message: 'Room settings updated', type: 'success', duration: 5000 });
+            setError(null);
+            addToast({ message: 'Room settings updated successfully', type: 'success', duration: 5000 });
         } catch (err: unknown) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -71,7 +91,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
     return (
         <Modal title="Update Settings" show={show} setShow={() => setEditSettings(null)} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="room-settings-alert-message" />
 
                 {selectedRoom && (
                     <div>
@@ -132,7 +152,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
 
                 {editSettings && (
                     <div>
-                        <form onSubmit={updateRoomSettings} className="text-white">
+                        <form onSubmit={updateRoomSettings} className="text-white" data-testid="room-settings-edit-form">
                             <InputControl
                                 id="update_settings_join_channel_uuid"
                                 type="select"

@@ -15,7 +15,7 @@ interface ChannelWebhookListProps {
     showWebhooks: boolean;
     setShowWebhooks: (show: boolean) => void;
     setWebhookEdit: (webhook: ChannelWebhook | null) => void;
-    destroyWebhook: (uuid: string) => void;
+    setWebhookDelete: (webhook: ChannelWebhook | null) => void;
     setShowWebhookCreate: (show: boolean) => void;
     setWebhookTest: (webhook: ChannelWebhook | null) => void;
     page: number;
@@ -42,23 +42,28 @@ const ChannelWebhookList = (props: ChannelWebhookListProps): JSX.Element => {
         <Modal title="Channel Webhooks" show={props.showWebhooks} setShow={props.setShowWebhooks} slot={
             <div>
                 <div className="mb-3">
-                    <Button type="primary" button="button" title="Create Webhook"
-                    onClick={() => props.setShowWebhookCreate(true)} slot="Create Webhook" />
+                    <Button 
+                        type="primary" 
+                        button="button" 
+                        title="Create Webhook"
+                        testId="channel-webhook-create-button"
+                        onClick={() => props.setShowWebhookCreate(true)} slot="Create Webhook" 
+                    />
                 </div>
 
                 <Paginator nextPage={props.nextPage} previousPage={props.previousPage} isLoading={props.isLoading} error={props.error} page={props.page} pages={props.pages} slot={
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3" data-testid="channel-webhook-list">
                         {props.webhooks.map((webhook) => (
                             <ChannelWebhookListItem 
                                 key={webhook.uuid}
                                 webhook={webhook}
                                 setWebhookEdit={props.setWebhookEdit} 
                                 channel={getWebhookChannel(webhook)} 
-                                destroyWebhook={props.destroyWebhook} 
+                                setWebhookDelete={props.setWebhookDelete} 
                                 setWebhookTest={props.setWebhookTest} 
                             />
                         ))}
-                        {!props.webhooks.length && <li className="text-white">No channel webhooks found</li>}
+                        {!props.webhooks.length && <li className="text-white" data-testid="channel-webhook-list-empty">No channel webhooks found</li>}
                     </ul>
                 } />
             </div>

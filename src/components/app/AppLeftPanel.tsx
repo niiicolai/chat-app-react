@@ -1,6 +1,8 @@
 import { useState, useContext, JSX } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
+import { RoomContext } from '../../context/roomContext';
+import { ChannelContext } from '../../context/channelContext';
 import UserService from '../../services/userService';
 import RoomCreate from '../room/RoomCreate';
 import RoomList from '../room/RoomList';
@@ -19,10 +21,17 @@ import Button from '../utils/Button';
  */
 function AppLeftPanel(): JSX.Element {
   const { setUser } = useContext(UserContext);
+  const { setSelectedRoom } = useContext(RoomContext);
+  const { setSelectedChannel } = useContext(ChannelContext);
   const [browseRooms, setBrowseRooms] = useState(false);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const navigate = useNavigate();
+
+  const clickOnLogo = () => {
+    setSelectedRoom(null);
+    setSelectedChannel(null);
+  }
 
   const logout = () => {
     setUser(null);
@@ -44,7 +53,7 @@ function AppLeftPanel(): JSX.Element {
       <RoomList browseRooms={browseRooms} setBrowseRooms={setBrowseRooms} />
       <UserEdit editUser={editUser} setEditUser={setEditUser} />
 
-      <div className='flex items-center justify-center bg-gray-800 w-8 h-8 rounded-md' title='Chat App'>
+      <div className='flex items-center justify-center bg-gray-800 w-8 h-8 rounded-md cursor-pointer' onClick={clickOnLogo} title='Chat App'>
         <GhostIcon fill="white" width=".8em" />
       </div>
 

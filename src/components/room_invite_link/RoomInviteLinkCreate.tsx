@@ -37,11 +37,18 @@ const RoomInviteLinkCreate = (props: RoomInviteLinkCreateProps): JSX.Element => 
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
+
+        if (expiresAt && new Date(expiresAt) < new Date()) {
+            setError("The expiration date cannot be in the past");
+            setIsLoading(false);
+            return;
+        }
         
         create(e).then(() => {
             setUuid(uuidv4());
             setExpiresAt('');
             setShowLinkCreate(false);
+            setError('');
         }).catch((err: unknown) => {
             if (err instanceof Error) {
                 setError(err.message);
@@ -56,13 +63,13 @@ const RoomInviteLinkCreate = (props: RoomInviteLinkCreateProps): JSX.Element => 
     return (
         <Modal title="Create Invite Link" show={showLinkCreate} setShow={setShowLinkCreate} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="room-invite-link-create-alert-message" />
 
                 <p className="text-md mb-3">
                     Enter the details to create a shareable invite link for your room.
                 </p>
 
-                <form onSubmit={submitHandler}>
+                <form onSubmit={submitHandler} data-testid="room-invite-link-create-form">
                     <input type="hidden" name="uuid" value={uuid} />
                     <input type="hidden" name="room_uuid" value={selectedRoom?.uuid} />
 

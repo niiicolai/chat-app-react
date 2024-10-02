@@ -19,11 +19,11 @@ function JoinRoomView(): JSX.Element {
 
     return (
         <div className="App w-full h-screen bg-black text-white flex items-center justify-center">
-            <Alert type="error" message={error} />
+            <Alert type="error" message={error} testId="room-join-alert-message" />
 
             {room && roomInviteLink && (
                 <div>
-                    <h1 className="text-3xl font-bold mb-3">Welcome to {room?.name}</h1>
+                    <h1 className="text-3xl font-bold mb-3" data-testid="join-room-welcome-message">Welcome to {room?.name}</h1>
                     <p className="mb-3">
                         {room?.description}
                     </p>

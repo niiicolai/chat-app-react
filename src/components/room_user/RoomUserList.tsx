@@ -30,7 +30,7 @@ const RoomUserList = (props: RoomUserListProps): JSX.Element => {
         <Modal title="Room Users" show={showUsers} setShow={setShowUsers} slot={
             <div>
                 <Paginator nextPage={nextPage} previousPage={previousPage} isLoading={isLoading} error={error} page={page} pages={pages} slot={
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mb-3" data-testid="room-user-list">
                         {roomUsers.map((roomUser) => (
                             <RoomUserListItem roomUser={roomUser} key={roomUser.uuid} update={update} destroy={destroy} isAdmin={isAdmin} isMod={isMod} />
                         ))}

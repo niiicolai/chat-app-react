@@ -3,6 +3,7 @@ import RoomInviteLink from "../../models/room_invite_link";
 import RoomInviteLinkList from "./RoomInviteLinkList";
 import RoomInviteLinkCreate from "./RoomInviteLinkCreate";
 import RoomInviteLinkUpdate from "./RoomInviteLinkUpdate";
+import RoomInviteLinkDelete from "./RoomInviteLinkDelete";
 import { useState, JSX } from "react";
 
 /**
@@ -22,8 +23,9 @@ interface RoomInviteLinkMainProps {
 const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): JSX.Element => {
     const { showLinks, setShowLinks } = props;
     const { inviteLinks, error, isLoading, page, pages, nextPage, previousPage, create, update, destroy } = useRoomInviteLinks();
-    const [showLinkCreate, setShowLinkCreate] = useState(false);
-    const [linkEdit, setLinkEdit] = useState<RoomInviteLink | null>(null);
+    const [ showLinkCreate, setShowLinkCreate ] = useState(false);
+    const [ linkDelete, setLinkDelete ] = useState<RoomInviteLink | null>(null);
+    const [ linkEdit, setLinkEdit ] = useState<RoomInviteLink | null>(null);
 
     const setShowLinksHandler = (show: boolean) => {
         setShowLinks(show);
@@ -42,6 +44,13 @@ const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): JSX.Element => {
             setLinkEdit={setLinkEdit}
             update={update}
         />
+    )
+    else if (linkDelete) return (
+        <RoomInviteLinkDelete
+            linkDelete={linkDelete}
+            setLinkDelete={setLinkDelete}
+            destroyRoomInviteLink={destroy}
+        />
     );
 
     return (
@@ -52,8 +61,8 @@ const RoomInviteLinkMain = (props: RoomInviteLinkMainProps): JSX.Element => {
             showLinks={showLinks}
             setShowLinkCreate={setShowLinkCreate}
             setLinkEdit={setLinkEdit}
+            setLinkDelete={setLinkDelete}
             setShowLinks={setShowLinksHandler}
-            destroyLink={destroy}
             nextPage={nextPage}
             previousPage={previousPage}
             page={page}

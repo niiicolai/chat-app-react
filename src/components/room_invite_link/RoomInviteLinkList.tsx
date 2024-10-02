@@ -15,9 +15,9 @@ interface RoomInviteLinkListProps {
     isLoading: boolean;
     inviteLinks: RoomInviteLink[];
     setLinkEdit: (link: RoomInviteLink | null) => void;
+    setLinkDelete: (link: RoomInviteLink | null) => void;
     showLinks: boolean;
     setShowLinks: (show: boolean) => void;
-    destroyLink: (uuid: string) => void;
     setShowLinkCreate: (show: boolean) => void;
     nextPage: () => void;
     previousPage: () => void;
@@ -35,7 +35,7 @@ const RoomInviteLinkList = (props: RoomInviteLinkListProps): JSX.Element => {
     const isAdmin = selectedRoomUser?.room_user_role_name === 'Admin';
     const { 
         inviteLinks, setLinkEdit, showLinks, 
-        setShowLinks, destroyLink, setShowLinkCreate,
+        setShowLinks, setLinkDelete, setShowLinkCreate,
         error, isLoading
     } = props;
     
@@ -44,8 +44,14 @@ const RoomInviteLinkList = (props: RoomInviteLinkListProps): JSX.Element => {
             <div>
                 {isAdmin && 
                     <div className="mb-3">
-                        <Button type="primary" button="button" title="Create Invite Link"
-                        onClick={() => setShowLinkCreate(true)} slot="Create Invite Link" />
+                        <Button 
+                            type="primary" 
+                            button="button" 
+                            title="Create Invite Link"
+                            onClick={() => setShowLinkCreate(true)} 
+                            slot="Create Invite Link"
+                            testId="room-invite-link-create-button" 
+                        />
                     </div>
                 }
 
@@ -56,11 +62,11 @@ const RoomInviteLinkList = (props: RoomInviteLinkListProps): JSX.Element => {
                                 link={link} 
                                 key={link.uuid} 
                                 setLinkEdit={setLinkEdit} 
-                                destroyLink={destroyLink} 
+                                setLinkDelete={setLinkDelete} 
                                 isAdmin={isAdmin}
                             />
                         ))}
-                        {!inviteLinks.length && <li className="text-white">No invite links found</li>}
+                        {!inviteLinks.length && <li className="text-white" data-testid="room-invite-link-list-empty">No invite links found</li>}
                     </ul>
                 } />
             </div>

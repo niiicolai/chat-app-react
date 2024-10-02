@@ -111,7 +111,7 @@ export default class ChannelWebhookService {
      */
     static create = async (formData: FormData): Promise<ChannelWebhook> => {
         if (!uuidValidate(formData.get('uuid') as string)) throw new Error('Invalid uuid');
-        if (!uuidValidate(formData.get('channel_uuid') as string)) throw new Error('Invalid channel_uuid');
+        if (!uuidValidate(formData.get('channel_uuid') as string)) throw new Error('Invalid channel');
         if (!formData.get('name')) throw new Error('Invalid name');
         if (!formData.get('description')) throw new Error('Invalid description');
 
@@ -192,7 +192,7 @@ export default class ChannelWebhookService {
      */
     static test = async (uuid: string, messageInput: MessageInput): Promise<void> => {
         if (!uuidValidate(uuid)) throw new Error('Invalid uuid');
-        if (!messageInput.message) throw new Error('messageInput.message is required');
+        if (!messageInput.message) throw new Error('Invalid message');
 
         try {
             await ApiService.builder()

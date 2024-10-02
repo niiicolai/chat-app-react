@@ -4,30 +4,30 @@ import Alert from "../components/utils/Alert";
 import Link from "../components/utils/Link";
 import InputControl from "../components/utils/InputControl";
 import GhostIcon from "../components/icons/GhostIcon";
-import UserService from "../services/userService";
-import { useNavigate } from 'react-router-dom';
-import { useContext, useState, JSX, FormEvent } from "react";
-import { UserContext } from "../context/userContext";
+import { useState, JSX, FormEvent } from "react";
 
 /**
- * @function LoginView
- * @description The login view
+ * @function ForgotPasswordView
+ * @description The forgot password view
  * @returns {JSX.Element} JSX.Element
  */
-const LoginView = (): JSX.Element => {
-    const { setUser } = useContext(UserContext);
+const ForgotPasswordView = (): JSX.Element => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
+        if (!formData.get('email')) {
+            setError("Email is required");
+            setIsLoading(false);
+            return;
+        }
         try {
-            const user = await UserService.login(formData);
-            setUser(user);
-            navigate("/");
+            console.log('not implemented');
+            setIsSubmitted(true);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -50,31 +50,31 @@ const LoginView = (): JSX.Element => {
 
                         <div className="flex items-center justify-center gap-6 w-full mb-3 text-3xl font-bold">
                             <GhostIcon fill="white" width="22" />
-                            <span>Welcome back!</span>
+                            <span>Forgot password</span>
                         </div>
 
                         <div className="mb-3 text-left">
-                            Log in to continue your journey, connect with friends, and dive back into the conversation. Your adventure
-                            awaits—let&lsquo;s pick up right where you left off!
+                            Enter your email address to receive a password reset link.
                         </div>
 
-                        <form onSubmit={handleSubmit} className="w-full mb-3">
-                            <InputControl id="email" type="email" label="Email" name="email" />
-                            <InputControl id="password" type="password" label="Password" name="password" />
-                            <Button type="primary" button="submit" slot={
-                                <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Login"}</span>
-                            } />
-                        </form>
+                        {!isSubmitted &&
+                            <form onSubmit={handleSubmit} className="w-full mb-3">
+                                <InputControl id="email" type="email" label="Email" name="email" />
+                                <Button type="primary" button="submit" slot={
+                                    <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Reset password"}</span>
+                                } />
+                            </form>
+                        }
 
-                        <Link href="/signup" type="primary" slot={
-                            <span>
-                                Don&lsquo;t have an account? Sign up
-                            </span>
-                        } />
+                        {isSubmitted &&
+                            <div className="text-md mb-3">
+                                If the email address exists in our system, you will receive a password reset link shortly.
+                            </div>
+                        }
 
-                        <Link href="/forgot-password" type="primary" slot={
+                        <Link href="/login" type="primary" slot={
                             <span>
-                                Forgot your password? Reset it
+                                Remember your password? Login
                             </span>
                         } />
                     </div>
@@ -84,4 +84,4 @@ const LoginView = (): JSX.Element => {
     );
 };
 
-export default LoginView;
+export default ForgotPasswordView;

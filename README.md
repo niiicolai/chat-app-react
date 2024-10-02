@@ -89,14 +89,15 @@ A React.js SPA made for the chat backend application found at https://github.com
 | **End2end tests**      | Login                        | [x]     |
 |                        | Signup                       | [x]     |
 |                        | Room                         | [x]     |
-|                        | Room Settings                | [ ]     |
-|                        | Room Invite Links            | [ ]     |
+|                        | Join Room                    | [x]     |
+|                        | Room Settings                | [x]     |
+|                        | Room Invite Link             | [x]     |
 |                        | Room User                    | [ ]     |
 |                        | Room File                    | [ ]     |
 |                        | Channel                      | [x]     |
 |                        | Channel Message              | [ ]     |
 |                        | Channel Message Upload       | [ ]     |
-|                        | Channel Webhook              | [ ]     |
+|                        | Channel Webhook              | [x]     |
 |                        | User                         | [ ]     |
 | **Other tests**        | Unit tests                   | [ ]     |
 |                        | Integration tests            | [ ]     |

@@ -36,6 +36,19 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
         e.preventDefault();
         setIsLoading(true);
 
+        const formData = new FormData(e.currentTarget);
+        if (formData.get('name') === '') {
+            setError("Invalid name");
+            setIsLoading(false);
+            return;
+        }
+
+        if (formData.get('description') === '') {
+            setError("Invalid description");
+            setIsLoading(false);
+            return;
+        }
+
         update(e, file)
         .then(() => {
             setFile('');
@@ -84,13 +97,13 @@ const ChannelWebhookUpdate = (props: ChannelWebhookUpdateProps): JSX.Element => 
     return (
         <Modal title="Update Channel Webhook" show={show} setShow={() => { setWebhookEdit(null) }} slot={
             <div>
-                <Alert type="error" message={error} />
+                <Alert type="error" message={error} testId="channel-webhook-edit-alert-message" />
 
                 <p className="text-md mb-3">
                     Enter the details to update the channel webhook.
                 </p>
 
-                <form onSubmit={updateHandler}>
+                <form onSubmit={updateHandler} data-testid="channel-webhook-edit-form">
                     <input type="hidden" name="uuid" value={webhookEdit.uuid} />
                     
                     <InputControl 

@@ -8,6 +8,7 @@ import ChannelCreate from "../channel/ChannelCreate";
 import RoomService from "../../services/roomService";
 import RoomUpdate from "./RoomUpdate";
 import RoomDelete from "./RoomDelete";
+import RoomLeave from "./RoomLeave";
 import Room from "../../models/room";
 
 import TrashIcon from "../icons/TrashIcon";
@@ -34,33 +35,15 @@ import { JSX } from "react";
 const RoomOptions = (): JSX.Element => {
     const [editRoom, setEditRoom] = useState<Room | null>(null);
     const [editSettings, setEditSettings] = useState<Room | null>(null);
-    const [showDeleteRoom, setShowDeleteRoom] = useState(false);
-    const [showWebhooks, setShowWebhooks] = useState(false);
     const [showCreateChannel, setShowCreateChannel] = useState(false);
+    const [showDeleteRoom, setShowDeleteRoom] = useState(false);
+    const [showLeaveRoom, setShowLeaveRoom] = useState(false);
+    const [showWebhooks, setShowWebhooks] = useState(false);
     const [showUsers, setShowUsers] = useState(false);
     const [showFiles, setShowFiles] = useState(false);
     const [showLinks, setShowLinks] = useState(false);
-    const { selectedRoom, setSelectedRoom, rooms, setRooms, selectedRoomUser } = useContext(RoomContext);
-    const { addToast } = useContext(ToastContext);
+    const { selectedRoom, selectedRoomUser } = useContext(RoomContext);
     const canModify = selectedRoomUser?.room_user_role_name === 'Admin';
-
-    const leaveRoom = async (uuid: string | undefined) => {
-        if (!uuid) return;
-        try {
-            await RoomService.leave(uuid);
-            setRooms(rooms.filter((r) => r.uuid !== uuid));
-            if (selectedRoom?.uuid === uuid) {
-                setSelectedRoom(null);
-            }
-            addToast({ message: 'Room left', type: 'success', duration: 5000 });
-        } catch (err: unknown) {
-            if (err instanceof Error) {
-                addToast({ message: err.message, type: 'error', duration: 5000 });
-            } else {
-                addToast({ message: 'An unknown error occurred', type: 'error', duration: 5000 });
-            }
-        }
-    }
 
     const roomOptions = [
         { title: 'Create Channel', icon: <PlusIcon fill="white" width="1em" />, onClick: () => setShowCreateChannel(!showCreateChannel), type: 'primary', requirePermission: true, testId: 'room-options-create-channel' },
@@ -71,10 +54,12 @@ const RoomOptions = (): JSX.Element => {
         { title: 'Room Settings', icon: <GearIcon fill="white" width="1em" />, onClick: () => setEditSettings(editSettings ? null : selectedRoom), type: 'primary', requirePermission: true, testId: 'room-options-room-settings' },
         { title: 'Edit Room', icon: <PenIcon fill="white" width="1em" />, onClick: () => setEditRoom(editRoom ? null : selectedRoom), type: 'primary', requirePermission: true, testId: 'room-options-edit-room' },
         { title: 'Delete Room', icon: <TrashIcon fill="white" width=".8em " />, onClick: () => setShowDeleteRoom(!showCreateChannel), type: 'error', requirePermission: true, testId: 'room-options-delete-room' },
-        { title: 'Leave Room', icon: <DoorIcon fill="white" width="1em" />, onClick: () => leaveRoom(selectedRoom?.uuid), type: 'error', requirePermission: false, testId: 'room-options-leave-room' }
+        { title: 'Leave Room', icon: <DoorIcon fill="white" width="1em" />, onClick: () => setShowLeaveRoom(!showLeaveRoom), type: 'error', requirePermission: false, testId: 'room-options-leave-room' }
     ]
+    
     return (
         <div>
+            <RoomLeave showLeaveRoom={showLeaveRoom} setShowLeaveRoom={setShowLeaveRoom} />
             <RoomDelete showDeleteRoom={showDeleteRoom} setShowDeleteRoom={setShowDeleteRoom} />
             <RoomUpdate editRoom={editRoom} setEditRoom={setEditRoom} />
             <RoomFileList showFiles={showFiles} setShowFiles={setShowFiles} />

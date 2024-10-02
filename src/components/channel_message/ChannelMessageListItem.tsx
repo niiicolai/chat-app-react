@@ -63,7 +63,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                 </div>
                 <div>
                     <div className="flex items-center gap-3 text-indigo-500 text-xs mb-1">
-                        <div>
+                        <div data-testid="channel-message-list-item-username">
                             {
                                 channelMessage.user?.username ||
                                 channelMessage.channel_webhook_message?.channel_webhook.name ||
@@ -82,7 +82,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                         }
                     </div>
 
-                    <div className="text-sm">
+                    <div className="text-sm" data-testid="channel-message-list-item-body">
                         {channelMessage.body}
                     </div>
 

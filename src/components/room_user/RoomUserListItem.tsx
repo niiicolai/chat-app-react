@@ -29,7 +29,7 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
     const isMe = user?.uuid === roomUser.user.uuid;
 
     return (
-        <li className="border border-gray-800 rounded-md p-3">
+        <li className="border border-gray-800 rounded-md p-3" data-testid="room-user-list-item">
             <div className="flex items-start gap-3 border border-gray-800 rounded-md p-3 mb-3">
                 <div>
                     <Avatar src={roomUser.user.avatar_src} alternativeName={roomUser.user.username} />
