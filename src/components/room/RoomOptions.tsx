@@ -5,7 +5,6 @@ import RoomSettingUpdate from "../room_setting/RoomSettingUpdate";
 import RoomUserList from "../room_user/RoomUserList";
 import RoomFileList from "../room_file/RoomFileList";
 import ChannelCreate from "../channel/ChannelCreate";
-import RoomService from "../../services/roomService";
 import RoomUpdate from "./RoomUpdate";
 import RoomDelete from "./RoomDelete";
 import RoomLeave from "./RoomLeave";
@@ -25,7 +24,6 @@ import ResMenu from "../utils/ResMenu";
 
 import { useContext, useState } from "react";
 import { RoomContext } from "../../context/roomContext";
-import { ToastContext } from "../../context/toastContext";
 import { JSX } from "react";
 
 /**
@@ -56,7 +54,7 @@ const RoomOptions = (): JSX.Element => {
         { title: 'Delete Room', icon: <TrashIcon fill="white" width=".8em " />, onClick: () => setShowDeleteRoom(!showCreateChannel), type: 'error', requirePermission: true, testId: 'room-options-delete-room' },
         { title: 'Leave Room', icon: <DoorIcon fill="white" width="1em" />, onClick: () => setShowLeaveRoom(!showLeaveRoom), type: 'error', requirePermission: false, testId: 'room-options-leave-room' }
     ]
-    
+
     return (
         <div>
             <RoomLeave showLeaveRoom={showLeaveRoom} setShowLeaveRoom={setShowLeaveRoom} />

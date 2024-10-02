@@ -81,7 +81,7 @@ const RoomInviteLinkDelete = (props: RoomInviteLinkDeleteProps): JSX.Element => 
                         </p>
 
                         <p className="text-md mb-3" data-testid="room-delete-confirm-description">
-                            Enter 'yes' to confirm deletion ({url}):
+                            Enter yes to confirm deletion ({url}):
                         </p>
 
                         <InputControlTracked id="room-invite-link-delete-answer" type="text" label="Answer" name="confirm" value={answer} onChange={answerHandler} />

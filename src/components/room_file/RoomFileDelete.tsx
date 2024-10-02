@@ -72,7 +72,7 @@ const RoomFileDelete = (props: RoomFileDeleteProps): JSX.Element => {
                         </p>
 
                         <p className="text-md mb-3" data-testid="room-file-confirm-description">
-                            Enter 'yes' to confirm deletion ({fileDelete.src}):
+                            Enter yes to confirm deletion ({fileDelete.src}):
                         </p>
 
                         <InputControlTracked id="room-file-delete-answer" type="text" label="Answer" name="confirm" value={answer} onChange={answerHandler} />
