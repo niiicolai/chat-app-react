@@ -7,6 +7,7 @@ export default interface User {
     uuid: string;
     username: string;
     email: string;
+    email_verified: boolean;
     avatar_src: string;
     created_at: string;
     updated_at: string;

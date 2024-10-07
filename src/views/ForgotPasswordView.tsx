@@ -5,6 +5,7 @@ import Link from "../components/utils/Link";
 import InputControl from "../components/utils/InputControl";
 import GhostIcon from "../components/icons/GhostIcon";
 import { useState, JSX, FormEvent } from "react";
+import UserPasswordResetService from "../services/userPasswordResetService";
 
 /**
  * @function ForgotPasswordView
@@ -26,8 +27,9 @@ const ForgotPasswordView = (): JSX.Element => {
             return;
         }
         try {
-            console.log('not implemented');
+            await UserPasswordResetService.create(formData);
             setIsSubmitted(true);
+            setError(null);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);

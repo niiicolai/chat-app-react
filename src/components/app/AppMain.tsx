@@ -1,6 +1,7 @@
 import AppUnauthorized from './AppUnauthorized';
 import AppLeftPanel from './AppLeftPanel';
 import AppContentPanel from './AppContentPanel';
+import UserVerifyEmail from '../user/UserVerifyEmail';
 import ToastList from '../toast/ToastList';
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
@@ -29,6 +30,8 @@ function AppMain(): JSX.Element {
     )
     else return (
         <div>
+            <UserVerifyEmail />
+            
             <div className="w-full h-screen bg-black text-white flex flex-col sm:flex-row">
                 <AppLeftPanel />
                 <AppContentPanel />
