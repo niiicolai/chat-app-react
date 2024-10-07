@@ -99,6 +99,7 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Channel Message Upload       | [ ]     |
 |                        | Channel Webhook              | [x]     |
 |                        | User                         | [ ]     |
+|                        | User Status                  | [ ]     |
 | **Other tests**        | Unit tests                   | [ ]     |
 |                        | Integration tests            | [ ]     |
 | **Routing**            | React Router                 | [x]     |
@@ -107,10 +108,7 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | GitHub Secrets               | [x]     |
 |                        | DigitalOcean                 | [x]     |
 |                        | Docker Hub                   | [x]     |
-| **Design**             | [Mockup](mockup-design.png)  | [x]     |
-| **Presentation 1.**    | [Link](#)                    | [ ]     |
-| **Presentation 2.**    | [Link](#)                    | [ ]     |
-
+| **Design**             | [Wireframe](wireframe-design.png)  | [x]     |
 
 ## Development Environment Setup
 The following are the steps to set up the development environment for the chat client.

@@ -4,5 +4,5 @@
  * @description The RoomRulesSettings interface
  */
 export default interface RoomRulesSettings {
-    text: string;
+    rules_text: string;
 }

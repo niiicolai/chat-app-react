@@ -101,22 +101,22 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
 
                         <div className="border-b border-gray-800 pb-3 mb-3 flex flex-col gap-3">
                             <div className="w-full">
-                                <Progress type="primary" value={roomUsersTotal} max={selectedRoom.userSettings.maxUsers}
+                                <Progress type="primary" value={roomUsersTotal} max={selectedRoom.userSettings.max_users}
                                     slot={
                                         <span className="flex items-center gap-1 justify-center text-xs overflow-hidden truncate ...">
                                             <span>Members:</span>
-                                            <span>{roomUsersTotal} / {selectedRoom.userSettings.maxUsers}</span>
+                                            <span>{roomUsersTotal} / {selectedRoom.userSettings.max_users}</span>
                                         </span>
                                     }
                                 />
                             </div>
 
                             <div className="w-full">
-                                <Progress type="primary" value={channelsTotal} max={selectedRoom.channelSettings.maxChannels}
+                                <Progress type="primary" value={channelsTotal} max={selectedRoom.channelSettings.max_channels}
                                     slot={
                                         <span className="flex items-center gap-1 justify-center text-xs overflow-hidden truncate ...">
                                             <span>Channels:</span>
-                                            <span>{channelsTotal} / {selectedRoom.channelSettings.maxChannels}</span>
+                                            <span>{channelsTotal} / {selectedRoom.channelSettings.max_channels}</span>
                                         </span>
                                     }
                                 />
@@ -125,21 +125,21 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
                             <div className="w-full">
                                 <span className="bg-gray-500 rounded-md p-2 flex items-center gap-1 justify-start text-xs overflow-hidden truncate ...">
                                     <span>Message File Max Size:</span>
-                                    <span>{selectedRoom.fileSettings.singleFileMb} MB</span>
+                                    <span>{selectedRoom.fileSettings.single_file_mb} MB</span>
                                 </span>
                             </div>
 
                             <div className="w-full">
                                 <span className="bg-gray-500 rounded-md p-2 flex items-center gap-1 justify-start text-xs overflow-hidden truncate ...">
                                     <span>Message Retention:</span>
-                                    <span>{selectedRoom.channelSettings.messagesDaysToLive} Days</span>
+                                    <span>{selectedRoom.channelSettings.message_days_to_live} Days</span>
                                 </span>
                             </div>
 
                             <div className="w-full">
                                 <span className="bg-gray-500 rounded-md p-2 flex items-center gap-1 justify-start text-xs overflow-hidden truncate ...">
                                     <span>Message File Retention:</span>
-                                    <span>{selectedRoom.fileSettings.fileDaysToLive} Days</span>
+                                    <span>{selectedRoom.fileSettings.file_days_to_live} Days</span>
                                 </span>
                             </div>
                         </div>
@@ -158,7 +158,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
                                 type="select"
                                 label="Join Channel"
                                 name="join_channel_uuid"
-                                defaultValue={editSettings.joinSettings.channelUuid}
+                                defaultValue={editSettings.joinSettings.join_channel_uuid}
                                 options={channels.map((channel: Channel) => (
                                     <option key={channel.uuid} value={channel.uuid}>
                                         {channel.name}
@@ -171,7 +171,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
                                 type="text"
                                 label="Join Message ({name} will be replaced with the user's name)"
                                 name="join_message"
-                                defaultValue={editSettings.joinSettings.message}
+                                defaultValue={editSettings.joinSettings.join_message}
                             />
 
                             <InputControl
@@ -179,7 +179,7 @@ const RoomSettingUpdate = (props: RoomSettingUpdateProps): JSX.Element => {
                                 type="textarea"
                                 label="README (Markdown)"
                                 name="rules_text"
-                                defaultValue={editSettings.rulesSettings.text}
+                                defaultValue={editSettings.rulesSettings.rules_text}
                             />
 
                             <div className="flex flex-col gap-2">

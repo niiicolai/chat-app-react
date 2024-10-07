@@ -28,11 +28,11 @@ const RoomHeader = (): JSX.Element => {
                             <Badge type="primary" title="Room Category" slot={selectedRoom.room_category_name} testId="room-header-category" />
 
                             <div className="w-24 sm:w-44">
-                                <Progress type="primary" value={selectedRoom.bytes_used} max={selectedRoom.fileSettings.totalFilesBytesAllowed}
+                                <Progress type="primary" value={selectedRoom.bytes_used} max={selectedRoom.fileSettings.total_files_bytes_allowed}
                                     slot={
                                         <span className="flex items-center gap-1 justify-center text-xs overflow-hidden truncate ...">
                                             <span className="hidden sm:inline-block">File Usage:</span>
-                                            <span>{selectedRoom.mb_used} / {selectedRoom.fileSettings.totalFilesMb} MB</span>
+                                            <span>{selectedRoom.mb_used} / {selectedRoom.fileSettings.total_files_mb} MB</span>
                                         </span>
                                     }
                                 />
