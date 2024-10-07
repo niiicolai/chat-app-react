@@ -45,6 +45,7 @@ const ChannelWebhookCreate = (props: ChannelWebhookCreateProps): JSX.Element => 
                 setDescription('');
                 setChannelUuid('');
                 setFile('');
+                setShowWebhookCreate(false);
             })
             .catch((err: unknown) => {
                 if (err instanceof Error) {
