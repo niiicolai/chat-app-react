@@ -67,6 +67,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                             {
                                 channelMessage.user?.username ||
                                 channelMessage.channel_webhook_message?.channel_webhook.name ||
+                                (channelMessage.channel_message_type_name === 'System' && 'Friendly Ghost') ||
                                 "Unknown"
                             }
                         </div>

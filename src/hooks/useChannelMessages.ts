@@ -62,27 +62,7 @@ const useChannelMessages = (): UseChannelMessages => {
          * Subscribe to the channel messages
          */
         joinChannel(`channel-${selectedChannel?.uuid}`);
-        onMessage((data: SocketMessage) => {
-            const message = data.payload as ChannelMessage;
-            if (message?.user?.uuid === user?.uuid) return;
-
-            switch (data.type) {
-                case 'chat_message_created':
-                    setMessages([...messages, data.payload as ChannelMessage]);
-                    break;
-                case 'chat_message_updated':
-                    setMessages(messages.map((message: ChannelMessage) => message.uuid === (data.payload as ChannelMessage).uuid
-                        ? data.payload as ChannelMessage
-                        : message
-                    ));
-                    break;
-                case 'chat_message_deleted':
-                    setMessages(messages.filter((message: ChannelMessage) => message.uuid !== (data.payload as ChannelMessage).uuid));
-                    break;
-                default:
-                    break;
-            }
-        });
+        
 
         /**
          * Unsubscribe from the channel messages
@@ -90,6 +70,28 @@ const useChannelMessages = (): UseChannelMessages => {
          */
         return () => leaveChannel();
     }, [selectedChannel]);
+
+    onMessage(((data: SocketMessage) => {
+        const message = data.payload as ChannelMessage;
+        if (message?.user?.uuid === user?.uuid) return;
+
+        switch (data.type) {
+            case 'chat_message_created':
+                setMessages([...messages, data.payload as ChannelMessage]);
+                break;
+            case 'chat_message_updated':
+                setMessages(messages.map((message: ChannelMessage) => message.uuid === (data.payload as ChannelMessage).uuid
+                    ? data.payload as ChannelMessage
+                    : message
+                ));
+                break;
+            case 'chat_message_deleted':
+                setMessages(messages.filter((message: ChannelMessage) => message.uuid !== (data.payload as ChannelMessage).uuid));
+                break;
+            default:
+                break;
+        }
+    }));
 
     const paginate = async (page: number, limit: number, onPaginate: (data: ChannelMessage[], pages?: number) => void) => {
         if (!selectedChannel) return;
