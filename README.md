@@ -21,7 +21,8 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Forgot password              | [x]     |
 |                        | E-mail verification          | [x]     |
 |                        | Two Factor Authentication    | [ ]     |
-|                        | Google Sign up + Login       | [ ]     |
+|                        | Google Sign up + Login       | [x]     |
+|                        | Add/Revoke Google Login      | [ ]     |
 | **Room**               | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
