@@ -3,7 +3,7 @@ import Alert from "../components/utils/Alert";
 import UserService from "../services/userService";
 import TokenService from "../services/tokenService";
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState, JSX, FormEvent, useEffect } from "react";
+import { useContext, useState, JSX, useEffect } from "react";
 import { UserContext } from "../context/userContext";
 import { useSearchParams } from "react-router-dom";
 
