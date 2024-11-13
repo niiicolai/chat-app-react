@@ -10,6 +10,12 @@ import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_URL should be set in the .env file');
+
+const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+if (!API_PREFIX) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_PREFIX should be set in the .env file');
+
 /**
  * @function SignupView
  * @description The signup view
@@ -69,6 +75,12 @@ const SignupView = (): JSX.Element => {
                                 <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Sign up"}</span>
                             } />
                         </form>
+
+                        <Link href={API_URL + API_PREFIX + "/user/signup/google"} type="primary" slot={
+                            <span>
+                                Sign up with Google
+                            </span>
+                        } />
 
                         <Link href="/login" type="primary" slot={
                             <span>

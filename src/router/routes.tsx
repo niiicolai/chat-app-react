@@ -3,6 +3,7 @@ import JoinRoomView from '../views/JoinRoomView';
 import LoginView from '../views/LoginView';
 import SignupView from '../views/SignupView';
 import ForgotPasswordView from '../views/ForgotPasswordView';
+import RedirectAuthView from '../views/RedirectAuthView';
 
 export const routes = [
   {
@@ -24,5 +25,9 @@ export const routes = [
   {
     path: "/room/:roomInviteLinkUuid/join",
     element: <JoinRoomView />,
+  },
+  {
+    path: "/redirect/auth",
+    element: <RedirectAuthView />,
   },
 ];

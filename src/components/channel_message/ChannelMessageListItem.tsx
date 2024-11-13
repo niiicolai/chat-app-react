@@ -49,8 +49,8 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                     }
                     {channelMessage.channel_message_type_name === 'Webhook' &&
                         <Avatar 
-                            src={channelMessage.channel_webhook_message?.channel_webhook.room_file?.src} 
-                            alternativeName={channelMessage.channel_webhook_message?.channel_webhook.name} 
+                            src={channelMessage.channel_webhook_message?.channel_webhook?.room_file?.src} 
+                            alternativeName={channelMessage.channel_webhook_message?.channel_webhook?.name} 
                             alternativeIcon={<BotIcon fill="#FFF" width=".7em" />} 
                         />
                     }
@@ -66,7 +66,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                         <div data-testid="channel-message-list-item-username">
                             {
                                 channelMessage.user?.username ||
-                                channelMessage.channel_webhook_message?.channel_webhook.name ||
+                                channelMessage.channel_webhook_message?.channel_webhook?.name ||
                                 (channelMessage.channel_message_type_name === 'System' && 'Friendly Ghost') ||
                                 "Unknown"
                             }

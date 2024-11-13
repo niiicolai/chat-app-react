@@ -9,6 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState, JSX, FormEvent } from "react";
 import { UserContext } from "../context/userContext";
 
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_URL should be set in the .env file');
+
+const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+if (!API_PREFIX) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_PREFIX should be set in the .env file');
+
+
 /**
  * @function LoginView
  * @description The login view
@@ -65,6 +72,12 @@ const LoginView = (): JSX.Element => {
                                 <span>{isLoading ? <Spinner isLoading={isLoading} width="2em" fill="white" /> : "Login"}</span>
                             } />
                         </form>
+
+                        <Link href={API_URL + API_PREFIX + "/user/login/google"} type="primary" slot={
+                            <span>
+                                Sign in with Google
+                            </span>
+                        } />
 
                         <Link href="/signup" type="primary" slot={
                             <span>
