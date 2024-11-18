@@ -35,16 +35,16 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
                     <Avatar src={roomUser.user.avatar_src} alternativeName={roomUser.user.username} />
                 </div>
                 <div>
-                    <p className="text-white mb-1">{roomUser.user.username}</p>
-                    <p className="text-gray-400 text-xs">{roomUser.room_user_role_name}</p>
+                    <p className="text-white mb-1" data-testid="room-user-li-username">{roomUser.user.username}</p>
+                    <p className="text-gray-400 text-xs" data-testid="room-user-li-role-name">{roomUser.room_user_role_name}</p>
                 </div>
             </div>
             { !isMe &&
                 <div className="bg-gray-700 p-2 rounded-md flex flex-col gap-1">
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Admin" onClick={() => update(roomUser.uuid, 'Admin')} button="button" slot="Set Admin" />
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Moderator" onClick={() => update(roomUser.uuid, 'Moderator')} button="button" slot="Set Moderator" />
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Member" onClick={() => update(roomUser.uuid, 'Member')} button="button" slot="Set Member" />
-                    <Button type="error" display={`${isAdmin||isMod?'':'hidden'} flex items-center justify-center`} button="button" title="Kick" onClick={() => destroy(roomUser.uuid)}  slot="Kick" />
+                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Admin" onClick={() => update(roomUser.uuid, 'Admin')} button="button" slot="Set Admin" testId="set-room-user-admin" />
+                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Moderator" onClick={() => update(roomUser.uuid, 'Moderator')} button="button" slot="Set Moderator" testId="set-room-user-mod" />
+                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Member" onClick={() => update(roomUser.uuid, 'Member')} button="button" slot="Set Member" testId="set-room-user-member" />
+                    <Button type="error" display={`${isAdmin||isMod?'':'hidden'} flex items-center justify-center`} button="button" title="Kick" onClick={() => destroy(roomUser.uuid)}  slot="Kick" testId="kick-room-user" />
                 </div>
             }
             { isMe &&

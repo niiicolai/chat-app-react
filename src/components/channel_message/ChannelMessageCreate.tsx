@@ -69,7 +69,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
         <div>
             {selectedChannel && (
                 <div>
-                    <form onSubmit={createHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0">
+                    <form onSubmit={createHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0" data-testid="channel-message-create-form">
                         <input type="hidden" name="uuid" value={uuid} />
                         <input type="hidden" name="channel_uuid" value={selectedChannel.uuid} />
 
@@ -96,6 +96,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
                             value={message}
                             onChange={messageHandler}
                             className="w-full focus:outline-none focus:bg-slate-800 bg-black px-3"
+                            data-testid="channel-message-create-body"
                         />
 
                         <Button type="primary" button="submit" display="w-24 flex items-center justify-center rounded-none" slot={

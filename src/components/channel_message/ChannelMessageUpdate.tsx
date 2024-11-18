@@ -52,7 +52,7 @@ const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): JSX.Element => 
         <div>
             {editMessage && (
                 <div>
-                    <form onSubmit={updateHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0">
+                    <form onSubmit={updateHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0" data-testid="channel-message-edit-form">
                         <input type="hidden" name="uuid" value={editMessage?.uuid} />
 
                         <input
@@ -62,6 +62,7 @@ const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): JSX.Element => 
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             className="w-full focus:outline-none focus:bg-slate-800 bg-black px-3"
+                            data-testid="channel-message-edit-body"
                         />
 
                         <Button type="primary" button="submit" display="w-24 flex items-center justify-center rounded-none" slot={

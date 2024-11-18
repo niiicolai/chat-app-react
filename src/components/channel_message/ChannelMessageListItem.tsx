@@ -37,7 +37,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
     const canModify = isModOrAdmin || authenticatedUser?.uuid === channelMessage.user?.uuid;
 
     return (
-        <li key={channelMessage.uuid} className="relative flex justify-between gap-3 hover:bg-gray-800 p-2 rounded-md" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <li key={channelMessage.uuid} className="relative flex justify-between gap-3 hover:bg-gray-800 p-2 rounded-md" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} data-testid="channel-message-list-item">
             <div className="w-full flex items-start gap-5">
                 <div className="w-8">
                     {channelMessage.channel_message_type_name === 'System' &&
@@ -116,10 +116,10 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
             </div>
             {showSettings && canModify && (
                 <div className="bg-gray-700 p-1 rounded-md flex gap-1 absolute top-3 right-3">
-                    <Button type="primary" display="h-5 w-5 flex items-center justify-center" title="Edit message" onClick={() => setEditMessage(channelMessage)} button="button" slot={
+                    <Button type="primary" display="h-5 w-5 flex items-center justify-center" title="Edit message" onClick={() => setEditMessage(channelMessage)} button="button" testId="edit-channel-message-button" slot={
                         <PenIcon fill="white" width=".6em" />
                     } />
-                    <Button type="error" display="h-5 w-5 flex items-center justify-center" button="button" title="Delete message" onClick={() => destroyMessage(channelMessage.uuid)} slot={
+                    <Button type="error" display="h-5 w-5 flex items-center justify-center" button="button" title="Delete message" testId="delete-channel-message-button" onClick={() => destroyMessage(channelMessage.uuid)} slot={
                         <TrashIcon fill="white" width=".6em" />
                     } />
                 </div>

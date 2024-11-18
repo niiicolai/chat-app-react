@@ -16,11 +16,9 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Registration                 | [x]     |
 |                        | Logout                       | [x]     |
 |                        | Edit Profile                 | [x]     |
-|                        | Status                       | [ ]     |
 |                        | Delete Avatar                | [x]     |
 |                        | Forgot password              | [x]     |
 |                        | E-mail verification          | [x]     |
-|                        | Two Factor Authentication    | [ ]     |
 |                        | Google Sign up + Login       | [x]     |
 |                        | Add/Revoke Google Login      | [ ]     |
 | **Room**               | Create                       | [x]     |
@@ -81,10 +79,6 @@ A React.js SPA made for the chat backend application found at https://github.com
 | **Websocket**          | Connect                      | [x]     |
 |                        | Join Channel                 | [x]     |
 |                        | Handle Message Events        | [x]     |
-| **WebRTC**             | Connect                      | [ ]     |
-|                        | Video Call                   | [ ]     |
-|                        | Audio Call                   | [ ]     |
-|                        | Screen Sharing               | [ ]     |
 | **Logging**            | Rollbar                      | [x]     |
 |                        | Uncaught Exceptions          | [x]     |
 |                        | Unhandled Promise Rej.       | [x]     |
@@ -94,16 +88,12 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Join Room                    | [x]     |
 |                        | Room Settings                | [x]     |
 |                        | Room Invite Link             | [x]     |
-|                        | Room User                    | [ ]     |
-|                        | Room File                    | [ ]     |
+|                        | Room User                    | [x]     |
+|                        | Room File                    | [x]     |
 |                        | Channel                      | [x]     |
-|                        | Channel Message              | [ ]     |
-|                        | Channel Message Upload       | [ ]     |
+|                        | Channel Message              | [x]     |
 |                        | Channel Webhook              | [x]     |
-|                        | User                         | [ ]     |
-|                        | User Status                  | [ ]     |
-| **Other tests**        | Unit tests                   | [ ]     |
-|                        | Integration tests            | [ ]     |
+|                        | User                         | [x]     |
 | **Routing**            | React Router                 | [x]     |
 |                        | Sitemap                      | [x]     |
 | **CI/CD**              | GitHub Actions               | [x]     |

@@ -89,7 +89,7 @@ const EditUser = (props: EditUserProps): JSX.Element => {
                     Enter the details to edit user
                 </p>
 
-                <form onSubmit={update}>
+                <form onSubmit={update} data-testid="edit-user-form">
                     <InputControl
                         id="user-edit-username"
                         type="text"

@@ -46,7 +46,7 @@ const RoomFileList = (props: RoomFileListProps): JSX.Element => {
                 <Spinner width="2em" fill="white" isLoading={isLoading} />
 
                 <Paginator nextPage={nextPage} previousPage={previousPage} isLoading={isLoading} error={error} page={page} pages={pages} slot={
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3" data-testid="room-file-list">
                         {files.map((file) => (
                             <RoomFileListItem file={file} key={file.uuid} setFileDelete={setFileDelete} isAdmin={isAdmin} />
                         ))}
