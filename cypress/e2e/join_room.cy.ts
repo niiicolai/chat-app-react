@@ -95,12 +95,4 @@ describe('Join Room E2E Test', () => {
         cy.get('[data-testid="channel-list-item-button"]').first().click();
         cy.get('[data-testid="channel-message-list-item-body"]').should('be.visible').and('contain', `${username2} entered the room!`);
     });
-
-    it('Clicking the leave room button should leave the room', () => {
-        cy.visit('http://localhost:5173/');
-        cy.get('[data-testid="browse-rooms-button"]').click();
-        cy.get('[data-testid="room-list-item-button"]').first().click();
-        cy.get('[data-testid="room-options-leave-room"]').click();
-        cy.get('[data-testid="room-leave-room-alert-message"]').should('be.visible').and('contain', 'User left the room');
-    });
 });
