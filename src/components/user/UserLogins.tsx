@@ -30,7 +30,6 @@ interface UserLoginsProps {
 const UserLogins = (props: UserLoginsProps): JSX.Element => {
     const { showUserLogins, setShowUserLogins } = props;
     const { addToast } = useContext(ToastContext);
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [userLogins, setUserLogins] = useState<UserLogin[]>([]);
     const [hasGoogleLogin, setHasGoogleLogin] = useState(false);
@@ -51,7 +50,6 @@ const UserLogins = (props: UserLoginsProps): JSX.Element => {
     }, []);
 
     const revokeAccess = (uuid: string) => {
-        setIsLoading(true);
         UserService.destroyLogin(uuid)
             .then(() => {
                 setUserLogins(userLogins.filter((login: UserLogin) => login.uuid !== uuid));
@@ -65,8 +63,7 @@ const UserLogins = (props: UserLoginsProps): JSX.Element => {
                 } else {
                     setError("An unknown error occurred");
                 }
-            })
-            .finally(() => setIsLoading(false));
+            });
     }
 
     const addGoogleLogin = () => {

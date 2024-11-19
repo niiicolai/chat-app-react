@@ -50,7 +50,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
         })
         .finally(() => {
             setIsLoading(false);
-            scrollToBottom && scrollToBottom();
+            if (scrollToBottom) scrollToBottom();
         });
     };
 
