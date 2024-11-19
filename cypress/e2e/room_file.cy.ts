@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 const uuid = uuidv4();
 const room_name = `room_name_${Date.now()}`;
 
-describe('Room User as Admin E2E Test', () => {
+describe('Room File E2E Test', () => {
     before(() => {
         // Sign up a random user before running the tests
         cy.visit('http://localhost:5173/signup');

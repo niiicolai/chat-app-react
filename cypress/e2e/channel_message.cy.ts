@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 const room_name = `room_name_${Date.now()}`;
 const uniqueUsername = `user_${Date.now()}`;
 
-describe('Join Room E2E Test', () => {
+describe('Channel Message E2E Test', () => {
     before(() => {
         // Sign up a random user before running the tests
         cy.visit('http://localhost:5173/signup');
@@ -66,7 +66,7 @@ describe('Join Room E2E Test', () => {
 
     it('creating a channel message should show the channel message', () => {
         const message = `message_${Date.now()}`;
-        cy.get('[data-testid="channel-message-create-body"]').type(message);
+        cy.get('[data-testid="channel-message-create-body"]').type(message, { force: true });
         cy.get('[data-testid="channel-message-create-form"]').submit();
         cy.get('[data-testid="channel-message-list-item-body"]').should('be.visible').and('contain', message);
         cy.get('[data-testid="channel-message-list-item-username"]').should('be.visible').and('contain', uniqueUsername);
@@ -88,7 +88,7 @@ describe('Join Room E2E Test', () => {
         const message = `message_${Date.now()}`;
         cy.get('[data-testid="channel-message-list-item"]').first().trigger('mouseover');
         cy.get('[data-testid="edit-channel-message-button"]').click();
-        cy.get('[data-testid="channel-message-edit-body"]').clear().type(message);
+        cy.get('[data-testid="channel-message-edit-body"]').clear({ force: true }).type(message, { force: true });
         cy.get('[data-testid="channel-message-edit-form"]').submit();
         cy.get('[data-testid="channel-message-list-item-body"]').should('be.visible').and('contain', message);
     });
@@ -102,7 +102,7 @@ describe('Join Room E2E Test', () => {
     it('after adding five messages, the channel message list should have five messages', () => {
         for (let i = 0; i < 5; i++) {
             const message = `message_${Date.now()}_${i}`;
-            cy.get('[data-testid="channel-message-create-body"]').type(message);
+            cy.get('[data-testid="channel-message-create-body"]').type(message, { force: true });
             cy.get('[data-testid="channel-message-create-form"]').submit();
         }
         cy.get('[data-testid="channel-message-list-item"]').should('have.length', 5);
