@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView';
 import SignupView from '../views/SignupView';
 import ForgotPasswordView from '../views/ForgotPasswordView';
 import RedirectAuthView from '../views/RedirectAuthView';
+import RedirectAuthConfirmView from '../views/RedirectAuthConfirmView';
 
 export const routes = [
   {
@@ -29,5 +30,9 @@ export const routes = [
   {
     path: "/redirect/auth",
     element: <RedirectAuthView />,
+  },
+  {
+    path: "/redirect/auth/confirm",
+    element: <RedirectAuthConfirmView />,
   },
 ];

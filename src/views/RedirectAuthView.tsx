@@ -8,8 +8,8 @@ import { UserContext } from "../context/userContext";
 import { useSearchParams } from "react-router-dom";
 
 /**
- * @function LoginView
- * @description The login view
+ * @function RedirectAuthView
+ * @description The redirect auth view
  * @returns {JSX.Element} JSX.Element
  */
 const RedirectAuthView = (): JSX.Element => {

@@ -20,7 +20,7 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | Forgot password              | [x]     |
 |                        | E-mail verification          | [x]     |
 |                        | Google Sign up + Login       | [x]     |
-|                        | Add/Revoke Google Login      | [ ]     |
+|                        | Add/Revoke Google Login      | [x]     |
 | **Room**               | Create                       | [x]     |
 |                        | Update                       | [x]     |
 |                        | Delete                       | [x]     |
@@ -71,7 +71,7 @@ A React.js SPA made for the chat backend application found at https://github.com
 |                        | List                         | [x]     |
 |                        | Add File                     | [x]     |
 |                        | Delete File                  | [x]     |
-|                        | Scroll To Bottom Event       | [ ]     |
+|                        | Scroll To Bottom Event       | [x]     |
 |                        | Pagination                   | [x]     |
 | **Toast**              | Create                       | [x]     |
 |                        | List                         | [x]     |

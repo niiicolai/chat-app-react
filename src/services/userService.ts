@@ -2,6 +2,7 @@ import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
 import { validate as uuidValidate } from 'uuid';
 import TokenService from "./tokenService";
 import User from "../models/user";
+import UserLogin from "../models/user_login";
 
 /**
  * @interface UserResponse
@@ -10,6 +11,15 @@ import User from "../models/user";
  */
 interface UserResponse extends BuilderResponse {
     data: User;
+}
+
+/**
+ * @interface UserLoginsResponse
+ * @description The user logins response
+ * @param {UserLogin[]} data - The user logins
+ */
+interface UserLoginsResponse extends BuilderResponse {
+    data: UserLogin[];
 }
 
 /**
@@ -45,6 +55,25 @@ export default class UserService {
                 .endpoint(`/user/${uuid}`)
                 .method(BuilderMethods.GET)
                 .execute() as UserResponse;
+            return response.data;
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
+        }
+    }
+
+    /**
+     * @function logins
+     * @description Find the current user's logins
+     * @returns {Promise<UserLogin[]>} user logins
+     * @throws {BuilderError}
+     */
+    static logins = async (): Promise<UserLogin[]> => {
+        try {
+            const response = await ApiService.builder()
+                .endpoint(`/user/me/logins`)
+                .method(BuilderMethods.GET)
+                .auth()
+                .execute() as UserLoginsResponse;
             return response.data;
         } catch (error: unknown) {
             throw UserService.handleError(error);
@@ -163,6 +192,27 @@ export default class UserService {
         try {
             await ApiService.builder()
                 .endpoint(`/user/me/avatar`)
+                .method(BuilderMethods.DELETE)
+                .auth()
+                .execute() as BuilderResponse;
+        } catch (error: unknown) {
+            throw UserService.handleError(error);
+        }
+    }
+
+    /**
+     * @function destroyLogin
+     * @description Destroy a user login
+     * @param {string} uuid - The user login uuid
+     * @returns {Promise<void>} void
+     * @throws {Error} if the login uuid is missing
+     */
+    static destroyLogin = async (uuid: string): Promise<void> => {
+        if (!uuid) throw new Error('Login uuid is required');
+
+        try {
+            await ApiService.builder()
+                .endpoint(`/user/me/login/${uuid}`)
                 .method(BuilderMethods.DELETE)
                 .auth()
                 .execute() as BuilderResponse;

@@ -2,7 +2,7 @@ import ChannelMessageCreate from "./ChannelMessageCreate";
 import ChannelMessageUpdate from "./ChannelMessageUpdate";
 import ChannelMessageList from "./ChannelMessageList";
 import useChannelMessages from "../../hooks/useChannelMessages";
-import { JSX } from "react";
+import { JSX, useRef } from "react";
 /**
  * @function ChannelMessageMain
  * @returns {JSX.Element}
@@ -16,8 +16,17 @@ const ChannelMessageMain = (): JSX.Element => {
         setEditMessage 
     } = useChannelMessages();
 
+    const channelWrapperRef = useRef<HTMLDivElement>(null);
+    const scrollToBottom = () => {
+        setTimeout(() => {
+            if (channelWrapperRef.current) {
+                channelWrapperRef.current.scrollTop = channelWrapperRef.current.scrollHeight;
+            }
+        }, 100);
+    };
+
     return (
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto main-msg-wrapper" ref={channelWrapperRef}>
             <ChannelMessageList
                 messages={messages}
                 isLoading={isLoading}
@@ -31,7 +40,7 @@ const ChannelMessageMain = (): JSX.Element => {
             />
 
             {!editMessage
-                ? <ChannelMessageCreate create={create} />
+                ? <ChannelMessageCreate create={create} scrollToBottom={scrollToBottom} />
                 : <ChannelMessageUpdate
                     editMessage={editMessage}
                     update={update}

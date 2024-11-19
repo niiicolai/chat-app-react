@@ -52,8 +52,8 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
     );
 
     return (
-        <div className="bg-black pb-12">
-            <div className="p-3">
+        <div className="bg-black">
+            <div className="pl-3 pt-3 pr-3 pb-12 sm:pb-0">
                 <Alert type="error" message={error} />
 
                 {!messages.length &&

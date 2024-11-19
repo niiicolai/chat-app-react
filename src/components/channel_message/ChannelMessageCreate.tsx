@@ -13,6 +13,7 @@ import { useState, JSX } from "react";
  */
 interface ChannelMessageCreateProps {
     create: (e: FormEvent<HTMLFormElement>, file: string | Blob) => Promise<void>;
+    scrollToBottom?: () => void;
 }
 
 /**
@@ -27,7 +28,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
     const [uuid, setUuid] = useState(uuidv4());
     const [file, setFile] = useState('' as string | Blob);
     const [isLoading, setIsLoading] = useState(false);
-    const { create } = props;
+    const { create, scrollToBottom } = props;
 
     const createHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,6 +50,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
         })
         .finally(() => {
             setIsLoading(false);
+            scrollToBottom && scrollToBottom();
         });
     };
 
