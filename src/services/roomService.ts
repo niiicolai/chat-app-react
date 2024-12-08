@@ -22,6 +22,8 @@ interface RoomsResponse extends BuilderResponse {
         data: Room[];
         total: number;
         pages: number;
+        limit: number;
+        page: number;
     };
 }
 

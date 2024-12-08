@@ -1,49 +1,44 @@
-import { useEffect, useState  } from "react";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import UserService from "../services/userService";
 import User from "../models/user";
 
-/**
- * @interface UseUser
- * @description The user hook interface
- */
-interface UseUser {
-    user: User | null;
-    setUser: (user: User | null) => void;
-    error: string;
-    isLoading: boolean;
+const key = ['user'];
+
+export const useGetUser = () => {
+    return useQuery(key, UserService.me);
 }
 
-/**
- * @function useUser
- * @description The user hook
- * @returns {UseUser} The user hook
- */
-const useUser = (): UseUser => {
-    const [user, setUser] = useState<User | null>(null);
-    const [error, setError] = useState("");
-    const [isLoading, setLoading] = useState(false);
-
-    useEffect(() => {
-        if (UserService.isAuthenticated()) {
-            setLoading(true);
-            UserService.me()
-                .then(setUser)
-                .catch((err: unknown) => {
-                    if (err instanceof Error) setError(err.message);
-                    else setError("An unknown error occurred");
-                })
-                .finally(() => setLoading(false));
-        }
-
-        return () => {}
-    }, []);
-
-    return { 
-        user, 
-        setUser, 
-        error, 
-        isLoading 
-    };
+export const useGetLogins = () => {
+    return useQuery(key, UserService.logins);
 }
 
-export default useUser;
+export const useDestroyLogin = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(UserService.destroyLogin, {
+        onSuccess: () => queryClient.invalidateQueries(key)
+    });
+}
+
+export const useUpdateUser = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation(UserService.update, {
+        onSuccess: (user: User) => queryClient.setQueryData(key,
+            (prevUser: User | undefined) => user
+        )
+    });
+}
+
+export const useDestroyAvatar = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(UserService.destroyAvatar, {
+        onSuccess: () => queryClient.setQueryData(key, (prevUser: User | undefined) => {
+            if (!prevUser) return prevUser;
+            return { ...prevUser, avatar_src: '' };
+        })
+    });
+}
+
+export default useGetUser;

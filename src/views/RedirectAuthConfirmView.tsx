@@ -44,7 +44,7 @@ const RedirectAuthConfirmView = (): JSX.Element => {
     }
 
     const toApp = () => {
-        navigate("/");
+        navigate("/user/logins");
     }
 
     return (

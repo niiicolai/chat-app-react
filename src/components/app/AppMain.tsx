@@ -7,14 +7,14 @@ import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import { ToastContext } from "../../context/toastContext";
 import { JSX, useEffect } from "react";
-
+import { useGetUser } from "../../hooks/useUser";
 /**
  * @function AppMain
  * @description The main app component
  * @returns {JSX.Element} JSX.Element
  */
 function AppMain(): JSX.Element {
-    const { user } = useContext(UserContext);
+    const { data: user } = useGetUser();
     const { addToast } = useContext(ToastContext);
 
     useEffect(() => {

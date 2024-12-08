@@ -4,7 +4,6 @@ import RoomProvider from '../providers/RoomProvider';
 import UserProvider from '../providers/UserProvider';
 import ToastProvider from "../providers/ToastProvider";
 import WebsocketProvider from "../providers/WebsocketProvider";
-import RollbarProvider from "../providers/RollbarProvider";
 import AppMain from '../components/app/AppMain';
 
 /**
@@ -14,14 +13,12 @@ import AppMain from '../components/app/AppMain';
  */
 function AppView(): JSX.Element {
   return (
-    <RollbarProvider slot={
-      <UserProvider slot={
-        <RoomProvider slot={
-          <ChannelProvider slot={
-            <ToastProvider slot={
-              <WebsocketProvider slot={
-                <AppMain />
-              } />
+    <UserProvider slot={
+      <RoomProvider slot={
+        <ChannelProvider slot={
+          <ToastProvider slot={
+            <WebsocketProvider slot={
+              <AppMain />
             } />
           } />
         } />

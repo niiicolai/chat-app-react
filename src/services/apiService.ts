@@ -1,4 +1,5 @@
 import TokenService from "./tokenService";
+import CsrfService from "./csrfService";
 
 /**
  * @constant API_URL
@@ -209,6 +210,13 @@ export default class ApiService {
                     b.methods.header('Authorization', `Bearer ${token}`);
                 } else {
                     throw new BuilderError('No token found');
+                }
+            }
+
+            if ([BuilderMethods.POST, BuilderMethods.PUT, BuilderMethods.PATCH].includes(b.options.method)) {
+                const csrf = CsrfService.getToken();
+                if (csrf) {
+                    b.methods.header('x-csrf-token', csrf);
                 }
             }
 

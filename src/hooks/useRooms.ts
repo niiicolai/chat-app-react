@@ -1,65 +1,109 @@
-import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from "react";
 import Room from "../models/room";
 import RoomService from "../services/roomService";
-import UserService from "../services/userService";
+import RoomFileService from "../services/roomFileService";
 
-/**
- * @interface UseRooms
- * @description The room hook interface
- */
-interface UseRooms {
-    rooms: Room[];
-    setRooms: (rooms: Room[]) => void;
-    error: string;
-    isLoading: boolean;
-    pages: number;
-    setPages: (pages: number) => void;
+export const useUpdateRoom = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(async ({ uuid, formData }: { uuid: string, formData: FormData }) => {
+        return await RoomService.update(uuid, formData);
+    }, {
+        onSuccess: (room: Room) => {
+            queryClient.setQueryData(['room', uuid],
+                (prevRoom: Room | undefined) => room
+            )
+            queryClient.setQueryData(['rooms'], (prevRooms: Room[] | undefined) => {
+                if (!prevRooms) return [];
+                return prevRooms.map(r => {
+                    if (r.uuid === room.uuid) {
+                        return room;
+                    }
+                    return r;
+                })
+            })
+        }
+    });
 }
 
-/**
- * @function useRooms
- * @description The room hook
- * @returns {UseRoom} The room hook
- */
-const useRooms = (): UseRooms => {
-    const [rooms, setRooms] = useState<Room[]>([]);
-    const [error, setError] = useState("");
-    const [isLoading, setLoading] = useState(false);
-    const [pages, setPages] = useState(1);
-    const limit = 10;
+export const useCreateRoom = () => {
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
-        if (UserService.isAuthenticated()) {
-            paginate(1, limit);
+    return useMutation(RoomService.create, {
+        onSuccess: (room: Room) => {
+            queryClient.setQueryData(['room', room.uuid], room);
+            queryClient.setQueryData(['rooms'], (prevRooms: Room[] | undefined) => {
+                if (!prevRooms) return [];
+                return [...prevRooms, room];
+            })
         }
+    });
+}
 
-        return () => { }
-    }, []);
+export const useDestroyAvatar = (uuid: string) => {
+    const queryClient = useQueryClient();
 
-    const paginate = async (page: number, limit: number) => {
-        setLoading(true);
-
-        try {
-            const { data, pages } = await RoomService.findAll(page, limit);
-            setRooms(data);
-            setPages(pages ?? 1);
-            setError("");
-        } catch (err: unknown) {
-            if (err instanceof Error) setError(err.message);
-            else setError("An unknown error occurred");
-        } finally {
-            setLoading(false);
+    return useMutation(RoomFileService.destroy, {
+        onSuccess: () => {
+            queryClient.setQueryData(['room', uuid], (prevRoom: Room | undefined) => {
+                if (!prevRoom) return;
+                return {
+                    ...prevRoom,
+                    ...(prevRoom.avatar && { avatar: { uuid: prevRoom.avatar.uuid, room_file: null } })
+                }
+            })
+            queryClient.setQueryData(['rooms'], (prevRooms: Room[] | undefined) => {
+                if (!prevRooms) return [];
+                return prevRooms.map(room => {
+                    if (room.uuid === uuid && room.avatar) {
+                        return {
+                            ...room,
+                            avatar: { uuid: room.avatar.uuid, room_file: null }
+                        }
+                    }
+                    return room;
+                })
+            })
         }
-    }
+    });
+}
+
+export const useGetRoom = (uuid: string) => {
+    const [category, setCategory] = useState<string>('');
 
     return {
-        rooms,
-        setRooms,
-        error,
-        isLoading,
-        pages,
-        setPages,
+        category,
+        setCategory,
+        query: useQuery(['room', uuid], async () => {
+            const room = await RoomService.findOne(uuid);
+            setCategory(room.room_category_name);
+            return room;
+        })
     };
 }
 
-export default useRooms;
+export const useGetRooms = () => {
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
+
+    const { data, error, isLoading } = useQuery(['rooms', page], async () => {
+        const { data, pages } = await RoomService.findAll(page, 10);
+        setPages(pages ?? 1);
+        return { data, pages };
+    }, {
+        keepPreviousData: true,
+    });
+
+    return {
+        page,
+        pages,
+        data,
+        error,
+        isLoading,
+        nextPage: () => setPage(page < pages ? page + 1 : page),
+        previousPage: () => setPage(page > 1 ? page - 1 : page),
+    };
+}
+
+export default useGetRooms;

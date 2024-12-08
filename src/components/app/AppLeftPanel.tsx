@@ -15,8 +15,6 @@ import Button from '../utils/Button';
 
 import RoomCreate from '../room/RoomCreate';
 import RoomList from '../room/RoomList';
-import UserEdit from '../user/UserEdit';
-import UserLogins from '../user/UserLogins';
 
 /**
  * @function AppLeftPanel
@@ -29,8 +27,6 @@ function AppLeftPanel(): JSX.Element {
   const { setSelectedChannel } = useContext(ChannelContext);
   const [browseRooms, setBrowseRooms] = useState(false);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
-  const [editUser, setEditUser] = useState(false);
-  const [showUserLogins, setShowUserLogins] = useState(false);
   const navigate = useNavigate();
 
   const clickOnLogo = () => {
@@ -48,8 +44,8 @@ function AppLeftPanel(): JSX.Element {
   const actions = [
     { name: 'Create Room', type: 'primary', onClick: () => { setShowCreateRoom(true) }, slot: <PlusIcon fill="white" width="1em" />, testId: 'show-create-room-button' },
     { name: 'Browse Rooms', type: 'primary', onClick: () => { setBrowseRooms(true) }, slot: <ListIcon fill="white" width="1em" />, testId: 'browse-rooms-button' },
-    { name: 'Edit Profile', type: 'primary', onClick: () => { setEditUser(true) }, slot: <UserGear fill="white" width="1em" />, testId: 'edit-profile-button' },
-    { name: 'Logins', type: 'primary', onClick: () => { setShowUserLogins(true) }, slot: <KeyIcon fill="white" width="1em" />, testId: 'logins-button' },
+    { name: 'Edit Profile', type: 'primary', onClick: () => { navigate('/user/edit') }, slot: <UserGear fill="white" width="1em" />, testId: 'edit-profile-button' },
+    { name: 'Logins', type: 'primary', onClick: () => { navigate('/user/logins') }, slot: <KeyIcon fill="white" width="1em" />, testId: 'logins-button' },
     { name: 'Logout', type: 'error', onClick: () => { logout() }, slot: <LogoutIcon fill="white" width="1em" />, testId: 'logout-button' }
   ]
 
@@ -57,8 +53,6 @@ function AppLeftPanel(): JSX.Element {
     <div className='flex flex-row sm:flex-col justify-between gap-2 p-3 sm:h-screen border-b sm:border-r sm:border-b-0 border-gray-800'>
       <RoomCreate showCreateRoom={showCreateRoom} setShowCreateRoom={setShowCreateRoom} />
       <RoomList browseRooms={browseRooms} setBrowseRooms={setBrowseRooms} />
-      <UserEdit editUser={editUser} setEditUser={setEditUser} />
-      <UserLogins showUserLogins={showUserLogins} setShowUserLogins={setShowUserLogins} />
 
       <div className='flex items-center justify-center bg-gray-800 w-8 h-8 rounded-md cursor-pointer' onClick={clickOnLogo} title='Chat App'>
         <GhostIcon fill="white" width=".8em" />
