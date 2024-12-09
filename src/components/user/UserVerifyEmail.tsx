@@ -21,7 +21,7 @@ const UserVerifyEmail = (): JSX.Element => {
         try {
             await resendEmailVerification.mutateAsync();
             addToast({ message: 'Verification email sent', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error sending verification email', type: 'error', duration: 5000 });
         }
     }

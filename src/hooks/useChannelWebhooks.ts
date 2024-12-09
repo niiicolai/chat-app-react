@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import RoomFileService from "../services/roomFileService";
 import ChannelWebhookService from "../services/channelWebhookService";
 import ChannelWebhook from "../models/channel_webhook";
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 
 export const useGetChannelWebhook = (uuid: string) => {
     return useQuery(['channelWebhook', uuid], ({ queryKey }) => {
@@ -28,7 +28,7 @@ export const useUpdateChannelWebhook = (uuid: string) => {
     }, {
         onSuccess: (channelWebhook: ChannelWebhook) => {
             queryClient.setQueryData(['channelWebhook', uuid],
-                (prevChannelWebhook: ChannelWebhook | undefined) => channelWebhook
+                () => channelWebhook
             )
         }
     });

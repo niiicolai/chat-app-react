@@ -4,12 +4,9 @@ import Restricted from "../../components/utils/Restricted";
 import Spinner from "../../components/utils/Spinner";
 import Alert from "../../components/utils/Alert";
 import Progress from "../../components/utils/Progress";
-
-import RoomService from "../../services/roomService";
 import Room from "../../models/room";
 import Channel from "../../models/channel";
-
-import { useContext, useState, JSX, FormEvent } from "react";
+import { useContext, JSX, FormEvent } from "react";
 import { ToastContext } from "../../context/toastContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGetRoom, useUpdateRoomSettings } from "../../hooks/useRooms";
@@ -73,7 +70,7 @@ const RoomSettingEditView = (): JSX.Element => {
             });
             navigate(`/room/${room_uuid}`);
             addToast({ message: 'Room settings updated successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating room settings', type: 'error', duration: 5000 });
         }
     }

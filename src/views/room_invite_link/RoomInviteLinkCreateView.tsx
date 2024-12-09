@@ -50,7 +50,7 @@ const RoomInviteLinkCreateView = (): JSX.Element => {
             navigate(`/room/${room_uuid}/links`);
             addToast({ message: 'Invite link created successfully', type: 'success', duration: 5000 });
             setUuid(uuidv4());
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error creating invite link', type: 'error', duration: 5000 });
         }
     }

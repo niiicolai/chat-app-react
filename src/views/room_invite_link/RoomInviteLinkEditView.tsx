@@ -45,7 +45,7 @@ const RoomInviteLinkEditView = (): JSX.Element => {
     
             navigate(`/room/${room_uuid}/links`);
             addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating invite link', type: 'error', duration: 5000 });
         }
     }
@@ -60,7 +60,7 @@ const RoomInviteLinkEditView = (): JSX.Element => {
     
             navigate(`/room/${room_uuid}/links`);
             addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating invite link', type: 'error', duration: 5000 });
         }
     }

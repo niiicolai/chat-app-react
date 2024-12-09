@@ -63,7 +63,7 @@ const ChannelWebhookCreateView = (): JSX.Element => {
             await createChannel.mutateAsync(formData);
             navigate(`/room/${room_uuid}/webhooks`);
             addToast({ message: 'Channel webhook created successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Failed to create channel webhook', type: 'error', duration: 5000 });
         }
     }

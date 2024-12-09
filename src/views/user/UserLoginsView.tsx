@@ -30,7 +30,7 @@ const UserLoginsView = (): JSX.Element => {
         try {
             await destroyLogin.mutateAsync(uuid);
             addToast({ message: 'Login revoked', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error revoking login', type: 'error', duration: 5000 });
         }
     }

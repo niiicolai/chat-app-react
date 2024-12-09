@@ -28,7 +28,7 @@ export const useUpdateChannel = (uuid: string) => {
     }, {
         onSuccess: (channel: Channel) => {
             queryClient.setQueryData(['channel', uuid],
-                (prevChannel: Channel | undefined) => channel
+                () => channel
             )
         }
     });

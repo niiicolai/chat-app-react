@@ -25,7 +25,7 @@ export const useUpdateRoomInviteLink = (uuid: string) => {
     return useMutation(async ({ uuid, body }: { uuid: string, body: RoomInviteLinkUpdateInput }) => {
         return await RoomInviteLinkService.update(uuid, body);
     }, {
-        onSuccess: (roomInviteLink: RoomInviteLink) => {
+        onSuccess: () => {
             queryClient.setQueryData(['roomInviteLink', uuid],
                 (prevRoomInviteLink: RoomInviteLink | undefined) => prevRoomInviteLink
             )

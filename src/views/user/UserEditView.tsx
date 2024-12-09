@@ -31,7 +31,7 @@ const UserEditView = (): JSX.Element => {
             await updateUser.mutateAsync(formData);
             navigate('/');
             addToast({ message: 'User updated successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating user', type: 'error', duration: 5000 });
         }
     }
@@ -40,7 +40,7 @@ const UserEditView = (): JSX.Element => {
         try {
             await destroyAvatar.mutateAsync();
             addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error removing avatar', type: 'error', duration: 5000 });
         }
     }

@@ -35,7 +35,7 @@ const RoomLeaveView = (): JSX.Element => {
             await leaveRoom.mutateAsync(room_uuid);
             navigate(`/rooms`);
             addToast({ message: 'User left the room', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error leaving room', type: 'error', duration: 5000 });
         }
     }

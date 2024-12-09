@@ -32,7 +32,7 @@ const ChannelWebhookTestView = (): JSX.Element => {
             await mutateAsync({ uuid: channel_webhook_uuid, message });
             addToast({ message: 'Webhook test sent', type: 'success', duration: 5000 });
             setMessage('');
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error sending webhook test', type: 'error', duration: 5000 });
         }
     }

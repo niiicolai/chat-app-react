@@ -49,7 +49,7 @@ const ChannelWebhookEditView = (): JSX.Element => {
             await updateChannelWebhook.mutateAsync({ uuid: channel_webhook_uuid, formData });
             navigate(`/room/${room_uuid}/webhooks`);
             addToast({ message: 'Channel webhook updated', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating channel webhook', type: 'error', duration: 5000 });
         }
     }
@@ -60,7 +60,7 @@ const ChannelWebhookEditView = (): JSX.Element => {
         try {
             await destroyAvatar.mutateAsync(webhook.room_file.uuid);
             addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error removing avatar', type: 'error', duration: 5000 });
         }
     }

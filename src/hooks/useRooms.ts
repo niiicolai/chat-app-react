@@ -21,9 +21,7 @@ export const useUpdateRoom = (uuid: string) => {
         return await RoomService.update(uuid, formData);
     }, {
         onSuccess: (room: Room) => {
-            queryClient.setQueryData(['room', uuid],
-                (prevRoom: Room | undefined) => room
-            )
+            queryClient.setQueryData(['room', uuid], () => room)
         }
     });
 }
@@ -36,9 +34,7 @@ export const useUpdateRoomSettings = (uuid: string) => {
         return RoomService.findOne(uuid);
     }, {
         onSuccess: (room: Room) => {
-            queryClient.setQueryData(['room', uuid],
-                (prevRoom: Room | undefined) => room
-            )
+            queryClient.setQueryData(['room', uuid], () => room)
         }
     });
 }

@@ -49,7 +49,7 @@ const RoomCreateView = (): JSX.Element => {
             await mutateAsync(formData);
             navigate(`/room/${uuid}`);
             addToast({ message: 'Room created successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error creating room', type: 'error', duration: 5000 });
         }
     }

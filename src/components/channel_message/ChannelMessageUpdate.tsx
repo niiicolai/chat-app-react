@@ -49,7 +49,7 @@ const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): JSX.Element => 
             setEditMessage(null);
             addToast({ message: "Message updated", type: "success", duration: 5000 });
             setMessage("");
-        } catch (error) {
+        } catch {
             addToast({ message: "Error updating message", type: "error", duration: 5000 });
         }
     };

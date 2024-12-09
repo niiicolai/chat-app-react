@@ -5,7 +5,7 @@ import TrashIcon from "../icons/TrashIcon";
 import CopyIcon from "../icons/CopyIcon";
 import { ToastContext } from "../../context/toastContext";
 import { useContext, JSX } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @constant CLIENT_URL

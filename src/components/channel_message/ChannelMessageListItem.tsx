@@ -41,17 +41,25 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
 
     const destroyMessageHandler = async () => {
         if (!channelMessage) return;
-        await destroyMessage.mutateAsync({ uuid: channelMessage.uuid, channel_uuid: channelMessage.channel_uuid });
-        addToast({ message: 'Message deleted', type: 'success', duration: 5000 });
+        try {
+            await destroyMessage.mutateAsync({ uuid: channelMessage.uuid, channel_uuid: channelMessage.channel_uuid });
+            addToast({ message: 'Message deleted', type: 'success', duration: 5000 });
+        } catch {
+            addToast({ message: 'Error deleting message', type: 'error', duration: 5000 });
+        }
     }
 
     const destroyUploadHandler = async () => {
         if (!channelMessage.channel_message_upload) return;
-        const room_file_uuid = channelMessage.channel_message_upload.room_file.uuid;
-        const channel_message_uuid = channelMessage.uuid;
-        const channel_uuid = channelMessage.channel_uuid;
-        await destroyUpload.mutateAsync({ channel_message_uuid, room_file_uuid, channel_uuid });
-        addToast({ message: 'Message upload deleted', type: 'success', duration: 5000 });
+        try {
+            const room_file_uuid = channelMessage.channel_message_upload.room_file.uuid;
+            const channel_message_uuid = channelMessage.uuid;
+            const channel_uuid = channelMessage.channel_uuid;
+            await destroyUpload.mutateAsync({ channel_message_uuid, room_file_uuid, channel_uuid });
+            addToast({ message: 'Message upload deleted', type: 'success', duration: 5000 });
+        } catch {
+            addToast({ message: 'Error deleting message upload', type: 'error', duration: 5000 });
+        }
     }
 
     return (
@@ -59,23 +67,23 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
             <div className="w-full flex items-start gap-5">
                 <div className="w-8">
                     {channelMessage.channel_message_type_name === 'System' &&
-                        <Avatar 
-                            src={null} 
-                            alternativeName="System" 
-                            alternativeIcon={<GhostIcon fill="#FFF" width=".7em" />} 
+                        <Avatar
+                            src={null}
+                            alternativeName="System"
+                            alternativeIcon={<GhostIcon fill="#FFF" width=".7em" />}
                         />
                     }
                     {channelMessage.channel_message_type_name === 'Webhook' &&
-                        <Avatar 
-                            src={channelMessage.channel_webhook_message?.channel_webhook?.room_file?.src} 
-                            alternativeName={channelMessage.channel_webhook_message?.channel_webhook?.name} 
-                            alternativeIcon={<BotIcon fill="#FFF" width=".7em" />} 
+                        <Avatar
+                            src={channelMessage.channel_webhook_message?.channel_webhook?.room_file?.src}
+                            alternativeName={channelMessage.channel_webhook_message?.channel_webhook?.name}
+                            alternativeIcon={<BotIcon fill="#FFF" width=".7em" />}
                         />
                     }
                     {channelMessage.channel_message_type_name === 'User' &&
-                        <Avatar 
-                            src={channelMessage.user?.avatar_src} 
-                            alternativeName={channelMessage.user?.username} 
+                        <Avatar
+                            src={channelMessage.user?.avatar_src}
+                            alternativeName={channelMessage.user?.username}
                         />
                     }
                 </div>
@@ -110,7 +118,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                             <div className="rotate-180">
                                 <ArrowTurnDownIcon fill="#6366f1" width=".7em" />
                             </div>
-                            
+
                             <ChannelMessageUpload channelMessage={{
                                 channel_message_upload: {
                                     uuid: channelMessage.channel_message_upload.uuid,
@@ -124,7 +132,7 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                             }} />
 
                             {showSettings && canModify && (
-                                <Button type="error" display="h-5 w-5 flex items-center justify-center absolute right-3 top-3" button="button" title="Delete file" onClick={()=>destroyUploadHandler()} slot={
+                                <Button type="error" display="h-5 w-5 flex items-center justify-center absolute right-3 top-3" button="button" title="Delete file" onClick={() => destroyUploadHandler()} slot={
                                     <TrashIcon fill="white" width=".6em" />
                                 } />
                             )}

@@ -48,7 +48,7 @@ const RoomEditView = (): JSX.Element => {
             await updateRoom.mutateAsync({ uuid: room_uuid, formData });
             navigate(`/room/${room_uuid}`);
             addToast({ message: 'Room updated successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating room', type: 'error', duration: 5000 });
         }
     }
@@ -59,7 +59,7 @@ const RoomEditView = (): JSX.Element => {
         try {
             await destroyAvatar.mutateAsync(room.avatar.room_file.uuid);
             addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error removing avatar', type: 'error', duration: 5000 });
         }
     }

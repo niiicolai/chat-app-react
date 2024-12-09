@@ -15,7 +15,7 @@ export const useUpdateRoomUser = (uuid: string) => {
     return useMutation(async ({ uuid, room_user_role_name }: { uuid: string, room_user_role_name: string }) => {
         return await RoomUserService.update(uuid, room_user_role_name);
     }, {
-        onSuccess: (roomUser: RoomUser) => {
+        onSuccess: () => {
             queryClient.setQueryData(['roomUser', uuid],
                 (prevRoomUser: RoomUser | undefined) => prevRoomUser
             )

@@ -40,7 +40,7 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
             await updateRoomUser.mutateAsync({ uuid, room_user_role_name: role });
             addToast({ message: 'User role updated', type: 'success', duration: 5000 });
             refetch();
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating user role', type: 'error', duration: 5000 });
         }
     }
@@ -50,7 +50,7 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
             await destroyRoomUser.mutateAsync(uuid);
             addToast({ message: 'User kicked', type: 'success', duration: 5000 });
             refetch();
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error kicking user', type: 'error', duration: 5000 });
         }
     }

@@ -45,7 +45,7 @@ const ChannelEditView = (): JSX.Element => {
             await updateChannel.mutateAsync({ uuid: channel_uuid, formData });
             navigate(`/room/${room_uuid}/channel/${channel_uuid}`);
             addToast({ message: 'Channel updated successfully', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error updating channel', type: 'error', duration: 5000 });
         }
     };
@@ -56,7 +56,7 @@ const ChannelEditView = (): JSX.Element => {
         try {
             await destroyAvatar.mutateAsync(channel.room_file.uuid);
             addToast({ message: 'Avatar deleted', type: 'success', duration: 5000 });
-        } catch (error) {
+        } catch {
             addToast({ message: 'Error deleting avatar', type: 'error', duration: 5000 });
         }
     };

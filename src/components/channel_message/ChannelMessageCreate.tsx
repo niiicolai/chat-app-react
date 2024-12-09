@@ -48,8 +48,8 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
             if (scrollToBottom) scrollToBottom();
             setMessage('');
             setUuid(uuidv4());
-            fileInputRef.current?.value && (fileInputRef.current.value = '');
-        } catch (error) {
+            if (fileInputRef.current && fileInputRef.current?.value) fileInputRef.current.value = '';
+        } catch {            
             addToast({ message: 'Error sending message', type: 'error', duration: 5000 });
         }
     };

@@ -28,9 +28,7 @@ export const useUpdateUser = () => {
     const queryClient = useQueryClient();
     
     return useMutation(UserService.update, {
-        onSuccess: (user: User) => queryClient.setQueryData(key,
-            (prevUser: User | undefined) => user
-        )
+        onSuccess: (user: User) => queryClient.setQueryData(key, () => user)
     });
 }
 
