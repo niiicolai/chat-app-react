@@ -1,49 +1,71 @@
-import { useEffect, useState  } from "react";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import UserService from "../services/userService";
+import UserEmailVerificationService from "../services/userEmailVerificationService";
+import UserPasswordResetService from '../services/userPasswordResetService';
 import User from "../models/user";
 
-/**
- * @interface UseUser
- * @description The user hook interface
- */
-interface UseUser {
-    user: User | null;
-    setUser: (user: User | null) => void;
-    error: string;
-    isLoading: boolean;
+const key = ['user'];
+
+export const useGetUser = () => {
+    return useQuery(key, UserService.me);
 }
 
-/**
- * @function useUser
- * @description The user hook
- * @returns {UseUser} The user hook
- */
-const useUser = (): UseUser => {
-    const [user, setUser] = useState<User | null>(null);
-    const [error, setError] = useState("");
-    const [isLoading, setLoading] = useState(false);
+export const useLoginUser = () => {
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
-        if (UserService.isAuthenticated()) {
-            setLoading(true);
-            UserService.me()
-                .then(setUser)
-                .catch((err: unknown) => {
-                    if (err instanceof Error) setError(err.message);
-                    else setError("An unknown error occurred");
-                })
-                .finally(() => setLoading(false));
-        }
-
-        return () => {}
-    }, []);
-
-    return { 
-        user, 
-        setUser, 
-        error, 
-        isLoading 
-    };
+    return useMutation(UserService.login, {
+        onSuccess: (user: User) => queryClient.setQueryData(key, () => user)
+    });
 }
 
-export default useUser;
+export const useGetLogins = () => {
+    return useQuery(key, UserService.logins, {
+        keepPreviousData: true,
+        cacheTime: 0,
+    });
+}
+
+export const useDestroyLogin = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(UserService.destroyLogin, {
+        onSuccess: () => queryClient.invalidateQueries(key)
+    });
+}
+
+export const useCreateUser = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation(UserService.create, {
+        onSuccess: (user: User) => queryClient.setQueryData(key, () => user)
+    });
+}
+
+export const useUpdateUser = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation(UserService.update, {
+        onSuccess: (user: User) => queryClient.setQueryData(key, () => user)
+    });
+}
+
+export const useDestroyAvatar = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(UserService.destroyAvatar, {
+        onSuccess: () => queryClient.setQueryData(key, (prevUser: User | undefined) => {
+            if (!prevUser) return prevUser;
+            return { ...prevUser, avatar_src: '' };
+        })
+    });
+}
+
+export const useResendEmailVerification = () => {
+    return useMutation(async () => {
+        await UserEmailVerificationService.resend();
+    });
+};
+
+export const useCreatePasswordReset = () => {
+    return useMutation(UserPasswordResetService.create);
+};

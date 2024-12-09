@@ -22,14 +22,14 @@ interface UseJoinRoom {
  * @returns {UseJoinRoom} The join room hook
  */
 const useJoinRoom = (): UseJoinRoom => {
-    const { roomInviteLinkUuid } = useParams<{ roomInviteLinkUuid: string }>();
+    const { room_invite_link_uuid } = useParams<{ room_invite_link_uuid: string }>();
     const [ room, setRoom ] = useState<Room | null>(null);
     const [ roomInviteLink, setRoomInviteLink ] = useState<RoomInviteLink | null>(null);
     const [ error, setError ] = useState<string | null>(null);
     const [ isLoading, setLoading ] = useState(false);
 
     useEffect(() => {
-        if (!roomInviteLinkUuid) {
+        if (!room_invite_link_uuid) {
             setError("Invalid room invite link");
             return;
         }
@@ -37,8 +37,8 @@ const useJoinRoom = (): UseJoinRoom => {
         (async () => {
             try {
                 setLoading(true);
-                await RoomInviteLinkService.join(roomInviteLinkUuid);
-                const roomInviteLink = await RoomInviteLinkService.findOne(roomInviteLinkUuid);
+                await RoomInviteLinkService.join(room_invite_link_uuid);
+                const roomInviteLink = await RoomInviteLinkService.findOne(room_invite_link_uuid);
                 setRoomInviteLink(roomInviteLink);
                 const room = await RoomService.findOne(roomInviteLink.room_uuid);
                 setRoom(room);
@@ -52,7 +52,7 @@ const useJoinRoom = (): UseJoinRoom => {
             }
         })();
 
-    }, [roomInviteLinkUuid]);
+    }, [room_invite_link_uuid]);
 
     return {
         room,

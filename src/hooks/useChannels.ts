@@ -1,67 +1,84 @@
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ChannelService from "../services/channelService";
+import RoomFileService from "../services/roomFileService";
 import Channel from "../models/channel";
-import { useEffect, useState, useContext } from "react";
-import { RoomContext } from "../context/roomContext";
+import { useState } from "react";
 
-/**
- * @interface UseChannels
- * @description The channels hook interface
- */
-interface UseChannels {
-    channels: Channel[];
-    setChannels: (channels: Channel[]) => void;
-    error: string;
-    isLoading: boolean;
-    total: number;
-    setTotal: (total: number) => void;
-    pages: number;
-    setPages: (pages: number) => void;
+export const useGetChannel = (uuid: string) => {
+    return useQuery(['channel', uuid], ({ queryKey }) => {
+        return ChannelService.findOne(queryKey[1]);
+    });
 }
 
-/**
- * @function useChannels
- * @description The channels hook
- * @returns {UseChannels} The channels hook
- */
-const useChannels = (): UseChannels => {
-    const { selectedRoom } = useContext(RoomContext);
-    const [channels, setChannels] = useState<Channel[]>([]);
-    const [isLoading, setLoading] = useState(false);
-    const [total, setTotal] = useState(0);
+export const useCreateChannel = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(ChannelService.create, {
+        onSuccess: (channel: Channel) => {
+            queryClient.setQueryData(['channel', channel.uuid], channel);
+        }
+    });
+}
+
+export const useUpdateChannel = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(async ({ uuid, formData }: { uuid: string, formData: FormData }) => {
+        return await ChannelService.update(uuid, formData);
+    }, {
+        onSuccess: (channel: Channel) => {
+            queryClient.setQueryData(['channel', uuid],
+                () => channel
+            )
+        }
+    });
+}
+
+export const useDestroyChannel = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(ChannelService.destroy, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['channel', uuid]);
+        }
+    });
+}
+
+export const useDestroyAvatar = (channel_uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(RoomFileService.destroy, {
+        onSuccess: () => {
+            queryClient.setQueryData(['channel', channel_uuid], (prevChannel: Channel | undefined) => {
+                if (!prevChannel) return;
+                return {
+                    ...prevChannel,
+                    room_file: null
+                }
+            })
+        }
+    });
+}
+
+export const useGetChannels = (room_uuid: string) => {
+    const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
-    const [error, setError] = useState("");
-    const limit = 5;
 
-    useEffect(() => {
-        if (!selectedRoom) return;
-
-        setLoading(true);
-        ChannelService.findAll(selectedRoom.uuid, 1, limit)
-            .then(({ data, total, pages }: { data: Channel[], total: number, pages: number }) => {            
-                setChannels(data);
-                setTotal(total);
-                setPages(pages ?? 1);
-                setError("");
-            })
-            .catch((err: unknown) => {
-                if (err instanceof Error) setError(err.message);
-                else setError("An unknown error occurred");
-            })
-            .finally(() => setLoading(false));
-
-        return () => { }
-    }, [selectedRoom]);
+    const { data, error, isLoading } = useQuery(['channels', room_uuid, page], async () => {
+        const { data, pages, total } = await ChannelService.findAll(room_uuid, page, 10);
+        setPages(pages ?? 1);
+        return { data, pages, total };
+    }, {
+        keepPreviousData: true,
+    });
 
     return {
-        channels,
-        setChannels,
-        isLoading,
-        error,
-        total,
-        setTotal,
+        page,
         pages,
-        setPages
+        data,
+        error,
+        isLoading,
+        nextPage: () => setPage(page < pages ? page + 1 : page),
+        previousPage: () => setPage(page > 1 ? page - 1 : page),
     };
 }
-
-export default useChannels;

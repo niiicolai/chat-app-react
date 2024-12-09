@@ -1,6 +1,7 @@
 import ApiService, { BuilderResponse, BuilderMethods } from "./apiService";
 import { validate as uuidValidate } from 'uuid';
 import TokenService from "./tokenService";
+import CsrfService from "./csrfService";
 import User from "../models/user";
 import UserLogin from "../models/user_login";
 
@@ -92,6 +93,10 @@ export default class UserService {
                 .method(BuilderMethods.GET)
                 .auth()
                 .execute() as UserResponse;
+
+            if (response?.data?.csrf)
+                CsrfService.setToken(response.data.csrf);
+
             return response.data;
         } catch (error: unknown) {
             throw UserService.handleError(error);

@@ -1,12 +1,10 @@
 import ChannelMessageListItem from "./ChannelMessageListItem";
 import ChannelMessage from "../../models/channel_message";
-import Alert from "../utils/Alert";
-import Spinner from "../utils/Spinner";
 import Button from "../utils/Button";
-import { useContext, JSX } from "react";
-import { ChannelContext } from "../../context/channelContext";
-import { RoomContext } from "../../context/roomContext";
-import { UserContext } from "../../context/userContext";
+import { JSX } from "react";
+import { useGetAuthenticatedRoomUser } from "../../hooks/useRoomUsers";
+import { useGetUser } from "../../hooks/useUser";
+import Channel from "../../models/channel";
 
 /**
  * @interface ChannelMessageListProps
@@ -14,14 +12,11 @@ import { UserContext } from "../../context/userContext";
  */
 interface ChannelMessageListProps {
     setEditMessage: (message: ChannelMessage | null) => void;
-    destroyMessage: (uuid: string) => void;
-    destroyFile: (msg: ChannelMessage) => void;
     messages: ChannelMessage[];
-    isLoading: boolean;
-    error: string | null;
     nextPage: () => void;
-    maxPages: number;
+    channel: Channel;
     page: number;
+    maxPages: number;
 }
 
 /**
@@ -30,11 +25,14 @@ interface ChannelMessageListProps {
  * @returns {JSX.Element}
  */
 const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
-    const { messages, isLoading, error, setEditMessage, destroyMessage, destroyFile, nextPage, maxPages, page } = props;
-    const { selectedChannel } = useContext(ChannelContext);
-    const { selectedRoomUser } = useContext(RoomContext);
-    const { user } = useContext(UserContext);
-    const isModOrAdmin = selectedRoomUser?.room_user_role_name === 'Admin' || selectedRoomUser?.room_user_role_name === 'Moderator';
+    const { channel, messages, setEditMessage, nextPage, page, maxPages } = props;
+    const { data: roomUser } = useGetAuthenticatedRoomUser(channel.room_uuid);
+    const { data: user } = useGetUser();
+    
+    const isModOrAdmin = (
+        roomUser?.room_user_role_name === 'Admin' || 
+        roomUser?.room_user_role_name === 'Moderator'
+    );
 
     const emptyStateMessages = [
         'Looks like you are the early bird! Send a message to kick things off! 🐦💬',
@@ -44,17 +42,10 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
 
     const emptyStateMessage = emptyStateMessages[Math.floor(Math.random() * emptyStateMessages.length)];
 
-    if (isLoading) return (
-        <div className="flex flex-col items-center justify-center gap-3 p-3 h-full text-center">
-            <Spinner isLoading={isLoading} fill="white" width="2em" />
-            <p className="text-white ml-3">Hold on, messages are<br />traveling through cyberspace</p>
-        </div>
-    );
-
     return (
         <div className="bg-black">
             <div className="pl-3 pt-3 pr-3 pb-12 sm:pb-0">
-                <Alert type="error" message={error} />
+                
 
                 {!messages.length &&
                     <div className="flex flex-col items-center justify-center gap-3 p-3 text-center">
@@ -62,7 +53,7 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
                     </div>
                 }
 
-                {selectedChannel &&
+                {channel && user &&
                     <ul className="flex flex-col justify-end gap-3 mb-3">
                         <li className="flex justify-center">
                             {page < maxPages &&
@@ -85,8 +76,6 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
                                 key={message.uuid}
                                 channelMessage={message}
                                 setEditMessage={setEditMessage}
-                                destroyMessage={destroyMessage}
-                                destroyFile={destroyFile}
                                 isModOrAdmin={isModOrAdmin}
                                 authenticatedUser={user}
                             />

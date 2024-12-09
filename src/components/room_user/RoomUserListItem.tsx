@@ -2,9 +2,12 @@
 import RoomUser from "../../models/room_user";
 import Avatar from "../utils/Avatar";
 import Button from "../utils/Button";
+import Spinner from "../utils/Spinner";
+import Alert from "../utils/Alert";
 import { useContext } from "react";
-import { UserContext } from "../../context/userContext";
+import { ToastContext } from "../../context/toastContext";
 import { JSX } from "react";
+import { useUpdateRoomUser, useDestroyRoomUser } from "../../hooks/useRoomUsers";
 
 /**
  * @interface RoomUserListItemProps
@@ -12,10 +15,8 @@ import { JSX } from "react";
  */
 interface RoomUserListItemProps {
     roomUser: RoomUser;
-    update: (uuid: string, room_user_role_name: string) => void;
-    destroy: (uuid: string) => void;
-    isAdmin: boolean;
-    isMod: boolean;
+    authRoomUser: RoomUser | undefined;
+    refetch: () => void;
 }
 
 /**
@@ -24,9 +25,35 @@ interface RoomUserListItemProps {
  * @returns {JSX.Element}
  */
 const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
-    const { roomUser, update, destroy, isAdmin, isMod } = props;
-    const { user } = useContext(UserContext);
-    const isMe = user?.uuid === roomUser.user.uuid;
+    const { roomUser, authRoomUser, refetch } = props;
+    const { addToast } = useContext(ToastContext);
+    const updateRoomUser = useUpdateRoomUser(roomUser.uuid);
+    const destroyRoomUser = useDestroyRoomUser(roomUser.uuid);
+    const isLoading = updateRoomUser.isLoading || destroyRoomUser.isLoading;
+    const error = updateRoomUser.error || destroyRoomUser.error;
+    const isAdmin = authRoomUser?.room_user_role_name === 'Admin';
+    const isMod = authRoomUser?.room_user_role_name === 'Moderator';
+    const isMe = roomUser?.uuid === authRoomUser?.user.uuid;
+
+    const updateHandler = async (uuid: string, role: string) => {
+        try {
+            await updateRoomUser.mutateAsync({ uuid, room_user_role_name: role });
+            addToast({ message: 'User role updated', type: 'success', duration: 5000 });
+            refetch();
+        } catch {
+            addToast({ message: 'Error updating user role', type: 'error', duration: 5000 });
+        }
+    }
+
+    const destroyHandler = async (uuid: string) => {
+        try {
+            await destroyRoomUser.mutateAsync(uuid);
+            addToast({ message: 'User kicked', type: 'success', duration: 5000 });
+            refetch();
+        } catch {
+            addToast({ message: 'Error kicking user', type: 'error', duration: 5000 });
+        }
+    }
 
     return (
         <li className="border border-gray-800 rounded-md p-3" data-testid="room-user-list-item">
@@ -39,15 +66,24 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
                     <p className="text-gray-400 text-xs" data-testid="room-user-li-role-name">{roomUser.room_user_role_name}</p>
                 </div>
             </div>
-            { !isMe &&
-                <div className="bg-gray-700 p-2 rounded-md flex flex-col gap-1">
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Admin" onClick={() => update(roomUser.uuid, 'Admin')} button="button" slot="Set Admin" testId="set-room-user-admin" />
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Moderator" onClick={() => update(roomUser.uuid, 'Moderator')} button="button" slot="Set Moderator" testId="set-room-user-mod" />
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Member" onClick={() => update(roomUser.uuid, 'Member')} button="button" slot="Set Member" testId="set-room-user-member" />
-                    <Button type="error" display={`${isAdmin||isMod?'':'hidden'} flex items-center justify-center`} button="button" title="Kick" onClick={() => destroy(roomUser.uuid)}  slot="Kick" testId="kick-room-user" />
+
+            <Alert type="error" message={error} />
+
+            {isLoading &&
+                <div className="flex items-center justify-center">
+                    <Spinner isLoading={isLoading} width="2em" fill="white" />
                 </div>
             }
-            { isMe &&
+
+            {!isMe && !isLoading &&
+                <div className="bg-gray-700 p-2 rounded-md flex flex-col gap-1">
+                    <Button type="primary" display={`${isAdmin ? '' : 'hidden'} flex items-center justify-center`} title="Promote to Admin" onClick={() => updateHandler(roomUser.uuid, 'Admin')} button="button" slot="Set Admin" testId="set-room-user-admin" />
+                    <Button type="primary" display={`${isAdmin ? '' : 'hidden'} flex items-center justify-center`} title="Promote to Moderator" onClick={() => updateHandler(roomUser.uuid, 'Moderator')} button="button" slot="Set Moderator" testId="set-room-user-mod" />
+                    <Button type="primary" display={`${isAdmin ? '' : 'hidden'} flex items-center justify-center`} title="Promote to Member" onClick={() => updateHandler(roomUser.uuid, 'Member')} button="button" slot="Set Member" testId="set-room-user-member" />
+                    <Button type="error" display={`${isAdmin || isMod ? '' : 'hidden'} flex items-center justify-center`} button="button" title="Kick" onClick={() => destroyHandler(roomUser.uuid)} slot="Kick" testId="kick-room-user" />
+                </div>
+            }
+            {isMe &&
                 <div className="bg-gray-700 p-2 rounded-md flex flex-col gap-1 text-center">
                     You
                 </div>

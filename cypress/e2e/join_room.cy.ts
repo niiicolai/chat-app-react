@@ -85,7 +85,7 @@ describe('Join Room E2E Test', () => {
 
     it('visiting the invite link again should show an error', () => {
         cy.visit(`http://localhost:5173/room/${uuid}/join`);
-        cy.get('[data-testid="room-join-alert-message"]').should('be.visible').and('contain', 'User is already in room');
+        cy.get('[data-testid="room-join-alert-message"]').should('be.visible').and('contain', 'User already in room');
     });
 
     it('a welcome message should be displayed in the channel', () => {

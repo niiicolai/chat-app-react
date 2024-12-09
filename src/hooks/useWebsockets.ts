@@ -1,5 +1,7 @@
 import TokenService from "../services/tokenService";
-import { useRef } from "react";
+import ChannelMessage from '../models/channel_message';
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from "react";
 
 /**
  * @constant WEBSOCKET_URL
@@ -39,10 +41,9 @@ export interface SocketMessage {
  * @description The user hook interface
  */
 interface UseWebsocket {
-    onMessage: (cb: (data: SocketMessage) => void) => void;
-    joinChannel: (channel: string) => void;
     leaveChannel: () => void;
-    socket: WebSocket | null;
+    joinChannel: () => void;
+    socket: WebSocket;
 }
 
 /**
@@ -50,9 +51,9 @@ interface UseWebsocket {
  * @description The websocket hook
  * @returns {UseWebsocket} The websocket hook
  */
-const useWebsocket = (): UseWebsocket => {
-    const onChatMessageCallbacks = useRef<Array<(data: SocketMessage) => void>>([]);
-    const socket = new WebSocket(WEBSOCKET_URL, WS_PROTOCOL);
+export const useWebsocket = (channel_uuid: string): UseWebsocket => {
+    const queryClient = useQueryClient();
+    const [socket] = useState(new WebSocket(WEBSOCKET_URL, WS_PROTOCOL));
 
     socket.onopen = () => {
         if (DEBUG) console.log('WebSocket connection');
@@ -60,6 +61,7 @@ const useWebsocket = (): UseWebsocket => {
 
     socket.onclose = () => {
         if (DEBUG) console.log('WebSocket disconnection');
+        leaveChannel();
     };
 
     socket.onerror = (error) => {
@@ -68,56 +70,87 @@ const useWebsocket = (): UseWebsocket => {
 
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
+
         if (data.error) {
             console.error('WebSocket error:', data.error);
             return;
-        } else if (data.type === 'chat_message') {
-            if (onChatMessageCallbacks.current) {
-                onChatMessageCallbacks.current.forEach(cb => cb(data));
-            }
+        } else if (data.type === 'chat_message_created') {
+            const payload = data.payload as ChannelMessage;
+
+            // Update the infinite query data
+            queryClient.setQueryData(['channel_messages', channel_uuid],
+                (prevChannelMessages: { pages: { data: ChannelMessage[] }[], pageParams: number[] } | undefined) => {
+                    
+                    // If there are no previous messages, create a new page
+                    if (!prevChannelMessages || !prevChannelMessages.pages.length) {
+                        return { pages: [{ data: [payload] }], pageParams: [] };
+                    }
+
+                    // Append the new message to the first page so it appears first
+                    // and return the rest of the pages
+                    return {
+                        pages: [{ data: [...prevChannelMessages.pages[0].data, payload] }, ...prevChannelMessages.pages.slice(1)],
+                        pageParams: prevChannelMessages.pageParams
+                    };
+                }
+            );
+        } else if (data.type === 'chat_message_updated') {
+            const payload = data.payload as ChannelMessage;
+
+            // Update the infinite query data
+            queryClient.setQueryData(['channel_messages', payload.channel_uuid],
+                (prevChannelMessages: { pages: { data: ChannelMessage[] }[], pageParams: number[] } | undefined) => {
+                    if (!prevChannelMessages) return;
+
+                    // Find the message and update it
+                    return {
+                        pages: prevChannelMessages.pages.map((page) => ({
+                            data: page.data.map((message: ChannelMessage) => message.uuid === payload.uuid
+                                ? payload
+                                : message
+                            )
+                        })),
+                        pageParams: prevChannelMessages.pageParams
+                    };
+                }
+            );
+        } else if (data.type === 'chat_message_deleted') {
+            const uuid = data.payload as string;
+
+            // Update the infinite query data
+            queryClient.setQueryData(['channel_messages', channel_uuid],
+                (prevChannelMessages: { pages: { data: ChannelMessage[] }[], pageParams: number[] } | undefined) => {
+                    if (!prevChannelMessages) return;
+
+                    // Remove the message from the data
+                    return {
+                        pages: prevChannelMessages.pages.map((page) => ({
+                            data: page.data.filter((message: ChannelMessage) => message.uuid !== uuid)
+                        })),
+                        pageParams: prevChannelMessages.pageParams
+                    };
+                }
+            );
         }
     };
 
-    const onMessage = (cb: (data: SocketMessage) => void): void => {
-        socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.error) {
-                console.error('WebSocket error:', data.error);
-                return;
-            }
-
-            cb(data);
-        };
-    };
-
-    const joinChannel = (channel: string): void => {
-        if (!socket) {
-            throw new Error('No WebSocket connection found');
-        }
-        // Check if the socket is connected
-        if (socket.readyState !== WebSocket.OPEN) {
-            throw new Error('WebSocket connection not open');
-        }
+    const joinChannel = (): void => {
+        if (!socket) throw new Error('No WebSocket connection found');
+        if (socket.readyState !== WebSocket.OPEN) throw new Error('WebSocket connection not open');
+        
         const token = TokenService.getToken();
         if (!token) {
             throw new Error('No token found in local storage');
         }
-        socket.send(JSON.stringify({ type: 'join_channel', channel, token: `Bearer ${token}` }));
+        console.log('Joining channel:', channel_uuid);
+        socket.send(JSON.stringify({ type: 'join_channel', channel: `channel-${channel_uuid}`, token: `Bearer ${token}` }));
     };
 
     const leaveChannel = (): void => {
-        if (!socket) {
-            throw new Error('No WebSocket connection found');
-        }
+        if (!socket) throw new Error('No WebSocket connection found');
+        console.log('Leaving channel');
         socket.send(JSON.stringify({ type: 'leave_channel' }));
     };
 
-    return {
-        onMessage,
-        joinChannel,
-        leaveChannel,
-        socket
-    };
+    return { leaveChannel, joinChannel, socket };
 }
-
-export default useWebsocket;

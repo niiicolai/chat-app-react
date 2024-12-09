@@ -49,7 +49,7 @@ describe('Room E2E Test', () => {
         cy.get('[data-testid="room-create-form"] select[name="room_category_name"]').select(room_category);
 
         cy.get('[data-testid="room-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-create-alert-message"]').should('be.visible').and('contain', 'Name is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Name is required');
     });
 
     it('the create room form shows an error if the description input is empty', () => {
@@ -58,7 +58,7 @@ describe('Room E2E Test', () => {
         cy.get('[data-testid="room-create-form"] select[name="room_category_name"]').select(room_category);
 
         cy.get('[data-testid="room-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-create-alert-message"]').should('be.visible').and('contain', 'Description is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Description is required');
     });
 
     it('successfully creates a room with valid inputs', () => {
@@ -111,7 +111,7 @@ describe('Room E2E Test', () => {
         cy.get('[data-testid="room-options-edit-room"]').click();
         cy.get('[data-testid="room-edit-form"] input[name="name"]').clear();
         cy.get('[data-testid="room-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-edit-alert-message"]').should('be.visible').and('contain', 'Name is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Name is required');
     });
 
     it('the edit room form shows an error if the description input is empty', () => {
@@ -120,7 +120,7 @@ describe('Room E2E Test', () => {
         cy.get('[data-testid="room-options-edit-room"]').click();
         cy.get('[data-testid="room-edit-form"] input[name="description"]').clear();
         cy.get('[data-testid="room-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-edit-alert-message"]').should('be.visible').and('contain', 'Description is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Description is required');
     });
 
     it('successfully updates a room with valid inputs', () => {
@@ -150,7 +150,7 @@ describe('Room E2E Test', () => {
         cy.get('[data-testid="room-list-item-button"]').first().click();
         cy.get('[data-testid="room-options-delete-room"]').click();
         cy.get('[data-testid="room-delete-cancel-button"]').click();
-        cy.get('[data-testid="room-delete-modal"]').should('not.visible');
+        cy.get('[data-testid="room-delete-modal"]').should('not.exist');
     });
 
     it('clicking the confirm button shows an error if the confirm input does not match the room name', () => {

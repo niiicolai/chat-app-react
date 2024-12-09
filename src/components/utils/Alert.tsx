@@ -16,7 +16,7 @@ const types: { [key: string]: string } = {
  */
 interface AlertProps {
     type?: string | null;
-    message?: string | null;
+    message?: string | null | unknown;
     testId?: string | null;
 }
 
@@ -32,7 +32,7 @@ const Alert = (props: AlertProps): JSX.Element => {
         <>
             {message &&
                 <p className={`${styling} p-3 text-sm rounded-md text-center font-bold`} data-testid={testId || ''}>
-                    {props.message}
+                    {props.message?.toString()}
                 </p>
             }
         </>

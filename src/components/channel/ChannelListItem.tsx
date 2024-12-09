@@ -10,8 +10,8 @@ import { JSX } from "react";
  */
 interface ChannelListItemProps {
     channel: Channel;
-    setChannel: (channel: Channel | null) => void;
     isSelected: boolean;
+    setChannel: (channel: Channel) => void;
 }
 
 /**
@@ -20,7 +20,7 @@ interface ChannelListItemProps {
  * @returns {JSX.Element}
  */
 const ChannelListItem = (props: ChannelListItemProps): JSX.Element => {
-    const { channel, setChannel, isSelected } = props;
+    const { channel, isSelected, setChannel } = props;
     const selectedClass = isSelected ? 'ring-2 ring-gray-500 hover:ring-gray-500' : '';
     return (
         <li key={channel.uuid}

@@ -1,6 +1,7 @@
 import Button from "../utils/Button";
 import Room from "../../models/room";
 import { JSX } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @interface RoomListItemProps
@@ -8,7 +9,6 @@ import { JSX } from "react";
  */
 interface RoomListItemProps {
     room: Room;
-    setRoom: (room: Room) => void;
 }
 
 /**
@@ -17,11 +17,12 @@ interface RoomListItemProps {
  * @returns {JSX.Element}
  */
 const RoomListItem = (props: RoomListItemProps): JSX.Element => {
-    const { room, setRoom } = props;
+    const navigate = useNavigate();
+    const { room } = props;
 
     return (
         <li key={room.uuid} className="hover:ring-2 hover:ring-indigo-800 relative rounded-md overflow-hidden" data-testid="room-list-item">
-            <Button onClick={() => setRoom(room)}
+            <Button onClick={() => navigate(`/room/${room.uuid}`)}
                 button="button"
                 type="primary"
                 testId="room-list-item-button"

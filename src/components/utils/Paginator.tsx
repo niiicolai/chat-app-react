@@ -14,9 +14,9 @@ interface PaginatorProps {
     nextPage: () => void;
     previousPage: () => void;
     isLoading: boolean;
-    error: string;
-    page: number;
-    pages: number;
+    error: string | null | unknown;
+    page: number | null | unknown;
+    pages: number | null | unknown;
 }
 
 /**
@@ -26,6 +26,14 @@ interface PaginatorProps {
  */
 const Paginator = (props: PaginatorProps): JSX.Element => {
     const { slot, nextPage, previousPage, isLoading, error, page, pages } = props;
+
+    const previousPageHandler = () => {
+        previousPage();
+    };
+
+    const nextPageHandler = () => {
+        nextPage();
+    }
 
     return (
         <div>
@@ -42,13 +50,13 @@ const Paginator = (props: PaginatorProps): JSX.Element => {
                 </div>
             }
 
-            {!isLoading && pages > 1 &&
+            {!isLoading &&
                 <div>
                     <div className="flex gap-2 mt-2">
-                        <Button type="primary" onClick={previousPage} slot={<ArrowLeftIcon fill="white" width=".6em" />} display="w-10 p-2 flex items-center justify-center" disabled={page === 1} />
-                        <Button type="primary" onClick={nextPage} slot={<ArrowRightIcon fill="white" width=".6em" />} display="w-10 p-2 flex items-center justify-center" disabled={page === pages} />
+                        <Button type="primary" onClick={previousPageHandler} slot={<ArrowLeftIcon fill="white" width=".6em" />} display="w-10 p-2 flex items-center justify-center" disabled={page === 1} />
+                        <Button type="primary" onClick={nextPageHandler} slot={<ArrowRightIcon fill="white" width=".6em" />} display="w-10 p-2 flex items-center justify-center" disabled={page === pages} />
                         <div className="w-full h-full flex items-center justify-center p-2 bg-gray-500 rounded-md text-xs">
-                            Page {page} of {pages}
+                            Page {String(page || 1)} of {String(pages || 1)}
                         </div>
                     </div>
 

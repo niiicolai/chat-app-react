@@ -39,6 +39,6 @@ describe('User E2E Test', () => {
         cy.get('#user-edit-email').clear().type(`updated_email${Date.now()}@example.com`);
         cy.get('#user-edit-password').clear().type('updated_password');
         cy.get('[data-testid="edit-user-form"]').submit();
-        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'User updated');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'User updated successfully');
     });
 });

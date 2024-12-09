@@ -5,6 +5,7 @@ import TrashIcon from "../icons/TrashIcon";
 import CopyIcon from "../icons/CopyIcon";
 import { ToastContext } from "../../context/toastContext";
 import { useContext, JSX } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @constant CLIENT_URL
@@ -20,8 +21,6 @@ if (!CLIENT_URL) console.error('CONFIGURATION ERROR(RoomInviteLinkListItem.tsx):
  */
 interface RoomInviteLinkListItemProps {
     link: RoomInviteLink;
-    setLinkEdit: (link: RoomInviteLink | null) => void;
-    setLinkDelete: (link: RoomInviteLink | null) => void;
     isAdmin: boolean;
 }
 
@@ -31,14 +30,24 @@ interface RoomInviteLinkListItemProps {
  * @returns {JSX.Element}
  */
 const RoomInviteLinkListItem = (props: RoomInviteLinkListItemProps): JSX.Element => {
-    const { link, setLinkEdit, setLinkDelete, isAdmin } = props;
+    const { link, isAdmin } = props;
+    const navigate = useNavigate();
     const { addToast } = useContext(ToastContext);
     const url = new URL(`/room/${link.uuid}/join`, CLIENT_URL).toString();
     const isExpired = link.expires_at && new Date(link.expires_at) < new Date() ? 'Yes' : 'No';
+    
     const copyToClipboard = () => {
         navigator.clipboard.writeText(url);
         addToast({ message: 'Invite link copied to clipboard', type: 'success', duration: 5000 });
     };
+
+    const setLinkEdit = (link: RoomInviteLink) => {
+        navigate(`/room/${link.room_uuid}/link/${link.uuid}/edit`);
+    }
+
+    const setLinkDelete = (link: RoomInviteLink) => {
+        navigate(`/room/${link.room_uuid}/link/${link.uuid}/delete`);
+    }
 
     return (
         <li className="flex flex-col gap-1 border border-gray-800 p-3 rounded-md break-all" data-testid="room-invite-link-list-item">

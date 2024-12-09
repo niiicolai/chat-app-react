@@ -56,6 +56,7 @@ export default class ChannelService {
             const response = await ApiService.builder()
                 .endpoint(`/channel/${uuid}`)
                 .method(BuilderMethods.GET)
+                .auth()
                 .execute() as ChannelResponse;
 
             return response.data;
