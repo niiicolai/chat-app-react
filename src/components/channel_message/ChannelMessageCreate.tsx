@@ -6,7 +6,7 @@ import Channel from "../../models/channel";
 import { v4 as uuidv4 } from "uuid";
 import { FormEvent, useContext } from "react";
 import { ToastContext } from "../../context/toastContext";
-import { useState, JSX } from "react";
+import { useState, JSX, useRef } from "react";
 import { useCreateChannelMessage } from "../../hooks/useChannelMessages";
 
 /**
@@ -31,6 +31,8 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
     const [file, setFile] = useState('' as string | Blob);
     const { scrollToBottom, channel } = props;
 
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     const createHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -45,8 +47,8 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
             addToast({ message: 'Message sent', type: 'success', duration: 5000 });
             if (scrollToBottom) scrollToBottom();
             setMessage('');
-            setFile('');
             setUuid(uuidv4());
+            fileInputRef.current?.value && (fileInputRef.current.value = '');
         } catch (error) {
             addToast({ message: 'Error sending message', type: 'error', duration: 5000 });
         }
@@ -89,7 +91,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
                         </button>
                     )}
 
-                    <input type="file" name="file" id="ch-msg-create-file" className="hidden" onChange={fileHandler} />
+                    <input type="file" name="file" id="ch-msg-create-file" className="hidden" ref={fileInputRef} onChange={fileHandler} />
                     <input
                         type="text"
                         name="body"

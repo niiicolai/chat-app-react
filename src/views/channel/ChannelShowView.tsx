@@ -4,8 +4,9 @@ import ChannelMessageMain from "../../components/channel_message/ChannelMessageM
 import Spinner from "../../components/utils/Spinner";
 import Alert from "../../components/utils/Alert";
 import { useParams } from "react-router-dom";
-import { JSX } from "react";
+import { JSX, useEffect } from "react";
 import { useGetChannel } from "../../hooks/useChannels";
+import { useWebsocket } from "../../hooks/useWebsockets";
 
 /**
  * @function ChannelShowView
@@ -15,6 +16,21 @@ import { useGetChannel } from "../../hooks/useChannels";
 function ChannelShowView(): JSX.Element {
     const { channel_uuid } = useParams<{ channel_uuid: string }>();
     const { data: channel, isLoading, error } = useGetChannel(channel_uuid as string);
+    const { leaveChannel, joinChannel, socket } = useWebsocket(channel_uuid as string);
+    const readyState = socket?.readyState;
+
+    useEffect(() => {
+        if (!channel_uuid) return;
+        if (readyState === 1) joinChannel();
+        
+        /**
+         * Unsubscribe from the channel messages
+         * on component unmount
+         */
+        return () => {
+            if (readyState === 1) leaveChannel();
+        }
+    }, [channel_uuid, readyState]);
 
     return (
         <LayoutRoomMain slot={
