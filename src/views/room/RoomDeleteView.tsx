@@ -34,7 +34,7 @@ const RoomDeleteView = (): JSX.Element => {
 
         await destroyRoom.mutateAsync(room_uuid);
         navigate(`/rooms`);
-        addToast({ message: 'Room deleted', type: 'success', duration: 5000 });
+        addToast({ message: 'Room deleted successfully', type: 'success', duration: 5000 });
     }
 
     const nameHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

@@ -84,7 +84,7 @@ describe('Room Invite Link E2E Test', () => {
         cy.get('[data-testid="room-invite-link-create-button"]').click();
         cy.get('[data-testid="room-invite-link-create-form"] input[name="expires_at"]').type(expires_at_yesterday);
         cy.get('[data-testid="room-invite-link-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-invite-link-create-alert-message"]').should('be.visible').and('contain', 'The expiration date cannot be in the past');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'The expiration date cannot be in the past');
     });
 
     it('the browse room invite link modal should contain two room-invite-link-list-item', () => {
@@ -141,7 +141,7 @@ describe('Room Invite Link E2E Test', () => {
         cy.get('[data-testid="room-invite-link-list-item"]').first().find('[data-testid="room-invite-link-edit-button"]').click();
         cy.get('[data-testid="room-invite-link-edit-form"] input[name="expires_at"]').type(expires_at_yesterday);
         cy.get('[data-testid="room-invite-link-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-invite-link-edit-alert-message"]').should('be.visible').and('contain', 'The expiration date cannot be in the past');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'The expiration date cannot be in the past');
     });
 
     it('clicking the delete button should show a confirmation modal', () => {

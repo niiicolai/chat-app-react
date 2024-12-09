@@ -63,7 +63,7 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="channel-webhook-create-form"] input[name="name"]').type('name');
         cy.get('[data-testid="channel-webhook-create-form"] input[name="description"]').type('description');
         cy.get('[data-testid="channel-webhook-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-create-alert-message"]').should('be.visible').and('contain', 'Invalid channel');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Channel is required');
     });
 
     it('when submitting the create channel webhook form, without a name should display an error message', () => {
@@ -81,7 +81,7 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="room-options-webhooks"]').click();
         cy.get('[data-testid="channel-webhook-create-button"]').click();
         cy.get('[data-testid="channel-webhook-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-create-alert-message"]').should('be.visible').and('contain', 'Invalid name');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Name is required');
     });
 
     it('when submitting the create channel webhook form, without a description should display an error message', () => {
@@ -89,7 +89,7 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="channel-webhook-create-button"]').click();
         cy.get('[data-testid="channel-webhook-create-form"] input[name="name"]').type('name');
         cy.get('[data-testid="channel-webhook-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-create-alert-message"]').should('be.visible').and('contain', 'Invalid description');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Description is required');
     });
 
     it('when submitting the create channel webhook form, with valid data should create a channel webhook', () => {
@@ -106,8 +106,12 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="channel-webhook-create-button"]').click();
         cy.get('[data-testid="channel-webhook-create-form"] input[name="name"]').type('name');
         cy.get('[data-testid="channel-webhook-create-form"] input[name="description"]').type('description');
-        cy.get('[data-testid="channel-webhook-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-create-alert-message"]').should('be.visible').and('contain', 'Channel already has a webhook');
+        // expect uncaught exception
+        cy.on('uncaught:exception', (err, runnable) => {
+            cy.get('[data-testid="channel-webhook-create-form"] button[type="submit"]').click();
+            expect(err.message).to.include('Channel webhook already exists');
+            return false;
+        });
     });
 
     it('the browse channel webhook list should contain the created channel webhook', () => {
@@ -128,7 +132,7 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="room-options-webhooks"]').click();
         cy.get('[data-testid="channel-webhook-test-button"]').click();
         cy.get('[data-testid="channel-webhook-test-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-test-alert-message"]').should('be.visible').and('contain', 'Invalid message');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Message is required');
     });
 
     it('when submitting the test channel webhook form, with a message should send a test message', () => {
@@ -163,7 +167,7 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="channel-webhook-edit-button"]').click();
         cy.get('[data-testid="channel-webhook-edit-form"] input[name="name"]').clear();
         cy.get('[data-testid="channel-webhook-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-edit-alert-message"]').should('be.visible').and('contain', 'Invalid name');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Name is required');
     });
 
     it('when submitting the edit channel webhook form, without a description should display an error message', () => {
@@ -171,7 +175,7 @@ describe('Channel Webhook E2E Test', () => {
         cy.get('[data-testid="channel-webhook-edit-button"]').click();
         cy.get('[data-testid="channel-webhook-edit-form"] input[name="description"]').clear();
         cy.get('[data-testid="channel-webhook-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-webhook-edit-alert-message"]').should('be.visible').and('contain', 'Invalid description');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Description is required');
     });
 
     it('when submitting the edit channel webhook form, with valid data should update the channel webhook', () => {

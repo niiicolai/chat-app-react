@@ -35,13 +35,20 @@ const RoomInviteLinkCreateView = (): JSX.Element => {
             return;
         }
 
+        // Use the uuid from the form to allow
+        // the e2e test to set the uuid to a known value
+        // for joining rooms in tests.
+        const formData = new FormData(e.currentTarget);
+        const uuid = formData.get("uuid") as string;
+
         await mutateAsync({
             uuid,
             room_uuid,
             expires_at: expiresAt
         });
         navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link created', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link created successfully', type: 'success', duration: 5000 });
+        setUuid(uuidv4());
     }
 
     return (
@@ -71,6 +78,8 @@ const RoomInviteLinkCreateView = (): JSX.Element => {
                     </p>
 
                     <form onSubmit={submitHandler} data-testid="room-invite-link-create-form">
+                        <input type="hidden" name="uuid" value={uuid} />
+                        
                         <div className="flex gap-1">
                             <div className="w-full">
                                 <InputControlTracked

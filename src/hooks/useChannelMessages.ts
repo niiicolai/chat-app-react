@@ -66,7 +66,7 @@ export const useGetChannelMessages = (channel_uuid: string) => {
     const { data, error, isLoading } = useQuery(['channel_messages', channel_uuid, page], async () => {
         const { data, pages, total } = await ChannelMessageService.findAll(channel_uuid, page, 10);
         setPages(pages ?? 1);
-        return { data, pages, total };
+        return { data: data.reverse(), pages, total };
     }, {
         keepPreviousData: true,
     });

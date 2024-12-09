@@ -42,7 +42,7 @@ const RoomInviteLinkDeleteView = (): JSX.Element => {
 
         await destroyRoomInviteLink.mutateAsync(room_invite_link_uuid);
         navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Room invite link deleted', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link deleted successfully', type: 'success', duration: 5000 });
     }
 
     const answerHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

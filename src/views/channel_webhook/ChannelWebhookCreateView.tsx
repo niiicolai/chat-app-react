@@ -7,7 +7,7 @@ import Alert from "../../components/utils/Alert";
 import Channel from "../../models/channel";
 import { useContext, JSX, FormEvent } from "react";
 import { ToastContext } from "../../context/toastContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetChannels } from "../../hooks/useChannels";
@@ -31,6 +31,13 @@ const ChannelWebhookCreateView = (): JSX.Element => {
     const error = createChannel.error || getChannels.error;
     const isLoading = createChannel.isLoading;
     const isLoadingChannel = getChannels.isLoading;
+
+    useEffect(() => {
+        if (channels && channels.length > 0) {
+            setChannelUuid(channels[0].uuid);
+        }
+        return () => {};
+    }, [channels]);
 
     const createHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

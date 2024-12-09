@@ -28,6 +28,7 @@ const UserEditView = (): JSX.Element => {
         const formData = new FormData(event.currentTarget);
         await updateUser.mutateAsync(formData);
         navigate('/');
+        addToast({ message: 'User updated successfully', type: 'success', duration: 5000 });
     }
 
     const destroyAvatarHandler = async () => {

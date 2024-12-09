@@ -71,7 +71,7 @@ const RoomSettingEditView = (): JSX.Element => {
             }
         });
         navigate(`/room/${room_uuid}`);
-        addToast({ message: 'Room settings updated', type: 'success', duration: 5000 });
+        addToast({ message: 'Room settings updated successfully', type: 'success', duration: 5000 });
     }
 
     return (

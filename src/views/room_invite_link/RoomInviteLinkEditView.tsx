@@ -43,7 +43,7 @@ const RoomInviteLinkEditView = (): JSX.Element => {
         link.expires_at = expiresAt;
 
         navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link updated', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
     }
 
     const clearExpiresAt = async () => {
@@ -54,7 +54,7 @@ const RoomInviteLinkEditView = (): JSX.Element => {
         link.expires_at = '';
 
         navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link updated', type: 'success', duration: 5000 });
+        addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
     }
 
     return (

@@ -27,7 +27,7 @@ const RoomUserListView = (): JSX.Element => {
 
                 <div className="flex gap-3 justify-between p-3 border-b border-gray-800">
                     <div className="text-lg font-bold">
-                        Room Files
+                        Room Users
                     </div>
 
                     <div className="flex gap-3">

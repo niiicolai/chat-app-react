@@ -94,9 +94,9 @@ describe('Room User as Admin E2E Test', () => {
             // has an element where data-testid="room-user-li-role-name" contains "Member"
             cy.get('[data-testid="room-user-li-role-name"]').should('contain', 'Member');
             // role and kick buttons should not exist
-            cy.get('[data-testid="set-room-user-admin"]').should('not.exist');
-            cy.get('[data-testid="set-room-user-mod"]').should('not.exist');
-            cy.get('[data-testid="set-room-user-member"]').should('not.exist');
+            cy.get('[data-testid="set-room-user-admin"]').should('have.class', 'hidden');
+            cy.get('[data-testid="set-room-user-mod"]').should('have.class', 'hidden');
+            cy.get('[data-testid="set-room-user-member"]').should('have.class', 'hidden');
         });
     });
 });

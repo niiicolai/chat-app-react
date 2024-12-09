@@ -65,14 +65,14 @@ describe('Channel E2E Test', () => {
     it('the create channel form shows an error if the name input is empty', () => {
         cy.get('[data-testid="room-options-create-channel"]').click();
         cy.get('[data-testid="channel-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-create-alert-message"]').should('be.visible').and('contain', 'Name is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Name is required');
     });
 
     it('the create channel form shows an error if the description input is empty', () => {
         cy.get('[data-testid="room-options-create-channel"]').click();
         cy.get('[data-testid="channel-create-form"] input[name="name"]').type(channel_name);
         cy.get('[data-testid="channel-create-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-create-alert-message"]').should('be.visible').and('contain', 'Description is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Description is required');
     });
 
     it('successfully creates a channel with valid inputs', () => {
@@ -119,7 +119,7 @@ describe('Channel E2E Test', () => {
         cy.get('[data-testid="channel-header-edit-channel"]').click();
         cy.get('[data-testid="channel-edit-form"] input[name="name"]').clear();
         cy.get('[data-testid="channel-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-edit-alert-message"]').should('be.visible').and('contain', 'Name is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Name is required');
     });
 
     it('the edit channel form shows an error if the description input is empty', () => {
@@ -128,7 +128,7 @@ describe('Channel E2E Test', () => {
         cy.get('[data-testid="channel-header-edit-channel"]').click();
         cy.get('[data-testid="channel-edit-form"] input[name="description"]').clear();
         cy.get('[data-testid="channel-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="channel-edit-alert-message"]').should('be.visible').and('contain', 'Description is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Description is required');
     });
 
     it('successfully updates a channel with valid inputs', () => {
@@ -159,7 +159,7 @@ describe('Channel E2E Test', () => {
         cy.get('[data-testid="channel-header"]').trigger('mouseover');
         cy.get('[data-testid="channel-header-delete-channel"]').click();
         cy.get('[data-testid="channel-delete-cancel-button"]').click();
-        cy.get('[data-testid="channel-delete-modal"]').should('not.visible');
+        cy.get('[data-testid="channel-delete-modal"]').should('not.exist');
     });
 
     it('clicking the confirm button shows an error if the confirm input does not match the channel name', () => {

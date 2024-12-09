@@ -34,7 +34,7 @@ const ChannelDeleteView = (): JSX.Element => {
 
         await destroyChannel.mutateAsync(channel_uuid);
         navigate(`/room/${room_uuid}`);
-        addToast({ message: 'Channel deleted', type: 'success', duration: 5000 });
+        addToast({ message: 'Channel deleted successfully', type: 'success', duration: 5000 });
     }
 
     const nameHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

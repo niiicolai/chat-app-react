@@ -46,7 +46,7 @@ const RoomEditView = (): JSX.Element => {
 
         await updateRoom.mutateAsync({ uuid: room_uuid, formData });
         navigate(`/room/${room_uuid}`);
-        addToast({ message: 'Room updated', type: 'success', duration: 5000 });
+        addToast({ message: 'Room updated successfully', type: 'success', duration: 5000 });
     }
 
     const destroyAvatarHandler = async () => {

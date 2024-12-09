@@ -47,7 +47,7 @@ describe('Room Settings E2E Test', () => {
         cy.get('[data-testid="room-options-room-settings"]').click();
         cy.get('[data-testid="room-settings-edit-form"] input[name="join_message"]').clear();
         cy.get('[data-testid="room-settings-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-settings-alert-message"]').should('be.visible').and('contain', 'Join message is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Join message is required');
     });
 
     it ('submitting the edit room settings form without a join message including {name} should show an error', () => {
@@ -55,7 +55,7 @@ describe('Room Settings E2E Test', () => {
         cy.get('[data-testid="room-settings-edit-form"] input[name="join_message"]').clear();
         cy.get('[data-testid="room-settings-edit-form"] input[name="join_message"]').type('Hello');
         cy.get('[data-testid="room-settings-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-settings-alert-message"]').should('be.visible').and('contain', 'Join message must contain {name}');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Join message must contain {name}');
     });
 
     it('submitting the edit room settings form without rules text should show an error', () => {
@@ -63,7 +63,7 @@ describe('Room Settings E2E Test', () => {
         
         cy.get('[data-testid="room-settings-edit-form"] textarea[name="rules_text"]').clear();
         cy.get('[data-testid="room-settings-edit-form"] button[type="submit"]').click();
-        cy.get('[data-testid="room-settings-alert-message"]').should('be.visible').and('contain', 'Rules text is required');
+        cy.get('[data-testid="toast-item-message"]').should('be.visible').and('contain', 'Rules text is required');
     });
 
     it('submitting the edit room settings form with valid data should update the room settings', () => {

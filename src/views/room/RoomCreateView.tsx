@@ -47,6 +47,7 @@ const RoomCreateView = (): JSX.Element => {
 
         await mutateAsync(formData);
         navigate(`/room/${uuid}`);
+        addToast({ message: 'Room created successfully', type: 'success', duration: 5000 });
     }
 
     const nameHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

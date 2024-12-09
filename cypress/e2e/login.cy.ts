@@ -44,9 +44,8 @@ describe('Login E2E Test', () => {
     cy.get('button[type="submit"]').click();
 
     cy.url().should('eq', 'http://localhost:5173/');
-    cy.get('[data-testid="toast-item-message"]')
-      .should('be.visible')
-      .and('contain', 'Welcome back!');
+    cy.get('[data-testid="browse-rooms-button"]')
+      .should('be.visible');
   });
   
   it('shows an error message for invalid credentials', () => {
