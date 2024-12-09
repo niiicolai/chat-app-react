@@ -45,16 +45,24 @@ const ChannelWebhookEditView = (): JSX.Element => {
             return;
         }
 
-        await updateChannelWebhook.mutateAsync({ uuid: channel_webhook_uuid, formData });
-        navigate(`/room/${room_uuid}/webhooks`);
-        addToast({ message: 'Channel webhook updated', type: 'success', duration: 5000 });
+        try {
+            await updateChannelWebhook.mutateAsync({ uuid: channel_webhook_uuid, formData });
+            navigate(`/room/${room_uuid}/webhooks`);
+            addToast({ message: 'Channel webhook updated', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error updating channel webhook', type: 'error', duration: 5000 });
+        }
     }
 
     const destroyAvatarHandler = async () => {
-        if (!channel_webhook_uuid) return;
+        if (!channel_webhook_uuid || !webhook?.room_file) return;
 
-        await destroyAvatar.mutateAsync(channel_webhook_uuid);
-        addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+        try {
+            await destroyAvatar.mutateAsync(webhook.room_file.uuid);
+            addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error removing avatar', type: 'error', duration: 5000 });
+        }
     }
 
     return (
@@ -84,7 +92,7 @@ const ChannelWebhookEditView = (): JSX.Element => {
                     </p>
 
                     <form onSubmit={updateHandler} data-testid="channel-webhook-edit-form">
-                        <input type="hidden" name="uuid" value={webhook?.uuid} />
+                        <input type="hidden" name="uuid" defaultValue={webhook?.uuid} />
 
                         <InputControl
                             id="webhook-update-name"

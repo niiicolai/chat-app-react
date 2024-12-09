@@ -14,13 +14,11 @@ import Channel from "../../models/channel";
  */
 interface ChannelMessageListProps {
     setEditMessage: (message: ChannelMessage | null) => void;
-    destroyMessage: (uuid: string) => void;
-    destroyFile: (msg: ChannelMessage) => void;
     messages: ChannelMessage[];
     nextPage: () => void;
-    maxPages: number;
-    page: number;
     channel: Channel;
+    page: number;
+    maxPages: number;
 }
 
 /**
@@ -29,7 +27,7 @@ interface ChannelMessageListProps {
  * @returns {JSX.Element}
  */
 const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
-    const { channel, messages, setEditMessage, destroyMessage, destroyFile, nextPage, maxPages, page } = props;
+    const { channel, messages, setEditMessage, nextPage, page, maxPages } = props;
     const { data: roomUser } = useGetAuthenticatedRoomUser(channel.room_uuid);
     const { data: user } = useGetUser();
     
@@ -80,8 +78,6 @@ const ChannelMessageList = (props: ChannelMessageListProps): JSX.Element => {
                                 key={message.uuid}
                                 channelMessage={message}
                                 setEditMessage={setEditMessage}
-                                destroyMessage={destroyMessage}
-                                destroyFile={destroyFile}
                                 isModOrAdmin={isModOrAdmin}
                                 authenticatedUser={user}
                             />

@@ -25,15 +25,24 @@ const UserEditView = (): JSX.Element => {
 
     const updateHandler = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        await updateUser.mutateAsync(formData);
-        navigate('/');
-        addToast({ message: 'User updated successfully', type: 'success', duration: 5000 });
+
+        try {
+            const formData = new FormData(event.currentTarget);
+            await updateUser.mutateAsync(formData);
+            navigate('/');
+            addToast({ message: 'User updated successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error updating user', type: 'error', duration: 5000 });
+        }
     }
 
     const destroyAvatarHandler = async () => {
-        await destroyAvatar.mutateAsync();
-        addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+        try {
+            await destroyAvatar.mutateAsync();
+            addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error removing avatar', type: 'error', duration: 5000 });
+        }
     }
 
     return <Restricted slot={

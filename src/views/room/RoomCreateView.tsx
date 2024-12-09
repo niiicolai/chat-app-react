@@ -23,7 +23,7 @@ const RoomCreateView = (): JSX.Element => {
     const [uuid] = useState(uuidv4());
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [room_category_name, setRoomCategoryName] = useState("");
+    const [room_category_name, setRoomCategoryName] = useState("General");
 
     const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -45,9 +45,13 @@ const RoomCreateView = (): JSX.Element => {
             return;
         }
 
-        await mutateAsync(formData);
-        navigate(`/room/${uuid}`);
-        addToast({ message: 'Room created successfully', type: 'success', duration: 5000 });
+        try {
+            await mutateAsync(formData);
+            navigate(`/room/${uuid}`);
+            addToast({ message: 'Room created successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error creating room', type: 'error', duration: 5000 });
+        }
     }
 
     const nameHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

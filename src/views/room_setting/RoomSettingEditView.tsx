@@ -63,15 +63,19 @@ const RoomSettingEditView = (): JSX.Element => {
             return;
         }
 
-        await updateRoomSettings.mutateAsync({
-            uuid: room_uuid, settings: {
-                join_message,
-                rules_text,
-                join_channel_uuid
-            }
-        });
-        navigate(`/room/${room_uuid}`);
-        addToast({ message: 'Room settings updated successfully', type: 'success', duration: 5000 });
+        try {
+            await updateRoomSettings.mutateAsync({
+                uuid: room_uuid, settings: {
+                    join_message,
+                    rules_text,
+                    join_channel_uuid
+                }
+            });
+            navigate(`/room/${room_uuid}`);
+            addToast({ message: 'Room settings updated successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error updating room settings', type: 'error', duration: 5000 });
+        }
     }
 
     return (

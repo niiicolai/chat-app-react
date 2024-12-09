@@ -36,7 +36,7 @@ const ChannelWebhookCreateView = (): JSX.Element => {
         if (channels && channels.length > 0) {
             setChannelUuid(channels[0].uuid);
         }
-        return () => {};
+        return () => { };
     }, [channels]);
 
     const createHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -58,10 +58,14 @@ const ChannelWebhookCreateView = (): JSX.Element => {
             return;
         }
 
-        const formData = new FormData(e.currentTarget);
-        await createChannel.mutateAsync(formData);
-        navigate(`/room/${room_uuid}/webhooks`);
-        addToast({ message: 'Channel webhook created successfully', type: 'success', duration: 5000 });
+        try {
+            const formData = new FormData(e.currentTarget);
+            await createChannel.mutateAsync(formData);
+            navigate(`/room/${room_uuid}/webhooks`);
+            addToast({ message: 'Channel webhook created successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Failed to create channel webhook', type: 'error', duration: 5000 });
+        }
     }
 
     const nameHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -137,7 +141,7 @@ const ChannelWebhookCreateView = (): JSX.Element => {
                                 label="Channel"
                                 value={channelUuid}
                                 onChange={channelUuidHandler}
-                                options={channels.map((channel : Channel) => (
+                                options={channels.map((channel: Channel) => (
                                     <option key={channel.uuid} value={channel.uuid}>{channel.name}</option>
                                 ))}
                             />

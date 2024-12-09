@@ -31,9 +31,13 @@ const RoomLeaveView = (): JSX.Element => {
             return;
         }
 
-        await leaveRoom.mutateAsync(room_uuid);
-        navigate(`/rooms`);
-        addToast({ message: 'User left the room', type: 'success', duration: 5000 });
+        try {
+            await leaveRoom.mutateAsync(room_uuid);
+            navigate(`/rooms`);
+            addToast({ message: 'User left the room', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error leaving room', type: 'error', duration: 5000 });
+        }
     }
 
     const nameHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

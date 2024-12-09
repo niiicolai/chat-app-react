@@ -32,9 +32,13 @@ const ChannelWebhookDeleteView = (): JSX.Element => {
             return;
         }
 
-        await destroyChannelWebhook.mutateAsync(channel_webhook_uuid);
-        navigate(`/room/${room_uuid}/webhooks`);
-        addToast({ message: 'Channel webhook deleted successfully', type: 'success', duration: 5000 });
+        try {
+            await destroyChannelWebhook.mutateAsync(channel_webhook_uuid);
+            navigate(`/room/${room_uuid}/webhooks`);
+            addToast({ message: 'Channel webhook deleted successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error deleting channel webhook', type: 'error', duration: 5000 });
+        }
     }
 
     const nameHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

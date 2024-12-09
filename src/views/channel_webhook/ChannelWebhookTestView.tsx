@@ -28,9 +28,13 @@ const ChannelWebhookTestView = (): JSX.Element => {
             return;
         }
 
-        await mutateAsync({ uuid: channel_webhook_uuid, message });
-        addToast({ message: 'Webhook test sent', type: 'success', duration: 5000 });
-        setMessage('');
+        try {
+            await mutateAsync({ uuid: channel_webhook_uuid, message });
+            addToast({ message: 'Webhook test sent', type: 'success', duration: 5000 });
+            setMessage('');
+        } catch (error) {
+            addToast({ message: 'Error sending webhook test', type: 'error', duration: 5000 });
+        }
     }
 
     const messageHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

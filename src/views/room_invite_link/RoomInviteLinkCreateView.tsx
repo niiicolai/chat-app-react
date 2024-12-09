@@ -41,14 +41,18 @@ const RoomInviteLinkCreateView = (): JSX.Element => {
         const formData = new FormData(e.currentTarget);
         const uuid = formData.get("uuid") as string;
 
-        await mutateAsync({
-            uuid,
-            room_uuid,
-            expires_at: expiresAt
-        });
-        navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link created successfully', type: 'success', duration: 5000 });
-        setUuid(uuidv4());
+        try {
+            await mutateAsync({
+                uuid,
+                room_uuid,
+                expires_at: expiresAt
+            });
+            navigate(`/room/${room_uuid}/links`);
+            addToast({ message: 'Invite link created successfully', type: 'success', duration: 5000 });
+            setUuid(uuidv4());
+        } catch (error) {
+            addToast({ message: 'Error creating invite link', type: 'error', duration: 5000 });
+        }
     }
 
     return (

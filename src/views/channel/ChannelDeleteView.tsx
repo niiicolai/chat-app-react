@@ -32,9 +32,13 @@ const ChannelDeleteView = (): JSX.Element => {
             return;
         }
 
-        await destroyChannel.mutateAsync(channel_uuid);
-        navigate(`/room/${room_uuid}`);
-        addToast({ message: 'Channel deleted successfully', type: 'success', duration: 5000 });
+        try {
+            await destroyChannel.mutateAsync(channel_uuid);
+            navigate(`/room/${room_uuid}`);
+            addToast({ message: 'Channel deleted successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error deleting channel', type: 'error', duration: 5000 });
+        }
     }
 
     const nameHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

@@ -44,15 +44,24 @@ const RoomEditView = (): JSX.Element => {
             return;
         }
 
-        await updateRoom.mutateAsync({ uuid: room_uuid, formData });
-        navigate(`/room/${room_uuid}`);
-        addToast({ message: 'Room updated successfully', type: 'success', duration: 5000 });
+        try {
+            await updateRoom.mutateAsync({ uuid: room_uuid, formData });
+            navigate(`/room/${room_uuid}`);
+            addToast({ message: 'Room updated successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error updating room', type: 'error', duration: 5000 });
+        }
     }
 
     const destroyAvatarHandler = async () => {
         if (!room?.avatar?.room_file) return;
-        await destroyAvatar.mutateAsync(room.avatar.room_file.uuid);
-        addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+
+        try {
+            await destroyAvatar.mutateAsync(room.avatar.room_file.uuid);
+            addToast({ message: 'Avatar removed', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error removing avatar', type: 'error', duration: 5000 });
+        }
     }
 
     const categoryHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

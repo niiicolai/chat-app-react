@@ -1,16 +1,17 @@
-import { FormEvent, useState, JSX, useContext } from "react";
-import { ToastContext } from "../../context/toastContext";
 import Button from "../utils/Button";
 import Spinner from "../utils/Spinner";
+import Alert from "../utils/Alert";
 import CheckMarkIcon from "../icons/CheckMarkIcon";
 import ChannelMessage from "../../models/channel_message";
+import { FormEvent, useState, JSX, useContext, useEffect } from "react";
+import { ToastContext } from "../../context/toastContext";
+import { useUpdateChannelMessage } from "../../hooks/useChannelMessages";
 
 /**
  * @interface ChannelMessageUpdateProps
  * @description The props for the ChannelMessageUpdate component
  */
 interface ChannelMessageUpdateProps {
-    update: (e: FormEvent<HTMLFormElement>) => Promise<void>;
     editMessage: ChannelMessage | null;
     setEditMessage: (message: ChannelMessage | null) => void;
 }
@@ -21,37 +22,44 @@ interface ChannelMessageUpdateProps {
  * @returns {JSX.Element}
  */
 const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): JSX.Element => {
-    const { editMessage, setEditMessage, update } = props;
-    const [message, setMessage] = useState(editMessage?.body || "");
-    const [isLoading, setIsLoading] = useState(false);
+    const { editMessage, setEditMessage } = props;
     const { addToast } = useContext(ToastContext);
+    const { mutateAsync, isLoading, error } = useUpdateChannelMessage();
+    const [message, setMessage] = useState(editMessage?.body || "");
 
-    const updateHandler = (e: FormEvent<HTMLFormElement>) => {
+    /**
+     * If the editMessage prop changes, update the message state
+     * to ensure the input field is updated with the message body
+     */
+    useEffect(() => {
+        setMessage(editMessage?.body || "");
+    }, [editMessage]);
+
+    const updateHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
 
-        update(e)
-        .then(() => {
-            setMessage("");
+        if (!editMessage) return;
+        if (message === "") {
+            addToast({ message: "Message is required", type: "error", duration: 5000 });
+            return;
+        }
+
+        try {
+            await mutateAsync({ uuid: editMessage.uuid, body: { body: message } });
             setEditMessage(null);
             addToast({ message: "Message updated", type: "success", duration: 5000 });
-        })
-        .catch((err: unknown) => {
-            if (err instanceof Error) {
-                addToast({ message: err.message, type: "error", duration: 5000 });
-            } else {
-                addToast({ message: "An unknown error occurred", type: "error", duration: 5000 });
-            }
-        })
-        .finally(() => {
-            setIsLoading(false);
-        });
+            setMessage("");
+        } catch (error) {
+            addToast({ message: "Error updating message", type: "error", duration: 5000 });
+        }
     };
 
     return (
         <div>
             {editMessage && (
                 <div>
+                    <Alert type="error" message={error} />
+
                     <form onSubmit={updateHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0" data-testid="channel-message-edit-form">
                         <input type="hidden" name="uuid" value={editMessage?.uuid} />
 
@@ -74,12 +82,12 @@ const ChannelMessageUpdate = (props: ChannelMessageUpdateProps): JSX.Element => 
                             </span>
                         } />
 
-                        <Button 
-                            onClick={() => setEditMessage(null)} 
-                            type="secondary" 
-                            button="button" 
-                            slot="Cancel" 
-                            display="w-24 flex items-center justify-center rounded-none" 
+                        <Button
+                            onClick={() => setEditMessage(null)}
+                            type="secondary"
+                            button="button"
+                            slot="Cancel"
+                            display="w-24 flex items-center justify-center rounded-none"
                         />
                     </form>
                 </div>

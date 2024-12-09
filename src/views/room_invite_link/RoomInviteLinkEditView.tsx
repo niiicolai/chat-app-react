@@ -36,25 +36,33 @@ const RoomInviteLinkEditView = (): JSX.Element => {
             return;
         }
 
-        await updateRoomInviteLink.mutateAsync({
-            uuid: room_invite_link_uuid as string,
-            body: { expires_at: expiresAt || link?.expires_at }
-        });
-        link.expires_at = expiresAt;
-
-        navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
+        try {
+            await updateRoomInviteLink.mutateAsync({
+                uuid: room_invite_link_uuid as string,
+                body: { expires_at: expiresAt || link?.expires_at }
+            });
+            link.expires_at = expiresAt;
+    
+            navigate(`/room/${room_uuid}/links`);
+            addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error updating invite link', type: 'error', duration: 5000 });
+        }
     }
 
     const clearExpiresAt = async () => {
-        await updateRoomInviteLink.mutateAsync({
-            uuid: room_invite_link_uuid as string,
-            body: { expires_at: '' }
-        });
-        link.expires_at = '';
-
-        navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
+        try {
+            await updateRoomInviteLink.mutateAsync({
+                uuid: room_invite_link_uuid as string,
+                body: { expires_at: '' }
+            });
+            link.expires_at = '';
+    
+            navigate(`/room/${room_uuid}/links`);
+            addToast({ message: 'Invite link updated successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error updating invite link', type: 'error', duration: 5000 });
+        }
     }
 
     return (

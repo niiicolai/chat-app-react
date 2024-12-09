@@ -36,15 +36,23 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
     const isMe = roomUser?.uuid === authRoomUser?.user.uuid;
 
     const updateHandler = async (uuid: string, role: string) => {
-        await updateRoomUser.mutateAsync({ uuid, room_user_role_name: role });
-        addToast({ message: 'User role updated', type: 'success', duration: 5000 });
-        refetch();
+        try {
+            await updateRoomUser.mutateAsync({ uuid, room_user_role_name: role });
+            addToast({ message: 'User role updated', type: 'success', duration: 5000 });
+            refetch();
+        } catch (error) {
+            addToast({ message: 'Error updating user role', type: 'error', duration: 5000 });
+        }
     }
 
     const destroyHandler = async (uuid: string) => {
-        await destroyRoomUser.mutateAsync(uuid);
-        addToast({ message: 'User kicked', type: 'success', duration: 5000 });
-        refetch();
+        try {
+            await destroyRoomUser.mutateAsync(uuid);
+            addToast({ message: 'User kicked', type: 'success', duration: 5000 });
+            refetch();
+        } catch (error) {
+            addToast({ message: 'Error kicking user', type: 'error', duration: 5000 });
+        }
     }
 
     return (
@@ -61,21 +69,21 @@ const RoomUserListItem = (props: RoomUserListItemProps): JSX.Element => {
 
             <Alert type="error" message={error} />
 
-            { isLoading &&
+            {isLoading &&
                 <div className="flex items-center justify-center">
                     <Spinner isLoading={isLoading} width="2em" fill="white" />
                 </div>
             }
 
-            { !isMe && !isLoading &&
+            {!isMe && !isLoading &&
                 <div className="bg-gray-700 p-2 rounded-md flex flex-col gap-1">
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Admin" onClick={() => updateHandler(roomUser.uuid, 'Admin')} button="button" slot="Set Admin" testId="set-room-user-admin" />
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Moderator" onClick={() => updateHandler(roomUser.uuid, 'Moderator')} button="button" slot="Set Moderator" testId="set-room-user-mod" />
-                    <Button type="primary" display={`${isAdmin?'':'hidden'} flex items-center justify-center`} title="Promote to Member" onClick={() => updateHandler(roomUser.uuid, 'Member')} button="button" slot="Set Member" testId="set-room-user-member" />
-                    <Button type="error" display={`${isAdmin||isMod?'':'hidden'} flex items-center justify-center`} button="button" title="Kick" onClick={() => destroyHandler(roomUser.uuid)}  slot="Kick" testId="kick-room-user" />
+                    <Button type="primary" display={`${isAdmin ? '' : 'hidden'} flex items-center justify-center`} title="Promote to Admin" onClick={() => updateHandler(roomUser.uuid, 'Admin')} button="button" slot="Set Admin" testId="set-room-user-admin" />
+                    <Button type="primary" display={`${isAdmin ? '' : 'hidden'} flex items-center justify-center`} title="Promote to Moderator" onClick={() => updateHandler(roomUser.uuid, 'Moderator')} button="button" slot="Set Moderator" testId="set-room-user-mod" />
+                    <Button type="primary" display={`${isAdmin ? '' : 'hidden'} flex items-center justify-center`} title="Promote to Member" onClick={() => updateHandler(roomUser.uuid, 'Member')} button="button" slot="Set Member" testId="set-room-user-member" />
+                    <Button type="error" display={`${isAdmin || isMod ? '' : 'hidden'} flex items-center justify-center`} button="button" title="Kick" onClick={() => destroyHandler(roomUser.uuid)} slot="Kick" testId="kick-room-user" />
                 </div>
             }
-            { isMe &&
+            {isMe &&
                 <div className="bg-gray-700 p-2 rounded-md flex flex-col gap-1 text-center">
                     You
                 </div>

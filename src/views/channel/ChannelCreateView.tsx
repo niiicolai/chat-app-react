@@ -50,10 +50,14 @@ const ChannelCreateView = (): JSX.Element => {
             return;
         }
 
-        const formData = new FormData(e.currentTarget);
-        await createChannel.mutateAsync(formData);
-        navigate(`/room/${room_uuid}/channel/${uuid}`);
-        addToast({ message: 'Channel created successfully', type: 'success', duration: 5000 });
+        try {
+            const formData = new FormData(e.currentTarget);
+            await createChannel.mutateAsync(formData);
+            navigate(`/room/${room_uuid}/channel/${uuid}`);
+            addToast({ message: 'Channel created successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error creating channel', type: 'error', duration: 5000 });
+        }
     };
 
     const nameHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

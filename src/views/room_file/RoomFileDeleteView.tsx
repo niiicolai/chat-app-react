@@ -31,9 +31,13 @@ const RoomFileDeleteView = (): JSX.Element => {
             return;
         }
 
-        await destroyRoomFile.mutateAsync(file_uuid);
-        navigateToRoomFiles();
-        addToast({ message: 'Room file deleted', type: 'success', duration: 5000 });
+        try {
+            await destroyRoomFile.mutateAsync(file_uuid);
+            navigateToRoomFiles();
+            addToast({ message: 'Room file deleted', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error deleting room file', type: 'error', duration: 5000 });
+        }
     }
 
     const navigateToRoomFiles = () => {

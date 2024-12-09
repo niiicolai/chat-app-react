@@ -40,9 +40,13 @@ const RoomInviteLinkDeleteView = (): JSX.Element => {
             return;
         }
 
-        await destroyRoomInviteLink.mutateAsync(room_invite_link_uuid);
-        navigate(`/room/${room_uuid}/links`);
-        addToast({ message: 'Invite link deleted successfully', type: 'success', duration: 5000 });
+        try {
+            await destroyRoomInviteLink.mutateAsync(room_invite_link_uuid);
+            navigate(`/room/${room_uuid}/links`);
+            addToast({ message: 'Invite link deleted successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error deleting invite link', type: 'error', duration: 5000 });
+        }
     }
 
     const answerHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

@@ -18,8 +18,12 @@ const UserVerifyEmail = (): JSX.Element => {
     const isLoading = getUser.isLoading || resendEmailVerification.isLoading;
 
     const resend = async () => {
-        await resendEmailVerification.mutateAsync();
-        addToast({ message: 'Verification email sent', type: 'success', duration: 5000 });
+        try {
+            await resendEmailVerification.mutateAsync();
+            addToast({ message: 'Verification email sent', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error sending verification email', type: 'error', duration: 5000 });
+        }
     }
 
     return (

@@ -1,18 +1,19 @@
 import PaperPlaneIcon from "../icons/PaperPlaneIcon";
 import Spinner from "../utils/Spinner";
 import Button from "../utils/Button";
+import Alert from "../utils/Alert";
+import Channel from "../../models/channel";
 import { v4 as uuidv4 } from "uuid";
 import { FormEvent, useContext } from "react";
 import { ToastContext } from "../../context/toastContext";
 import { useState, JSX } from "react";
-import Channel from "../../models/channel";
+import { useCreateChannelMessage } from "../../hooks/useChannelMessages";
 
 /**
  * @interface ChannelMessageCreateProps
  * @description The props for the ChannelMessageCreate component
  */
 interface ChannelMessageCreateProps {
-    create: (e: FormEvent<HTMLFormElement>, file: string | Blob) => Promise<void>;
     scrollToBottom?: () => void;
     channel: Channel;
 }
@@ -26,32 +27,29 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
     const { addToast } = useContext(ToastContext);
     const [message, setMessage] = useState("");
     const [uuid, setUuid] = useState(uuidv4());
+    const { mutateAsync, isLoading, error } = useCreateChannelMessage();
     const [file, setFile] = useState('' as string | Blob);
-    const [isLoading, setIsLoading] = useState(false);
-    const { create, scrollToBottom, channel } = props;
+    const { scrollToBottom, channel } = props;
 
-    const createHandler = (e: FormEvent<HTMLFormElement>) => {
+    const createHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
 
-        create(e, file)
-            .then(() => {
-                setUuid(uuidv4());
-                setMessage("");
-                setFile('');
-                addToast({ message: 'Message sent', type: 'success', duration: 5000 });
-            })
-            .catch((err: unknown) => {
-                if (err instanceof Error) {
-                    addToast({ message: err.message, type: 'error', duration: 5000 });
-                } else {
-                    addToast({ message: 'An unknown error occurred', type: 'error', duration: 5000 });
-                }
-            })
-            .finally(() => {
-                setIsLoading(false);
-                if (scrollToBottom) scrollToBottom();
-            });
+        if (message === "") {
+            addToast({ message: 'Message is required', type: 'error', duration: 5000 });
+            return;
+        }
+
+        try {
+            const formData = new FormData(e.currentTarget);
+            await mutateAsync(formData);
+            addToast({ message: 'Message sent', type: 'success', duration: 5000 });
+            if (scrollToBottom) scrollToBottom();
+            setMessage('');
+            setFile('');
+            setUuid(uuidv4());
+        } catch (error) {
+            addToast({ message: 'Error sending message', type: 'error', duration: 5000 });
+        }
     };
 
     const messageHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -70,6 +68,8 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
     return (
         <div>
             <div>
+                <Alert type="error" message={error} />
+
                 <form onSubmit={createHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0" data-testid="channel-message-create-form">
                     <input type="hidden" name="uuid" value={uuid} />
                     <input type="hidden" name="channel_uuid" value={channel.uuid} />

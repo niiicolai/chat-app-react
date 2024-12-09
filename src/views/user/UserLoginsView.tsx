@@ -27,8 +27,12 @@ const UserLoginsView = (): JSX.Element => {
     const navigate = useNavigate();
 
     const revokeAccessHandler = async (uuid: string) => {
-        await destroyLogin.mutateAsync(uuid);
-        addToast({ message: 'Login revoked', type: 'success', duration: 5000 });
+        try {
+            await destroyLogin.mutateAsync(uuid);
+            addToast({ message: 'Login revoked', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error revoking login', type: 'error', duration: 5000 });
+        }
     }
 
     const addGoogleLoginHandler = () => {

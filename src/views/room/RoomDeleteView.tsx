@@ -32,9 +32,13 @@ const RoomDeleteView = (): JSX.Element => {
             return;
         }
 
-        await destroyRoom.mutateAsync(room_uuid);
-        navigate(`/rooms`);
-        addToast({ message: 'Room deleted successfully', type: 'success', duration: 5000 });
+        try {
+            await destroyRoom.mutateAsync(room_uuid);
+            navigate(`/rooms`);
+            addToast({ message: 'Room deleted successfully', type: 'success', duration: 5000 });
+        } catch (error) {
+            addToast({ message: 'Error deleting room', type: 'error', duration: 5000 });
+        }
     }
 
     const nameHandler = (event: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
