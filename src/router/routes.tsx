@@ -59,10 +59,13 @@ export const routes = [
     path: "/forgot-password",
     element: <ForgotPasswordView />,
   },
+  // Used when a user wants to sign-in with a third-party account.
+  // The server will redirect to this route if the user authentication is successful.
   {
     path: "/redirect/auth",
     element: <RedirectAuthView />,
   },
+  // Used when a user wants to add a third-party account to their existing account.
   {
     path: "/redirect/auth/confirm",
     element: <RedirectAuthConfirmView />,

@@ -4,8 +4,9 @@ import Alert from "../../components/utils/Alert";
 import Link from "../../components/utils/Link";
 import InputControl from "../../components/utils/InputControl";
 import GhostIcon from "../../components/icons/GhostIcon";
-import { useState, JSX, FormEvent } from "react";
-import UserPasswordResetService from "../../services/userPasswordResetService";
+import { useState, JSX, FormEvent, useContext } from "react";
+import { ToastContext } from "../../context/toastContext";
+import { useCreatePasswordReset } from "../../hooks/useUser";
 
 /**
  * @function ForgotPasswordView
@@ -13,32 +14,25 @@ import UserPasswordResetService from "../../services/userPasswordResetService";
  * @returns {JSX.Element} JSX.Element
  */
 const ForgotPasswordView = (): JSX.Element => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { addToast } = useContext(ToastContext);
+    const { mutateAsync, isLoading, error } = useCreatePasswordReset();
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
+
         const formData = new FormData(e.currentTarget);
         if (!formData.get('email')) {
-            setError("Email is required");
-            setIsLoading(false);
+            addToast({ message: 'Email is required', type: 'error', duration: 5000 });
             return;
         }
-        try {
-            await UserPasswordResetService.create(formData);
-            setIsSubmitted(true);
-            setError(null);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("An unknown error occurred");
-            }
 
-        } finally {
-            setIsLoading(false);
+        try {
+            await mutateAsync(formData);
+            setIsSubmitted(true);
+            addToast({ message: 'If the email address exists in our system, you will receive a password reset link shortly.', type: 'success', duration: 5000 });
+        } catch {
+            addToast({ message: 'Error sending password reset link', type: 'error', duration: 5000 });
         }
     }
 

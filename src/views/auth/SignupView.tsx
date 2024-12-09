@@ -4,10 +4,11 @@ import Alert from "../../components/utils/Alert";
 import Link from "../../components/utils/Link";
 import InputControl from "../../components/utils/InputControl";
 import GhostIcon from "../../components/icons/GhostIcon";
-import UserService from "../../services/userService";
 import { useContext, useState, JSX, FormEvent } from "react";
+import { ToastContext } from "../../context/toastContext";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { useCreateUser } from "../../hooks/useUser";
 
 const API_URL = import.meta.env.VITE_API_URL;
 if (!API_URL) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_URL should be set in the .env file');
@@ -21,27 +22,36 @@ if (!API_PREFIX) console.error('CONFIGURATION ERROR(apiService.ts): VITE_API_PRE
  * @returns {JSX.Element} JSX.Element
  */
 const SignupView = (): JSX.Element => {
+    const { addToast } = useContext(ToastContext);
+    const { mutateAsync, isLoading, error } = useCreateUser();
     const [uuid, setUuid] = useState(uuidv4());
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
         const formData = new FormData(e.currentTarget);
+
+        if (formData.get("username") === "") {
+            addToast({ message: "Username is required", type: "error", duration: 5000 });
+            return;
+        }
+
+        if (formData.get("email") === "") {
+            addToast({ message: "Email is required", type: "error", duration: 5000 });
+            return;
+        }
+
+        if (formData.get("password") === "") {
+            addToast({ message: "Password is required", type: "error", duration: 5000 });
+            return;
+        }
         try {
-            const user = await UserService.create(formData);
-            setUuid(uuidv4());
+            await mutateAsync(formData);
+            addToast({ message: "User created successfully", type: "success", duration: 5000 });
             navigate("/");
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("An unknown error occurred");
-            }
-        } finally {
-            setIsLoading(false);
+            setUuid(uuidv4());
+        } catch {
+            addToast({ message: "Error creating user", type: "error", duration: 5000 });
         }
     }
 

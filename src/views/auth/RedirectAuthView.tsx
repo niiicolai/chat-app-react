@@ -1,40 +1,40 @@
 import Spinner from "../../components/utils/Spinner";
 import Alert from "../../components/utils/Alert";
-import UserService from "../../services/userService";
 import TokenService from "../../services/tokenService";
 import { useNavigate } from 'react-router-dom';
-import { useContext, useState, JSX, useEffect } from "react";
+import { useState, JSX, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 /**
  * @function RedirectAuthView
  * @description The redirect auth view
+ * 
+ * 1. 
+ * When a user manages to sign in successfully with a third-party service,
+ * the server will redirect to this route with a token.
+ * 
+ * 2. The token is then saved by the user and used in subsequent requests.
+ * 
  * @returns {JSX.Element} JSX.Element
  */
 const RedirectAuthView = (): JSX.Element => {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
-
     const [searchParams] = useSearchParams();
+    const token = searchParams.get("token");
 
     useEffect(() => {
         setIsLoading(true);
-        const token = searchParams.get("token");
+        
         if (token) {
             TokenService.setToken(token);
-            UserService.me().then(user => {
-                navigate("/");
-            }).catch(error => {
-                setError(error.message);
-            }).finally(() => {
-                setIsLoading(false);
-            });
+            navigate("/");
         } else {
             setError("Error: No token provided");
-            setIsLoading(false);
         }
 
+        setIsLoading(false);
         return () => {};
     }, []);
 
