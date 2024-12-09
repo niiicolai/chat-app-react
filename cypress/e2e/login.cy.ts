@@ -22,7 +22,7 @@ describe('Login E2E Test', () => {
 
     cy.get('button[type="submit"]').click();
 
-    cy.get('[data-testid="alert-message"]')
+    cy.get('[data-testid="toast-item-message"]')
       .should('be.visible')
       .and('contain', 'Email is required');
   });
@@ -32,7 +32,7 @@ describe('Login E2E Test', () => {
 
     cy.get('button[type="submit"]').click();
 
-    cy.get('[data-testid="alert-message"]')
+    cy.get('[data-testid="toast-item-message"]')
       .should('be.visible')
       .and('contain', 'Password is required');
   });
@@ -56,6 +56,6 @@ describe('Login E2E Test', () => {
 
     cy.get('[data-testid="alert-message"]')
       .should('be.visible')
-      .and('contain', 'Invalid email or password');
+      .and('contain', 'Error: Invalid email or password');
   });
 });

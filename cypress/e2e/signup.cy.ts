@@ -28,7 +28,7 @@ describe('Signup E2E Test', () => {
 
         cy.get('button[type="submit"]').click();
 
-        cy.get('[data-testid="alert-message"]')
+        cy.get('[data-testid="toast-item-message"]')
             .should('be.visible')
             .and('contain', 'Email is required');
     });
@@ -39,7 +39,7 @@ describe('Signup E2E Test', () => {
 
         cy.get('button[type="submit"]').click();
 
-        cy.get('[data-testid="alert-message"]')
+        cy.get('[data-testid="toast-item-message"]')
             .should('be.visible')
             .and('contain', 'Password is required');
     });
@@ -50,7 +50,7 @@ describe('Signup E2E Test', () => {
 
         cy.get('button[type="submit"]').click();
 
-        cy.get('[data-testid="alert-message"]')
+        cy.get('[data-testid="toast-item-message"]')
             .should('be.visible')
             .and('contain', 'Username is required');
     });
