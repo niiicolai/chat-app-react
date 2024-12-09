@@ -5,4 +5,3 @@ export const useGetRoomCategories = () => {
     return useQuery(['room_categories'], RoomService.roomCategories);
 }
 
-export default useGetRoomCategories;

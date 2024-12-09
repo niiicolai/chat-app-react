@@ -16,10 +16,6 @@ const RoomListView = (): JSX.Element => {
     const { data, error, isLoading, page, pages, nextPage, previousPage } = useGetRooms();
     const rooms = data?.data || [];
 
-    const selectRoom = (room: Room) => {
-        navigate(`/room/${room.uuid}`);
-    }
-
     return (
         <Restricted slot={
             <div className="bg-black min-h-screen text-white">
@@ -40,10 +36,9 @@ const RoomListView = (): JSX.Element => {
                 </div>
 
                 <div className="p-3">
-                
                     <Paginator nextPage={nextPage} previousPage={previousPage} isLoading={isLoading} error={error} page={page} pages={pages} slot={
                         <ul className="flex flex-col gap-3 mb-3" data-testid="room-list">
-                            {rooms.map((room: Room) => (<RoomListItem key={room.uuid} room={room} setRoom={selectRoom} />))}
+                            {rooms.map((room: Room) => (<RoomListItem key={room.uuid} room={room} />))}
                             {!rooms.length && <li className="text-white" data-testid="room-list-empty">No rooms found</li>}
                         </ul>
                     } />

@@ -10,10 +10,8 @@ import ToastList from "./components/toast/ToastList";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
       retry: true,
       retryDelay: 5000,
-      staleTime: 10000
     }
   }
 });

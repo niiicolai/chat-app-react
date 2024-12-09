@@ -1,12 +1,13 @@
 import ChannelListItem from "./ChannelListItem";
 import ResMenu from "../utils/ResMenu";
-import { useContext, JSX, useState } from "react";
-import { ChannelContext } from "../../context/channelContext";
-import { RoomContext } from "../../context/roomContext";
-import ChannelService from "../../services/channelService";
+import Paginator from "../utils/Paginator";
 import Button from "../utils/Button";
 import Channel from "../../models/channel";
-import Paginator from "../utils/Paginator";
+import { JSX } from "react";
+import { useGetChannels } from "../../hooks/useChannels";
+import { useParams } from "react-router-dom";
+import Room from "../../models/room";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @interface ChannelListProps
@@ -15,6 +16,7 @@ import Paginator from "../utils/Paginator";
 interface ChannelListProps {
     setShowRules: (show: boolean) => void;
     showRules: boolean;
+    room: Room;
 }
 
 /**
@@ -22,58 +24,17 @@ interface ChannelListProps {
  * @returns {JSX.Element}
  */
 const ChannelList = (props: ChannelListProps): JSX.Element => {
-    const { selectedChannel, setSelectedChannel, channels, setChannels, setTotal, setPages, pages } = useContext(ChannelContext);
-    const { selectedRoom } = useContext(RoomContext);
-    const { showRules, setShowRules } = props;
-    const [page, setPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState("");
-    const limit = 5;
+    const navigate = useNavigate();
+    const { showRules, setShowRules, room } = props;
+    const { channel_uuid } = useParams<{ channel_uuid: string }>();
+    const getChannels = useGetChannels(room.uuid);
+    const { data, isLoading, error, nextPage, previousPage, page, pages } = getChannels;
+    const channels = data?.data || [];
 
-    const selectChannelHandler = (channel: Channel | null) => {
-        setSelectedChannel(channel);
+    const setChannel = (channel: Channel) => {
         setShowRules(false);
-    };
-
-    const showRulesHandler = () => {
-        setSelectedChannel(null);
-        setShowRules(true);
-    };
-
-    const paginate = (page: number, limit: number) => {
-        if (!selectedRoom) return;
-        setIsLoading(true);
-        ChannelService.findAll(selectedRoom.uuid, page, limit)
-            .then(({ data: channels, total, pages }: { data: Channel[], total: number, pages: number }) => {
-                setChannels(channels);
-                setTotal(total);
-                setError("");
-                setPages(pages);
-            })
-            .catch((err: unknown) => {
-                if (err instanceof Error) setError(err.message);
-                else setError("An unknown error occurred");
-            })
-            .finally(() => setIsLoading(false));
+        navigate(`/room/${channel.room_uuid}/channel/${channel.uuid}`);
     }
-
-    const previousPage = () => {
-        if (!selectedRoom) return;
-        if (pages <= 1) return;
-        if (page === 1) return;
-        setPage(page - 1);
-        paginate(page - 1, limit);
-    }
-
-    const nextPage = () => {
-        if (!selectedRoom) return;
-        if (pages <= 1) return;
-        if (page === pages) return;
-        setPage(page + 1);
-        paginate(page + 1, limit);
-    }
-
-
 
     return (
         <div className="p-3 w-64">
@@ -88,19 +49,19 @@ const ChannelList = (props: ChannelListProps): JSX.Element => {
                                     title="Show rules"
                                     testId="channel-list-show-rules-button"
                                     display={`${showRules ? 'ring-2 ring-gray-500 hover:ring-gray-500' : ''} w-full text-xs p-1`}
-                                    onClick={showRulesHandler}
+                                    onClick={() => setShowRules(true)}
                                     slot={
                                         <span className="text-white">README</span>
                                     } />
                             </li>
-                            {channels.map((channel) =>
+                            {channels && channels.map((channel: Channel) =>
                                 <ChannelListItem key={channel.uuid}
-                                    isSelected={channel.uuid === selectedChannel?.uuid}
+                                    isSelected={channel.uuid === channel_uuid}
                                     channel={channel}
-                                    setChannel={selectChannelHandler}
+                                    setChannel={setChannel}
                                 />
                             )}
-                            {!channels.length && (
+                            {!channels || !channels.length && (
                                 <li className="w-full flex flex-col items-center justify-center gap-3 p-3 text-center" data-testid="channel-list-empty">
                                     <p className="text-white">No channels to join, but you can fix that! Start a new one now! 🚀</p>
                                 </li>

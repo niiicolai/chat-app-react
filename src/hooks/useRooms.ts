@@ -1,8 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from "react";
 import Room from "../models/room";
-import RoomService from "../services/roomService";
+import RoomService, { SettingsInput } from "../services/roomService";
 import RoomFileService from "../services/roomFileService";
+
+export const useCreateRoom = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(RoomService.create, {
+        onSuccess: (room: Room) => {
+            queryClient.setQueryData(['room', room.uuid], room);
+        }
+    });
+}
 
 export const useUpdateRoom = (uuid: string) => {
     const queryClient = useQueryClient();
@@ -14,29 +24,21 @@ export const useUpdateRoom = (uuid: string) => {
             queryClient.setQueryData(['room', uuid],
                 (prevRoom: Room | undefined) => room
             )
-            queryClient.setQueryData(['rooms'], (prevRooms: Room[] | undefined) => {
-                if (!prevRooms) return [];
-                return prevRooms.map(r => {
-                    if (r.uuid === room.uuid) {
-                        return room;
-                    }
-                    return r;
-                })
-            })
         }
     });
 }
 
-export const useCreateRoom = () => {
+export const useUpdateRoomSettings = (uuid: string) => {
     const queryClient = useQueryClient();
 
-    return useMutation(RoomService.create, {
+    return useMutation(async ({ settings }: { uuid: string, settings: SettingsInput }) => {
+        await RoomService.updateSettings(uuid, settings);
+        return RoomService.findOne(uuid);
+    }, {
         onSuccess: (room: Room) => {
-            queryClient.setQueryData(['room', room.uuid], room);
-            queryClient.setQueryData(['rooms'], (prevRooms: Room[] | undefined) => {
-                if (!prevRooms) return [];
-                return [...prevRooms, room];
-            })
+            queryClient.setQueryData(['room', uuid],
+                (prevRoom: Room | undefined) => room
+            )
         }
     });
 }
@@ -53,18 +55,26 @@ export const useDestroyAvatar = (uuid: string) => {
                     ...(prevRoom.avatar && { avatar: { uuid: prevRoom.avatar.uuid, room_file: null } })
                 }
             })
-            queryClient.setQueryData(['rooms'], (prevRooms: Room[] | undefined) => {
-                if (!prevRooms) return [];
-                return prevRooms.map(room => {
-                    if (room.uuid === uuid && room.avatar) {
-                        return {
-                            ...room,
-                            avatar: { uuid: room.avatar.uuid, room_file: null }
-                        }
-                    }
-                    return room;
-                })
-            })
+        }
+    });
+}
+
+export const useDestroyRoom = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(RoomService.destroy, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['room', uuid]);
+        }
+    });
+}
+
+export const useLeaveRoom = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(RoomService.leave, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['room', uuid]);
         }
     });
 }
@@ -106,4 +116,3 @@ export const useGetRooms = () => {
     };
 }
 
-export default useGetRooms;

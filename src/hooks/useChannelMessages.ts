@@ -1,4 +1,5 @@
-import ChannelMessageService from "../services/channelMessageService";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import ChannelMessageService, { ChannelMessageUpdateInput } from "../services/channelMessageService";
 import ChannelMessage from "../models/channel_message";
 import { useEffect, useState, useContext, FormEvent } from "react";
 import { ChannelContext } from "../context/channelContext";
@@ -6,6 +7,81 @@ import { WebsocketContext } from "../context/websocketContext";
 import { UserContext } from "../context/userContext";
 import { SocketMessage } from "./useWebsockets";
 import RoomFileService from "../services/roomFileService";
+
+export const useCreateChannelMessage = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation(ChannelMessageService.create, {
+        onSuccess: (channelMessage: ChannelMessage) => {
+            queryClient.setQueryData(['channel_message', channelMessage.uuid], channelMessage);
+        }
+    });
+}
+
+export const useUpdateChannelMessage = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(async ({ uuid, body }: { uuid: string, body: ChannelMessageUpdateInput }) => {
+        return await ChannelMessageService.update(uuid, body);
+    }, {
+        onSuccess: (channelMessage: ChannelMessage) => {
+            queryClient.setQueryData(['channel_message', uuid],
+                (prevChannelMessage: ChannelMessage | undefined) => channelMessage
+            )
+        }
+    });
+}
+
+export const useDestroyChannelMessage = (uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(ChannelMessageService.destroy, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(['channel_message', uuid]);
+        }
+    });
+}
+
+export const useDestroyUpload= (channel_message_uuid: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation(RoomFileService.destroy, {
+        onSuccess: () => {
+            queryClient.setQueryData(['channel_message', channel_message_uuid], 
+                (prevChannelMessage: ChannelMessage | undefined) => {
+                if (!prevChannelMessage) return;
+                return {
+                    ...prevChannelMessage,
+                    channel_message_upload: null
+                }
+            })
+        }
+    });
+}
+
+export const useGetChannelMessages = (channel_uuid: string) => {
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
+
+    const { data, error, isLoading } = useQuery(['channel_messages', channel_uuid, page], async () => {
+        const { data, pages, total } = await ChannelMessageService.findAll(channel_uuid, page, 10);
+        setPages(pages ?? 1);
+        return { data, pages, total };
+    }, {
+        keepPreviousData: true,
+    });
+
+    return {
+        page,
+        pages,
+        data,
+        error,
+        isLoading,
+        nextPage: () => setPage(page < pages ? page + 1 : page),
+        previousPage: () => setPage(page > 1 ? page - 1 : page),
+    };
+}
+
 
 /**
  * @interface UseChannelMessages
@@ -118,7 +194,6 @@ const useChannelMessages = (): UseChannelMessages => {
             setMaxPages(pages ?? 1);
         });
     }
-
 
     const create = async (e: FormEvent<HTMLFormElement>, file: string | Blob) => {
         e.preventDefault();

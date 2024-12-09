@@ -6,10 +6,9 @@ import Restricted from "../../components/utils/Restricted";
 import InputControlTracked from "../../components/utils/InputControlTracked";
 import { useGetRoom, useUpdateRoom, useDestroyAvatar } from "../../hooks/useRooms";
 import { useGetRoomCategories } from "../../hooks/useRoomCategories";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FormEvent, JSX, useContext } from "react";
 import { ToastContext } from "../../context/toastContext";
-import { useNavigate } from 'react-router-dom';
 
 /**
  * @function RoomEditView
@@ -47,6 +46,7 @@ const RoomEditView = (): JSX.Element => {
 
         await updateRoom.mutateAsync({ uuid: room_uuid, formData });
         navigate(`/room/${room_uuid}`);
+        addToast({ message: 'Room updated', type: 'success', duration: 5000 });
     }
 
     const destroyAvatarHandler = async () => {
@@ -71,10 +71,10 @@ const RoomEditView = (): JSX.Element => {
 
                     <div>
                         <Button
-                            onClick={() => navigate('/')}
+                            onClick={() => navigate(`/room/${room_uuid}`)}
                             display="px-3 py-1 w-full block text-sm"
-                            slot="Dashboard"
-                            title="Dashboard"
+                            slot="Back to Room"
+                            title="Back to Room"
                         />
                     </div>
                 </div>
@@ -169,7 +169,7 @@ const RoomEditView = (): JSX.Element => {
                                                     type="secondary"
                                                     button="button"
                                                     slot="Cancel"
-                                                    onClick={() => { navigate('/') }}
+                                                    onClick={() => { navigate(`/room/${room_uuid}`) }}
                                                 />
                                             </>)
                                     }
