@@ -12,6 +12,14 @@ const WEBSOCKET_URL = import.meta.env.VITE_WS_URL;
 if (!WEBSOCKET_URL) console.error('CONFIGURATION ERROR(useWebsockets.ts): WEBSOCKET_URL should be set in the .env file');
 
 /**
+ * @constant WEBSOCKET_DB
+ * @description The websocket db
+ * @example mysql
+ */
+const WEBSOCKET_DB = import.meta.env.VITE_WS_DB;
+if (!WEBSOCKET_DB) console.error('CONFIGURATION ERROR(useWebsockets.ts): WEBSOCKET_DB should be set in the .env file');
+
+/**
  * @constant DEBUG
  * @description The debug flag
  * @example true
@@ -143,7 +151,7 @@ export const useWebsocket = (channel_uuid: string): UseWebsocket => {
             throw new Error('No token found in local storage');
         }
         console.log('Joining channel:', channel_uuid);
-        socket.send(JSON.stringify({ type: 'join_channel', channel: `channel-${channel_uuid}`, token: `Bearer ${token}` }));
+        socket.send(JSON.stringify({ type: 'join_channel', channel: `channel-${channel_uuid}`, token: `Bearer ${token}`, db: WEBSOCKET_DB }));
     };
 
     const leaveChannel = (): void => {
