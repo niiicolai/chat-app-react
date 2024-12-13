@@ -2,6 +2,7 @@ import PaperPlaneIcon from "../icons/PaperPlaneIcon";
 import Spinner from "../utils/Spinner";
 import Button from "../utils/Button";
 import Alert from "../utils/Alert";
+import EmojiPicker from "../utils/EmojiPicker";
 import Channel from "../../models/channel";
 import { v4 as uuidv4 } from "uuid";
 import { FormEvent, useContext } from "react";
@@ -27,6 +28,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
     const { addToast } = useContext(ToastContext);
     const [message, setMessage] = useState("");
     const [uuid, setUuid] = useState(uuidv4());
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const { mutateAsync, isLoading, error } = useCreateChannelMessage();
     const [file, setFile] = useState('' as string | Blob);
     const { scrollToBottom, channel } = props;
@@ -48,11 +50,16 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
             if (scrollToBottom) scrollToBottom();
             setMessage('');
             setUuid(uuidv4());
+            setShowEmojiPicker(false);
             if (fileInputRef.current && fileInputRef.current?.value) fileInputRef.current.value = '';
-        } catch {            
+        } catch {
             addToast({ message: 'Error sending message', type: 'error', duration: 5000 });
         }
     };
+
+    const addEmojiHandler = (emoji: string) => {
+        setMessage(message + emoji);
+    }
 
     const messageHandler = (e: FormEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         setMessage(e.currentTarget.value);
@@ -73,6 +80,7 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
                 <Alert type="error" message={error} />
 
                 <form onSubmit={createHandler} className="flex h-12 bg-black border-t border-gray-800 fixed sm:absolute bottom-0 left-0 right-0" data-testid="channel-message-create-form">
+                    <EmojiPicker show={showEmojiPicker} onSelect={addEmojiHandler} />
                     <input type="hidden" name="uuid" value={uuid} />
                     <input type="hidden" name="channel_uuid" value={channel.uuid} />
 
@@ -102,7 +110,12 @@ const ChannelMessageCreate = (props: ChannelMessageCreateProps): JSX.Element => 
                         data-testid="channel-message-create-body"
                     />
 
-                    <Button type="primary" button="submit" display="w-24 flex items-center justify-center rounded-none" slot={
+                    <Button type="primary"
+                        button="button"
+                        display="flex items-center justify-center w-12 h-12 cursor-pointer text-yellow-500 border-r rounded-none hover:ring-0"
+                        onClick={() => setShowEmojiPicker(!showEmojiPicker)} slot={showEmojiPicker ? '👻' : '😎'} />
+
+                    <Button type="primary" button="submit" display="w-24 flex items-center justify-center rounded-none hover:ring-0" slot={
                         <span>
                             {isLoading
                                 ? <Spinner isLoading={isLoading} width="2em" fill="white" />
