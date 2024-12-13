@@ -7,6 +7,7 @@ import PenIcon from "../icons/PenIcon";
 import Button from "../utils/Button";
 import Badge from "../utils/Badge";
 import User from "../../models/user";
+import ReactMarkdown from 'react-markdown';
 import ChannelMessage from "../../models/channel_message";
 import ChannelMessageUpload from "../channel_message_upload/ChannelMessageUpload";
 import { ToastContext } from "../../context/toastContext";
@@ -109,8 +110,8 @@ const ChannelMessageListItem = (props: ChannelMessageListItemProps): JSX.Element
                         }
                     </div>
 
-                    <div className="text-sm" data-testid="channel-message-list-item-body">
-                        {channelMessage.body}
+                    <div className="text-sm markdown-chat-message" data-testid="channel-message-list-item-body">
+                        <ReactMarkdown>{channelMessage.body}</ReactMarkdown>
                     </div>
 
                     {channelMessage.channel_message_upload &&
