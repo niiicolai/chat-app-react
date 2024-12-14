@@ -129,3 +129,20 @@ export const useGetChannelMessages = (channel_uuid: string) => {
         }),
     });
 }
+
+export const useSetHasUnreadMessages = (channel_uuid: string) => {
+    const queryClient = useQueryClient();
+    
+    return useMutation(async (hasUnreadMessages: boolean) => {
+            return Promise.resolve(hasUnreadMessages);
+    }, {
+        onSuccess: (hasUnreadMessages: boolean) => {
+            queryClient.setQueryData(['channel_messages_unread', channel_uuid], hasUnreadMessages);
+        }
+    });
+}
+
+export const useGetHasUnreadMessages = (channel_uuid: string) => {
+    return useQueryClient().getQueryData(
+        ['channel_messages_unread', channel_uuid]) as boolean;
+}

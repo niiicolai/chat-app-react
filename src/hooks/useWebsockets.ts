@@ -1,5 +1,6 @@
 import TokenService from "../services/tokenService";
 import ChannelMessage from '../models/channel_message';
+import { useSetHasUnreadMessages } from './useChannelMessages';
 import { useQueryClient } from '@tanstack/react-query';
 import { useState } from "react";
 
@@ -59,8 +60,9 @@ interface UseWebsocket {
  * @description The websocket hook
  * @returns {UseWebsocket} The websocket hook
  */
-export const useWebsocket = (channel_uuid: string): UseWebsocket => {
+export const useWebsocket = (channel_uuid: string, channelWrapperRef: React.RefObject<HTMLDivElement>): UseWebsocket => {
     const queryClient = useQueryClient();
+    const setHasUnreadMessages = useSetHasUnreadMessages(channel_uuid);
     const [socket] = useState(new WebSocket(WEBSOCKET_URL, WS_PROTOCOL));
 
     socket.onopen = () => {
@@ -75,6 +77,12 @@ export const useWebsocket = (channel_uuid: string): UseWebsocket => {
     socket.onerror = (error) => {
         console.error('WebSocket error:', error);
     };
+
+    const EVENTS = {
+        chat_message_created: { name: 'chat_message_created', scrollToBottom: true },
+        chat_message_updated: { name: 'chat_message_updated', scrollToBottom: false },
+        chat_message_deleted: { name: 'chat_message_deleted', scrollToBottom: false }
+    }
 
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
@@ -139,6 +147,26 @@ export const useWebsocket = (channel_uuid: string): UseWebsocket => {
                     };
                 }
             );
+        }
+
+        /**
+         * If the user is at the bottom of the chat, 
+         * automatically follow the new messages.
+         * If the user is not at the bottom of the chat,
+         * show a notification that there are unread messages.
+         */
+        const type = data.type as keyof typeof EVENTS;
+        if (channelWrapperRef.current && EVENTS[type]?.scrollToBottom) {
+            const distanceToBottom = channelWrapperRef.current.scrollHeight - channelWrapperRef.current.scrollTop - channelWrapperRef.current.clientHeight;
+            const isAtBottom = distanceToBottom < 1;
+            if (isAtBottom) {
+                setTimeout(() => {
+                    if (channelWrapperRef.current)
+                        channelWrapperRef.current.scrollTop = channelWrapperRef.current.scrollHeight;
+                }, 100);
+            } else {
+                setHasUnreadMessages.mutateAsync(true);
+            }
         }
     };
 

@@ -1,10 +1,10 @@
 import ChannelMessageListItem from "./ChannelMessageListItem";
 import ChannelMessage from "../../models/channel_message";
 import Button from "../utils/Button";
-import { JSX } from "react";
-import { useGetAuthenticatedRoomUser } from "../../hooks/useRoomUsers";
-import { useGetUser } from "../../hooks/useUser";
 import Channel from "../../models/channel";
+import { JSX } from "react";
+import { useGetUser } from "../../hooks/useUser";
+import { useGetAuthenticatedRoomUser } from "../../hooks/useRoomUsers";
 
 /**
  * @interface ChannelMessageListProps

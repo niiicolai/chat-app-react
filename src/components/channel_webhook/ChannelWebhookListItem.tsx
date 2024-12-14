@@ -30,7 +30,7 @@ const ChannelWebhookListItem = (props: ChannelWebhookListItemProps): JSX.Element
     const API_URL = import.meta.env.VITE_API_URL;
     const API_PREFIX = import.meta.env.VITE_API_PREFIX;
     
-    const url = `${API_URL}/${API_PREFIX}/channel_webhook/${webhook.uuid}`;
+    const url = `${API_URL}${API_PREFIX}/channel_webhook/${webhook.uuid}`;
     const curl = `curl -X POST ${url} -H "Content-Type: application/json" -d '{"message": "Hello World!"}'`;
 
     return (
